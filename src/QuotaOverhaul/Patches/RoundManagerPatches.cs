@@ -7,15 +7,14 @@ using Unity.Netcode;
 
 namespace QuotaOverhaul
 {
-    public class HarmonyPatches
+    public class SaveLootPatch
     {
         private static readonly Type patchType;
 
-        static HarmonyPatches()
+        static SaveLootPatch()
         {
-            patchType = typeof(HarmonyPatches);
-            Harmony gObject = new Harmony("LethalCompany.LuciusofLegend.QuotaOverhaul");
-            gObject.Patch(AccessTools.Method(typeof(RoundManager), "DespawnPropsAtEndOfRound", (Type[])null, (Type[])null), transpiler: new HarmonyMethod(patchType, "RM_DespawnPropsAtEndOfRound_Transpiler", (Type[])null));
+            patchType = typeof(SaveLootPatch);
+            Plugin.harmony.Patch(AccessTools.Method(typeof(RoundManager), "DespawnPropsAtEndOfRound", (Type[])null, (Type[])null), transpiler: new HarmonyMethod(patchType, "RM_DespawnPropsAtEndOfRound_Transpiler", (Type[])null));
         }
 
         public static IEnumerable<CodeInstruction> RM_DespawnPropsAtEndOfRound_Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
@@ -50,7 +49,7 @@ namespace QuotaOverhaul
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldarg_0));
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldloc_0));
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldarg_1));
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(HarmonyPatches), "CustomDespawnProps")));
+                instructionsToInsert.Add(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SaveLootPatch), "CustomDespawnProps")));
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Brtrue_S, labelSkip));
                 codes.InsertRange(startIndex + 1, instructionsToInsert);
             }
