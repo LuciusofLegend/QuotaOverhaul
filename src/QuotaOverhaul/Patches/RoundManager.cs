@@ -7,55 +7,16 @@ using Unity.Netcode;
 
 namespace QuotaOverhaul
 {
+    [HarmonyPatch(typeof(RoundManager), nameof(RoundManager.DespawnPropsAtEndOfRound))]
     public class SaveLootPatch
     {
-        private static readonly Type patchType;
-
-        static SaveLootPatch()
+        [HarmonyPrefix]
+        public static bool SkipOriginalDespawnProps()
         {
-            patchType = typeof(SaveLootPatch);
-            Plugin.harmony.Patch(AccessTools.Method(typeof(RoundManager), "DespawnPropsAtEndOfRound", (Type[])null, (Type[])null), transpiler: new HarmonyMethod(patchType, "RM_DespawnPropsAtEndOfRound_Transpiler", (Type[])null));
+            return false;
         }
 
-        public static IEnumerable<CodeInstruction> RM_DespawnPropsAtEndOfRound_Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
-        {
-            int startIndex = -1;
-            int endIndex = -1;
-            List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
-            for (int i = 0; i < codes.Count; i++)
-            {
-                if (codes[i].opcode == OpCodes.Stloc_0)
-                {
-                    startIndex = i;
-                    for (int j = startIndex + 1; j < codes.Count; j++)
-                    {
-                        if (codes[j].Is(OpCodes.Ldstr, "TemporaryEffect"))
-                        {
-                            endIndex = j;
-                            break;
-                        }
-                    }
-                    if (endIndex > -1)
-                    {
-                        break;
-                    }
-                }
-            }
-            if (startIndex > -1 && endIndex > -1)
-            {
-                Label labelSkip = il.DefineLabel();
-                codes[endIndex].labels.Add(labelSkip);
-                List<CodeInstruction> instructionsToInsert = new List<CodeInstruction>();
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldarg_0));
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldloc_0));
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldarg_1));
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SaveLootPatch), "CustomDespawnProps")));
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Brtrue_S, labelSkip));
-                codes.InsertRange(startIndex + 1, instructionsToInsert);
-            }
-            return codes.AsEnumerable();
-        }
-
+        [HarmonyPostfix]
         public static bool CustomDespawnProps(RoundManager rManager, GrabbableObject[] gObjects, bool despawnAllItems = false)
         {
             if (despawnAllItems)
@@ -67,7 +28,7 @@ namespace QuotaOverhaul
             List<GrabbableObject> gObjectsInside = new List<GrabbableObject>();
             foreach (GrabbableObject gObject in gObjects)
             {
-                if (!(gObject.isInShipRoom ||  gObject.isHeld) || gObject.deactivated)
+                if (!(gObject.isInShipRoom || gObject.isHeld) || gObject.deactivated)
                 {
                     Plugin.Log.LogInfo($"{gObject.name} Lost Outside");
                     DespawnItem(gObject);
@@ -167,4 +128,6 @@ namespace QuotaOverhaul
             }
         }
     }
+
+    
 }

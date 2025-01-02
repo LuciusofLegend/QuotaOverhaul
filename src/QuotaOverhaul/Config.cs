@@ -4,10 +4,14 @@ namespace QuotaOverhaul
 {
     public class Config
     {
+        // Quota settings
         public static ConfigEntry<int> startingQuota;
         public static ConfigEntry<int> quotaMinIncrease;
         public static ConfigEntry<float> quotaIncreaseSteepness;
         public static ConfigEntry<float> quotaRandomizerMultiplier;
+        public static ConfigEntry<bool> quotaEnablePlayerMultiplier;
+        public static ConfigEntry<int> quotaPlayerThreshold;
+        public static ConfigEntry<float> quotaMultPerPlayer;
 
         public static ConfigEntry<float> saveAllChance;
         public static ConfigEntry<float> saveEachChance;
@@ -22,10 +26,13 @@ namespace QuotaOverhaul
 
         public static void Load()
         {
-            startingQuota = Plugin.config.Bind("QuotaSettings", "Starting Quota", 250, "The starting quota for the game.");
+            startingQuota = Plugin.config.Bind("QuotaSettings", "Starting Quota", 300, "The starting quota for the game. \nVanilla = 130 \nDefault = 300");
             quotaMinIncrease = Plugin.config.Bind("QuotaSettings", "Quota Min Increase", 300, "The minimum amount of quota increase.");
             quotaIncreaseSteepness = Plugin.config.Bind("QuotaSettings", "Quota Increase Steepness", 4f, "The steepness of the quota increase curve - higher value means a less steep exponential increase.");
             quotaRandomizerMultiplier = Plugin.config.Bind("QuotaSettings", "Quota Randomizer Multiplier", 1f, "The multiplier for the quota randomizer - this determines the severity of the randomizer curve.");
+            quotaEnablePlayerMultiplier = Plugin.config.Bind("QuotaSettings", "Enable Player Count Multiplier", true, "Toggles multiplying the quota based on the number of players.  . \nVanilla = false \nDefault = true");
+            quotaPlayerThreshold = Plugin.config.Bind("QuotaSettings", "Player Count Threshold", 4, "If the player count is equal to or less than this threshold, the quota will be not be multiplied.  For each player beyond this threshold, the quota will be multiplied by multPerPlayer.");
+            quotaMultPerPlayer = Plugin.config.Bind("QuotaSettings", "Multiplier Per Player", 0.5f, "Quota will be multiplied by 1 + multPerPlayer * (playerCount - playerCountThreshold)");
 
             saveAllChance = Plugin.config.Bind<float>("LootSaving", "SaveAllChance", 0.25f, "A chance of all item being saved.\nVanilla value 0. Values between 0-1.");
             saveEachChance = Plugin.config.Bind<float>("LootSaving", "SaveEachChance", 0.5f, "A chance of each item being saved.\nApplied after SaveAllChance\nVanilla value 0. Values between 0-1.");
