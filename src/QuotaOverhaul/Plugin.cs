@@ -21,7 +21,7 @@ public class Plugin : BaseUnityPlugin
         Log = BepInEx.Logging.Logger.CreateLogSource(MOD_GUID);
         instance = this;
         config = Config;
-        harmony = new Harmony("LethalCompany.LuciusofLegend.QuotaOverhaul");
+        harmony = new Harmony($"LethalCompany.{MOD_GUID}");
         QuotaOverhaul.Config.Load();
         harmony.PatchAll();
         Log.LogInfo($"{MOD_NAME} is loaded!");

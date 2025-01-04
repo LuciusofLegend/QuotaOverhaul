@@ -1,17 +1,4 @@
-using BepInEx;
-using BepInEx.Configuration;
-using BepInEx.Logging;
-using GameNetcodeStuff;
 using HarmonyLib;
-using QuotaOverhaul;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using Unity.Netcode;
-using UnityEngine;
 
 namespace QuotaOverhaul
 {
@@ -37,14 +24,13 @@ namespace QuotaOverhaul
     public class QuotaUpdatePatch
     {
         [HarmonyPatch("SetNewProfitQuota")]
-        [HarmonyPrefix]
-        public static void RevertQuota()
+        public static void Prefix()
         {
             TimeOfDay.Instance.profitQuota = QuotaManager.baseProfitQuota;
         }
 
-        [HarmonyPostfix]
-        public static void SaveQuota()
+        [HarmonyPatch("SetNewProfitQuota")]
+        public static void Postfix()
         {
             QuotaManager.baseProfitQuota = TimeOfDay.Instance.profitQuota;
         }

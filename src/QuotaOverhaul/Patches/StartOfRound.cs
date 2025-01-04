@@ -1,6 +1,5 @@
-using System;
 using HarmonyLib;
-using Unity.Collections;
+using Unity.Mathematics;
 namespace QuotaOverhaul
 {
     [HarmonyPatch(typeof(StartOfRound), nameof(StartOfRound.OnClientConnect))]
@@ -8,8 +7,8 @@ namespace QuotaOverhaul
     {
         public void Postfix()
         {
-            float multiplier = 1 + Math.Max(StartOfRound.Instance.connectedPlayersAmount - Config.quotaPlayerThreshold.Value, 0) * Config.quotaMultPerPlayer.Value;
-            QuotaManager.quotaMultiplier = Math.Max(multiplier, QuotaManager.quotaMultiplier);
+            QuotaManager.recordPlayersThisQuota = math.max(QuotaManager.recordPlayersThisQuota, StartOfRound.Instance.connectedPlayersAmount);
+            QuotaManager.recordPlayersThisMoon = math.max(QuotaManager.recordPlayersThisMoon, StartOfRound.Instance.connectedPlayersAmount);
         }
     }
 }
