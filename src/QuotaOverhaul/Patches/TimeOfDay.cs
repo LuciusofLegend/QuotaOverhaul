@@ -3,12 +3,11 @@ using HarmonyLib;
 namespace QuotaOverhaul
 {
 
-    [HarmonyPatch(typeof(TimeOfDay))]
+    [HarmonyPatch(typeof(TimeOfDay), nameof(TimeOfDay.Awake))]
     public class QuotaVariablesPatch
     {
         [HarmonyPatch("Awake")]
-        [HarmonyPrefix]
-        public static void SetQuotaVariables()
+        public static void Prefix()
         {
             var quotaVariables = TimeOfDay.Instance.quotaVariables;
 
@@ -20,7 +19,7 @@ namespace QuotaOverhaul
         }
     }
 
-    [HarmonyPatch(typeof(TimeOfDay))]
+    [HarmonyPatch(typeof(TimeOfDay), nameof(TimeOfDay.SetNewProfitQuota))]
     public class QuotaUpdatePatch
     {
         [HarmonyPatch("SetNewProfitQuota")]

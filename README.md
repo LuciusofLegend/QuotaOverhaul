@@ -1,14 +1,20 @@
 # QuotaOverhaul
 
 Configurable quota variables
-Options to keep loot after all players die
-Options to increase quota for dead 
+Options to keep loot when all players die
+Options to increase quota for dead players
 Multipliers based on number of players for pretty much everything
 
-## Quota Functionality
-- Round 1, the quota is equal to startingQuota, or, if player multipliers are enabled, startingQuota * (multPerPlayer * (playerCount - playerCountThreshold)), where playerCount is equal to the number of players when the ship lands on the first moon.
-- Once a quota is set, it cannot be reduced based on players leaving, but whenever a new player joins, the quota is increased for the rest of the round.
-- At the end of each moon, if quotaDeathPenalties are enabled, the quota is increased based on the number of players that died, and optionally, if their bodies were recovered.
-- When fulfilling a quota, before the new quota is calculated, the quota is reverted to what it would be without any player multipliers or death penalties.
-- After the exponential functions are calculated, the quota is again multiplied by the number of players, and death penalties may accrue over the course of the round.
-- Rinse and repeat.
+# Credits
+
+## QuotaTweaks by mrov
+
+Quota Tweaks is a very simple mod that exposes the internal vanilla variable QuotaSettings to the user and makes it configurable. Since it's released under the permissive MIT License, I basically stole the whole thing. Thank you mrov!
+
+## SaveOurLoot by MrHydralisk
+
+Save Our Loot adds various options around saving your loot when all players die. It's very flexible but straightforward. Save Our Loot is released under the GPL v3 License, which allows modification and distribution. Thanks to MrHydralisk for the solid mod!
+
+## CustomDeathPenalty by ImpulsiveLass
+
+Custom Death Penalty adds extensive configuration of fines, and also a new quota penalty system. This was probably the main inspiration for Quota Overhaul. Unfortunately, I could not steal any code from this mod because for some reason the github repository was deleted. But thank you to ImpulsiveLass anyway for the great ideas!
