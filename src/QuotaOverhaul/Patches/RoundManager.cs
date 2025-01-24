@@ -15,8 +15,10 @@ namespace QuotaOverhaul
         }
 
         [HarmonyPostfix]
-        public static bool CustomDespawnProps(RoundManager rManager, GrabbableObject[] gObjects, bool despawnAllItems = false)
+        public static bool CustomDespawnProps(bool despawnAllItems = false)
         {
+            GrabbableObject[] gObjects = UnityEngine.Object.FindObjectsOfType<GrabbableObject>();
+            RoundManager rManager = RoundManager.Instance;
             if (despawnAllItems)
             {
                 return false;

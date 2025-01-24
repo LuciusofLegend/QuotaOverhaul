@@ -14,6 +14,8 @@ namespace QuotaOverhaul
         public static void UpdateProfitQuota()
         {
             TimeOfDay.Instance.profitQuota = (int)(baseProfitQuota * playerCountMultiplier * penaltyMultiplier);
+
+            Plugin.Log.LogInfo($"Quota Update: {playerCountMultiplier}");
         }
 
         public static float FindPlayerCountMultiplier()
@@ -29,6 +31,8 @@ namespace QuotaOverhaul
             }
             playerCountMultiplier = FindPlayerCountMultiplier();
             UpdateProfitQuota();
+
+            Plugin.Log.LogInfo($"New Player Multiplier: {playerCountMultiplier}");
         }
 
         public static float ApplyQuotaPenalty(int recoveredBodies, int unrecoveredBodies)
@@ -45,7 +49,27 @@ namespace QuotaOverhaul
                 penalty = 0;
             }
             penaltyMultiplier += penalty;
+
+            Plugin.Log.LogInfo($"Quota Penalty: {playerCountMultiplier}");
             return penalty;
+        }
+
+        public static void OnPlayerConnect()
+        {
+            Plugin.Log.LogInfo("Custom OnPlayerConnect() called");
+
+            int playerCount = StartOfRound.Instance.connectedPlayersAmount;
+            if (playerCount > recordPlayersThisMoon)
+            {
+                recordPlayersThisMoon = playerCount;
+                Plugin.Log.LogInfo($"Record Players this Quota: {recordPlayersThisQuota}");
+            }
+            if (playerCount > recordPlayersThisQuota)
+            {
+                recordPlayersThisQuota = playerCount;
+                UpdatePlayerCountMultiplier();
+                Plugin.Log.LogInfo($"Record Players this Quota: {recordPlayersThisQuota}");
+            }
         }
     }
 }

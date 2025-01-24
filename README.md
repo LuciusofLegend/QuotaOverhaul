@@ -1,20 +1,30 @@
 # QuotaOverhaul
 
-Configurable quota variables
-Options to keep loot when all players die
-Options to increase quota for dead players
-Multipliers based on number of players for pretty much everything
+Vision:
+Make the quota system as cool and customizable as possible.
+
+Base Game Loop:
+- You have 3 days to meet the profit quota (seems like a good deadline)
+
+
+# Features
+
+## Quota Settings
+
+
+
+## Player Multipliers
+
+## Death Penalties
+
+# NOTE:
+
+Quota Overhaul is released under the MIT License, which means you are 100% free to fork it, copy it, modify it, and distribute it on any platform, under any license. If I ever stop maintaining this mod and it starts breaking with new versions of Lethal Company, I encourage you to fork it and keep the mod alive.
+
+For now, if you want to report a bug or request a feature, you should make an issue on the github repository: https://github.com/LuciusofLegend/QuotaOverhaul
+
+Happy Modding!
 
 # Credits
 
-## QuotaTweaks by mrov
-
-Quota Tweaks is a very simple mod that exposes the internal vanilla variable QuotaSettings to the user and makes it configurable. Since it's released under the permissive MIT License, I basically stole the whole thing. Thank you mrov!
-
-## SaveOurLoot by MrHydralisk
-
-Save Our Loot adds various options around saving your loot when all players die. It's very flexible but straightforward. Save Our Loot is released under the GPL v3 License, which allows modification and distribution. Thanks to MrHydralisk for the solid mod!
-
-## CustomDeathPenalty by ImpulsiveLass
-
-Custom Death Penalty adds extensive configuration of fines, and also a new quota penalty system. This was probably the main inspiration for Quota Overhaul. Unfortunately, I could not steal any code from this mod because for some reason the github repository was deleted. But thank you to ImpulsiveLass anyway for the great ideas!
+- mrov, MrHydralisk and Impulsive Lass, for making the mods that inspired this overhual

@@ -7,8 +7,8 @@ namespace QuotaOverhaul
     {
         public void Postfix()
         {
-            QuotaManager.recordPlayersThisQuota = math.max(QuotaManager.recordPlayersThisQuota, StartOfRound.Instance.connectedPlayersAmount);
-            QuotaManager.recordPlayersThisMoon = math.max(QuotaManager.recordPlayersThisMoon, StartOfRound.Instance.connectedPlayersAmount);
+            QuotaManager.OnPlayerConnect();
+            Plugin.Log.LogInfo("OnPlayerConnect() patched");
         }
     }
 }
