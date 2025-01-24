@@ -27,4 +27,7 @@ Happy Modding!
 
 # Credits
 
-- mrov, MrHydralisk and Impulsive Lass, for making the mods that inspired this overhual
+These three mods are the inspiration behind this overhaul
+- Quota Tweaks by mrov
+- Save Our Loot by MrHydralisk
+- Custom Death Penalty by ImpulsiveLass
