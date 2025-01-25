@@ -5,7 +5,7 @@ namespace QuotaOverhaul
     [HarmonyPatch(typeof(StartOfRound), nameof(StartOfRound.OnClientConnect))]
     public class OnPlayerConnectPatch
     {
-        public void Postfix()
+        public static void Postfix()
         {
             QuotaManager.OnPlayerConnect();
             Plugin.Log.LogInfo("OnPlayerConnect() patched");
