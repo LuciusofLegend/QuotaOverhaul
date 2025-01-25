@@ -35,22 +35,57 @@ namespace QuotaOverhaul
             Plugin.Log.LogInfo($"New Player Multiplier: {playerCountMultiplier}");
         }
 
-        public static float ApplyQuotaPenalty(int recoveredBodies, int unrecoveredBodies)
+        public static float ApplyQuotaPenalty(int deadBodies, int recoveredBodies)
         {
-            if (!Config.quotaPenaltiesEnabled.Value)
-            {
-                return 0;
-            }
-            float unrecoveredBodyPenalty = 1 / recordPlayersThisMoon;
-            float recoveredBodyPenalty = 1 / recordPlayersThisMoon * (100 - Config.bodyRecoveryBonus.Value) / 100;
-            float penalty = (unrecoveredBodies * unrecoveredBodyPenalty + recoveredBodies * recoveredBodyPenalty) * (Config.penaltyMaxPercent.Value / 100);
-            if (penalty < Config.penaltyPercentThreshold.Value)
+            float penaltyPerBody = Config.quotaPenaltyPercentPerPlayer.Value / 100;
+            float bonusPerRecoveredBody = penaltyPerBody * Config.quotaPenaltyRecoveryBonus.Value / 100;
+            float penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
+            penaltyMultiplier += penalty;
+
+            Plugin.Log.LogInfo($"Applied Quota Penalty of {playerCountMultiplier}");
+            return penalty;
+        }
+
+        public static float ApplyDynamicQuotaPenalty(int deadBodies, int recoveredBodies)
+        {
+            float penaltyPerBody = 1 / recordPlayersThisMoon;
+            float bonusPerRecoveredBody = penaltyPerBody * Config.quotaPenaltyRecoveryBonus.Value / 100;
+            float penalty = (deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody) * (Config.quotaPenaltyPercentCap.Value / 100);
+
+            if (penalty < Config.quotaPenaltyPercentThreshold.Value)
             {
                 penalty = 0;
             }
-            penaltyMultiplier += penalty;
 
-            Plugin.Log.LogInfo($"Quota Penalty: {playerCountMultiplier}");
+            penaltyMultiplier += penalty;
+            Plugin.Log.LogInfo($"Dynamically Applied Quota Penalty of {playerCountMultiplier}");
+            return penalty;
+        }
+
+        public static float ApplyCreditPenalty(int deadBodies, int recoveredBodies)
+        {
+            float penaltyPerBody = Config.creditPenaltyPercentPerPlayer.Value / 100;
+            float bonusPerRecoveredBody = penaltyPerBody * Config.quotaPenaltyRecoveryBonus.Value / 100;
+            float penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
+
+            // subtract credits
+            Plugin.Log.LogInfo($"Applied Credit Penalty of {playerCountMultiplier}");
+            return penalty;
+        }
+
+        public static float ApplyDynamicCreditPenalty(int deadBodies, int recoveredBodies)
+        {
+            float penaltyPerBody = 1 / recordPlayersThisMoon;
+            float bonusPerRecoveredBody = penaltyPerBody * Config.creditPenaltyRecoveryBonus.Value / 100;
+            float penalty = (deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody) * (Config.creditPenaltyPercentCap.Value / 100);
+
+            if (penalty < Config.creditPenaltyPercentThreshold.Value)
+            {
+                penalty = 0;
+            }
+
+            //subtract credits
+            Plugin.Log.LogInfo($"Dynamically Applied Credit Penalty of {playerCountMultiplier}");
             return penalty;
         }
 

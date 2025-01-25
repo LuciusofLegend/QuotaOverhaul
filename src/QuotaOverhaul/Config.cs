@@ -14,10 +14,20 @@ namespace QuotaOverhaul
         public static ConfigEntry<int> quotaPlayerCap;
         public static ConfigEntry<float> quotaMultPerPlayer;
 
+        public static ConfigEntry<bool> creditPenaltiesEnabled;
+        public static ConfigEntry<float> creditPenaltyPercentPerPlayer;
+        public static ConfigEntry<bool> creditPenaltiesDynamic;
+        public static ConfigEntry<float> creditPenaltyPercentCap;
+        public static ConfigEntry<float> creditPenaltyPercentThreshold;
+        public static ConfigEntry<float> creditPenaltyRecoveryBonus;
+
+
         public static ConfigEntry<bool> quotaPenaltiesEnabled;
-        public static ConfigEntry<int> penaltyMaxPercent;
-        public static ConfigEntry<int> bodyRecoveryBonus;
-        public static ConfigEntry<int> penaltyPercentThreshold;
+        public static ConfigEntry<float> quotaPenaltyPercentPerPlayer;
+        public static ConfigEntry<bool> quotaPenaltiesDynamic;
+        public static ConfigEntry<float> quotaPenaltyPercentCap;
+        public static ConfigEntry<float> quotaPenaltyPercentThreshold;
+        public static ConfigEntry<float> quotaPenaltyRecoveryBonus;
 
         public static ConfigEntry<float> saveAllChance;
         public static ConfigEntry<float> saveEachChance;
@@ -41,11 +51,20 @@ namespace QuotaOverhaul
             quotaPlayerCap = Plugin.config.Bind("QuotaSettings", "Player Count Cap", 8, "Adding more players beyond this cap will not increase the quota multiplier. \nDefault = 8");
             quotaMultPerPlayer = Plugin.config.Bind("QuotaSettings", "Multiplier Per Player", 0.3f, "The multiplier for each player above the threshold. \nDefault = 0.3f");
 
-            quotaPenaltiesEnabled = Plugin.config.Bind("QuotaPenalties", "Enable Death Penalties", true, "Increase the quota for each player that dies. Intended to replace losing scrap when all players die. Penalties are applied as a percent of the base quota for the round. Penalties only affect the current quota, and do not carry to future rounds. Penalties are not added for deaths at the Company Building. \nDefault = true \nVanilla = false");
-            penaltyMaxPercent = Plugin.config.Bind("QuotaPenalties", "Penalty Max Percent", 50, "The percent penalty in the worst case scenario, all players dead and unrecovered. Any players still alive, and any bodies recovered (see Body Recovery Bonus) will reduce the penalty.");
-            bodyRecoveryBonus = Plugin.config.Bind("QuotaPenalties", "Body Recovery Bonus", 50, "How much of the penalty to forgive for recovering bodies. A higher value means a bigger difference. \nValues between 0-100 \nDefault = 50");
-            penaltyPercentThreshold = Plugin.config.Bind("QuotaPenalties", "Penalty Threshold Percent", 0, "Applied after penalty is calculated. If the penalty falls below this threshold, the penalty is set to 0. Increasing this value will prevent minor slip ups from affecting the quota. \nDefault = 0");
+            creditPenaltiesEnabled = Plugin.config.Bind("CreditPenalties", "Credit Penalties", false, "Toggle losing credits for each player that dies.  Works just like vanilla when enabled. \nDefault = false \nVanilla = true");
+            creditPenaltyPercentPerPlayer = Plugin.config.Bind("CreditPenalties", "Penalty Per Player", 20f, "The amount of credits to lose per dead player, as a percentage of current credits. \nValues >= 0 \nDefault: 20");
+            creditPenaltiesDynamic = Plugin.config.Bind("CreditPenalties", "Dynamic Mode", true, "Instead of calculating the penalty as a flat rate per dead player, Dynamic Mode calculates the penalty based on what fraction of total players have died.  AKA it scales with player count. \nDefault = true");
+            creditPenaltyPercentCap = Plugin.config.Bind("CreditPenalties", "Penalty Percent Cap", 80f, "The percent penalty in the worst case scenario, all players dead and unrecovered. Any players still alive, and any bodies recovered (see Body Recovery Bonus) will reduce the penalty. \nValues >= 0 \nDefault = 50");
+            creditPenaltyPercentThreshold = Plugin.config.Bind("CreditPenalties", "Penalty Threshold Percent", 20f, "Applied after penalty is calculated. If the penalty falls below this threshold, the penalty is set to 0. Increasing this value makes minor slip-ups more forgiving. \nValues between 0-100 \nDefault = 20");
+            creditPenaltyRecoveryBonus = Plugin.config.Bind("CreditPenalties", "Body Recovery Bonus", 50f, "How much of the penalty to forgive for recovering bodies. A higher value means a higher incentive to recover bodies.  Applies to both normal and dynamic modes. \nValues between 0-100 \nDefault = 50");
 
+            quotaPenaltiesEnabled = Plugin.config.Bind("QuotaPenalties", "Quota Penalties", true, "Increase the quota for each player that dies. Intended to replace losing scrap when all players die. Penalties are applied as a percent of the base quota for the round. Penalties only affect the current quota, and do not carry to future rounds. Penalties are not added for deaths at the Company Building. \nDefault = true \nVanilla = false");
+            quotaPenaltyPercentPerPlayer = Plugin.config.Bind("QuotaPenalties", "Penalty Per Player", 12f, "The amount to increase the quota per dead player, as a percentage of the base quota for this round. \nValues >= 0 \nDefault: 12");
+            quotaPenaltiesDynamic = Plugin.config.Bind("QuotaPenalties", "Dynamic Mode", true, "Instead of calculating the penalty as a flat rate per dead player, Dynamic Mode calculates the penalty based on what fraction of total players have died.  AKA it scales with player count. \nDefault = true");
+            quotaPenaltyPercentCap = Plugin.config.Bind("QuotaPenalties", "Penalty Percent Cap", 50f, "The percent penalty in the worst case scenario, all players dead and unrecovered. Any players still alive, and any bodies recovered (see Body Recovery Bonus) will reduce the penalty. \nValues >= 0 \nDefault = 50");
+            quotaPenaltyPercentThreshold = Plugin.config.Bind("QuotaPenalties", "Penalty Threshold Percent", 15f, "Applied after penalty is calculated. If the penalty falls below this threshold, the penalty is set to 0. Increasing this value makes minor slip-ups more forgiving. \nValues between 0-100 \nDefault = 15");
+            quotaPenaltyRecoveryBonus = Plugin.config.Bind("QuotaPenalties", "Body Recovery Bonus", 50f, "How much of the penalty to forgive for recovering bodies. A higher value means a higher incentive to recover bodies.  Applies to both normal and dynamic modes. \nValues between 0-100 \nDefault = 50");
+            
             saveAllChance = Plugin.config.Bind("LootSaving", "SaveAllChance", 1f, "A chance of all items being saved. \nValues between 0-1 \nDefault = 1 \nVanilla = 0");
             saveEachChance = Plugin.config.Bind("LootSaving", "SaveEachChance", 0.5f, "A chance of each item being saved.\nApplied after SaveAllChance. \nValues between 0-1 \nDefault = 0.5 \nVanilla = 0");
             scrapLossMax = Plugin.config.Bind("LootSaving", "ScrapLossMax", int.MaxValue, $"The maximum amount of items that can be lost.\nApplied after SaveEachChance. \nDefault = {int.MaxValue}");
