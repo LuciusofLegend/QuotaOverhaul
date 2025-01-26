@@ -1,5 +1,5 @@
-using System.Runtime.CompilerServices;
 using HarmonyLib;
+using UnityEngine.InputSystem.EnhancedTouch;
 
 namespace QuotaOverhaul
 {
@@ -15,9 +15,13 @@ namespace QuotaOverhaul
         [HarmonyPostfix]
         public static void CustomDeathPenalty(int playersDead, int bodiesInsured)
         {
+            float creditPenalty;
+            float quotaPenalty;
+            int oldQuota = TimeOfDay.Instance.profitQuota;
+            string penaltyAdditionText = $"{playersDead} casualties - {bodiesInsured} bodies recovered";
+            string penaltyTotalText = "";
             if (Config.creditPenaltiesEnabled.Value)
             {
-                float creditPenalty;
                 if (Config.creditPenaltiesDynamic.Value)
                 {
                     creditPenalty = CalculateDynamicCreditPenalty(playersDead, bodiesInsured);
@@ -34,11 +38,13 @@ namespace QuotaOverhaul
                 {
                     terminal.groupCredits = 0;
                 }
+
+                penaltyAdditionText += $"\nCREDITS: -{(int)(creditPenalty * 100)}%";
+                penaltyTotalText += $"\ncharged {(int)(credits * creditPenalty)} credits";
             }
 
             if (Config.quotaPenaltiesEnabled.Value)
             {
-                float quotaPenalty;
                 if (Config.quotaPenaltiesDynamic.Value)
                 {
                     quotaPenalty = CalculateDynamicQuotaPenalty(playersDead, bodiesInsured);
@@ -49,7 +55,12 @@ namespace QuotaOverhaul
                 }
                 QuotaOverhaul.quotaPenaltyMultiplier += quotaPenalty;
                 QuotaOverhaul.UpdateProfitQuota();
+
+                penaltyAdditionText += $"\nQUOTA: +{(int)(quotaPenalty * 100)}%";
+                penaltyTotalText += $"\nraised quota by {TimeOfDay.Instance.profitQuota - oldQuota}";
             }
+            HUDManager.Instance.statsUIElements.penaltyAddition.text = penaltyAdditionText;
+            HUDManager.Instance.statsUIElements.penaltyTotal.text = penaltyTotalText;
         }
 
         public static float CalculateCreditPenalty(int deadBodies, int recoveredBodies)
