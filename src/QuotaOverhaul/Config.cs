@@ -42,7 +42,7 @@ namespace QuotaOverhaul
 
         public static void Load()
         {
-            startingQuota = Plugin.config.Bind("QuotaSettings", "Starting Quota", 150, "The starting quota for the game. \nVanilla = 130 \nDefault = 300");
+            startingQuota = Plugin.config.Bind("QuotaSettings", "Starting Quota", 150, "The quota value at the start of a new game. \nVanilla = 130 \nDefault = 300");
             quotaMinIncrease = Plugin.config.Bind("QuotaSettings", "Quota Min Increase", 100, "The minimum amount of quota increase. \nVanilla = 200 \nDefault = 200");
             quotaIncreaseSteepness = Plugin.config.Bind("QuotaSettings", "Quota Increase Steepness", 4f, "The steepness of the quota increase curve - higher value means a less steep exponential increase. \nVanilla = 4 \nDefault = 4");
             quotaRandomizerMultiplier = Plugin.config.Bind("QuotaSettings", "Quota Randomizer Multiplier", 1f, "The multiplier for the quota randomizer - this determines the severity of the randomizer curve. \nVanilla = 1 \nDefault = 1");
@@ -65,16 +65,16 @@ namespace QuotaOverhaul
             quotaPenaltyPercentThreshold = Plugin.config.Bind("QuotaPenalties", "Penalty Threshold Percent", 15f, "Applied after penalty is calculated. If the penalty falls below this threshold, the penalty is set to 0. Increasing this value makes minor slip-ups more forgiving. \nValues between 0-100 \nDefault = 15");
             quotaPenaltyRecoveryBonus = Plugin.config.Bind("QuotaPenalties", "Body Recovery Bonus", 50f, "How much of the penalty to forgive for recovering bodies. A higher value means a higher incentive to recover bodies.  Applies to both normal and dynamic modes. \nValues between 0-100 \nDefault = 50");
             
-            saveAllChance = Plugin.config.Bind("LootSaving", "SaveAllChance", 1f, "A chance of all items being saved. \nValues between 0-1 \nDefault = 1 \nVanilla = 0");
-            saveEachChance = Plugin.config.Bind("LootSaving", "SaveEachChance", 0.5f, "A chance of each item being saved.\nApplied after SaveAllChance. \nValues between 0-1 \nDefault = 0.5 \nVanilla = 0");
-            scrapLossMax = Plugin.config.Bind("LootSaving", "ScrapLossMax", int.MaxValue, $"The maximum amount of items that can be lost.\nApplied after SaveEachChance. \nDefault = {int.MaxValue}");
+            saveAllChance = Plugin.config.Bind("LootSaving", "Save All Chance", 100f, "A percent chance of all items being saved. \nValues between 0-100 \nDefault = 1 \nVanilla = 0");
+            saveEachChance = Plugin.config.Bind("LootSaving", "Save Each Chance", 50f, "A percent chance of each item being saved.\nApplied after SaveAllChance. \nValues between 0-100 \nDefault = 0.5 \nVanilla = 0");
+            scrapLossMax = Plugin.config.Bind("LootSaving", "Scrap Loss Max", int.MaxValue, $"The maximum amount of items that can be lost.\nApplied after SaveEachChance. \nDefault = {int.MaxValue}");
 
-            valueSaveEnabled = Plugin.config.Bind("LootSaving", "ValueSaveEnabled", true, "Save a percent of total scrap value.\nApplied after SaveAllChance and prevent SaveEachChance \nDefault = true \nVanilla = false.");
-            valueSavePercent = Plugin.config.Bind("LootSaving", "ValueSavePercent", 1f, "The percentage of total scrap value to save. \nValues between 0-1 \nDefault = 1");
+            valueSaveEnabled = Plugin.config.Bind("LootSaving", "Value Save Enabled", true, "Save a percent of total scrap value.\nApplied after SaveAllChance and prevent SaveEachChance \nDefault = true \nVanilla = false.");
+            valueSavePercent = Plugin.config.Bind("LootSaving", "Value Save Percent", 100f, "The percentage of total scrap value to save. \nValues between 0-1 \nDefault = 1");
 
-            equipmentLossEnabled = Plugin.config.Bind("EquipmentLoss", "EquipmentLossEnabled", false, "Allow equipment to be lost. \nDefault = false \nVanilla = false.");
-            equipmentLossChance = Plugin.config.Bind("EquipmentLoss", "EquipmentLossChance", 0.1f, "A chance of each equipment item being lost. \nApplied after SaveAllChance. \nValues between 0-1 \nDefault = 0.1 \nVanilla = 0");
-            equipmentLossMax = Plugin.config.Bind("EquipmentLoss", "EquipmentLossMax", int.MaxValue, $"The maximum amount of equipment that can be lost.\nApplied after EquipmentLossChance. \nDefault = {int.MaxValue}");
+            equipmentLossEnabled = Plugin.config.Bind("EquipmentLoss", "Equipment Loss Enabled", false, "Allow equipment to be lost. \nDefault = false \nVanilla = false.");
+            equipmentLossChance = Plugin.config.Bind("EquipmentLoss", "Equipment Loss Chance", 10f, "A chance of each equipment item being lost. \nApplied after SaveAllChance. \nValues between 0-1 \nDefault = 0.1 \nVanilla = 0");
+            equipmentLossMax = Plugin.config.Bind("EquipmentLoss", "Equipment Loss Max", int.MaxValue, $"The maximum amount of equipment that can be lost.\nApplied after EquipmentLossChance. \nDefault = {int.MaxValue}");
         }
     }
 }

@@ -7,7 +7,7 @@ namespace QuotaOverhaul
     {
         public static void Postfix()
         {
-            QuotaManager.OnPlayerConnect();
+            QuotaOverhaul.OnPlayerConnect();
             Plugin.Log.LogInfo("OnPlayerConnect() patched");
         }
     }

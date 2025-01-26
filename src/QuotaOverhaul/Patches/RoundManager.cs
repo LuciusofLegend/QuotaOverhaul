@@ -48,7 +48,7 @@ namespace QuotaOverhaul
             {
                 return;
             }
-            if (RNG.NextDouble() >= (1f - (Config.saveAllChance?.Value ?? 0.25f)))
+            if (RNG.NextDouble() >= (1f - (Config.saveAllChance?.Value ?? 25f) / 100))
             {
                 Plugin.Log.LogInfo("All Saved");
                 return;
@@ -63,7 +63,7 @@ namespace QuotaOverhaul
             {
                 itemsScrap = itemsScrap.OrderByDescending((GrabbableObject item) => item.scrapValue).ToList();
                 int totalScrap = itemsScrap.Sum((GrabbableObject item) => item.scrapValue);
-                float saveScrap = totalScrap * (Config.valueSavePercent?.Value ?? 0.25f);
+                float saveScrap = totalScrap * (Config.valueSavePercent?.Value ?? 25f) / 100;
                 foreach (GrabbableObject item in itemsScrap)
                 {
                     totalScrap -= item.scrapValue;
@@ -81,7 +81,7 @@ namespace QuotaOverhaul
                 int lostSCount = 0;
                 foreach (GrabbableObject item in itemsScrap)
                 {
-                    if (RNG.NextDouble() >= (1f - (Config.saveEachChance?.Value ?? 0.5f)))
+                    if (RNG.NextDouble() >= (1f - (Config.saveEachChance?.Value ?? 50f) / 100))
                     {
                         Plugin.Log.LogInfo($"{item.name} Saved");
                     }
@@ -108,7 +108,7 @@ namespace QuotaOverhaul
                     { 
                         break;
                     }
-                    if (RNG.NextDouble() >= (1f - (Config.equipmentLossChance?.Value ?? 0.1f)))
+                    if (RNG.NextDouble() >= (1f - (Config.equipmentLossChance?.Value ?? 10f) / 100))
                     {
                         Plugin.Log.LogInfo($"{item.name} Equipment Lost");
                         DespawnItem(item);

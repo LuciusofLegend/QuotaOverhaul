@@ -7,7 +7,9 @@ using HarmonyLib;
 [BepInPlugin(PLUGIN_GUID, PLUGIN_NAME, PLUGIN_VERSION)]
 public class Plugin : BaseUnityPlugin
 {
-    const string PLUGIN_GUID = LCMPluginInfo.PLUGIN_GUID, PLUGIN_NAME = LCMPluginInfo.PLUGIN_NAME, PLUGIN_VERSION = LCMPluginInfo.PLUGIN_VERSION; 
+    const string PLUGIN_GUID = LCMPluginInfo.PLUGIN_GUID;
+    const string PLUGIN_NAME = LCMPluginInfo.PLUGIN_NAME;
+    const string PLUGIN_VERSION = LCMPluginInfo.PLUGIN_VERSION; 
 
     public static Plugin instance;
     public static ManualLogSource Log;
@@ -15,8 +17,8 @@ public class Plugin : BaseUnityPlugin
 
     private void Awake()
     {
-        Log = BepInEx.Logging.Logger.CreateLogSource(PLUGIN_GUID);
         instance = this;
+        Log = BepInEx.Logging.Logger.CreateLogSource(PLUGIN_GUID);
         config = Config;
         QuotaOverhaul.Config.Load();
         new Harmony(PLUGIN_GUID).PatchAll();

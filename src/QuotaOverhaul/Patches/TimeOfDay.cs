@@ -8,17 +8,17 @@ namespace QuotaOverhaul
     {
         [HarmonyPatch("Awake")]
         [HarmonyPrefix]
-        public static void SetQuotaVariables(ref TimeOfDay __instance)
+        public static void SetQuotaVariables()
         {
-            var __quotaVariables = __instance.quotaVariables;
+            var quotaVariables = TimeOfDay.Instance.quotaVariables;
 
-            __quotaVariables.startingQuota = Config.startingQuota.Value;
-            __quotaVariables.baseIncrease = Config.quotaMinIncrease.Value;
-            __quotaVariables.increaseSteepness = Config.quotaIncreaseSteepness.Value;
-            __quotaVariables.randomizerMultiplier = Config.quotaRandomizerMultiplier.Value;
-            QuotaManager.baseProfitQuota = __quotaVariables.startingQuota;
+            quotaVariables.startingQuota = Config.startingQuota.Value;
+            quotaVariables.baseIncrease = Config.quotaMinIncrease.Value;
+            quotaVariables.increaseSteepness = Config.quotaIncreaseSteepness.Value;
+            quotaVariables.randomizerMultiplier = Config.quotaRandomizerMultiplier.Value;
+            QuotaOverhaul.baseProfitQuota = quotaVariables.startingQuota;
 
-            Plugin.Log.LogInfo("Hello hello");
+            Plugin.Log.LogInfo("Quota Variables Configured");
         }   
     }
 
@@ -28,7 +28,7 @@ namespace QuotaOverhaul
         [HarmonyPatch("SetNewProfitQuota")]
         public static void Prefix()
         {
-            TimeOfDay.Instance.profitQuota = QuotaManager.baseProfitQuota;
+            TimeOfDay.Instance.profitQuota = QuotaOverhaul.baseProfitQuota;
             Plugin.Log.LogInfo($"Profit Quota: {TimeOfDay.Instance.profitQuota}");
             Plugin.Log.LogInfo("Calculating New Profit Quota...");
         }
@@ -36,8 +36,8 @@ namespace QuotaOverhaul
         [HarmonyPatch("SetNewProfitQuota")]
         public static void Postfix()
         {
-            QuotaManager.baseProfitQuota = TimeOfDay.Instance.profitQuota;
-            Plugin.Log.LogInfo($"Profit Quota: {QuotaManager.baseProfitQuota}");
+            QuotaOverhaul.baseProfitQuota = TimeOfDay.Instance.profitQuota;
+            Plugin.Log.LogInfo($"Profit Quota: {QuotaOverhaul.baseProfitQuota}");
         }
     }
 }

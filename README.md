@@ -7,11 +7,35 @@ Quota Overhaul combines ideas from several existing mods, and makes them fully f
 
 ## Quota Settings
 
+Makes the vanilla QuotaVariables configurable with 4 options:
 
+- Starting Quota
+- Quota Minimum Increase
+- Quota Increase Steepness
+- Quota Randomness Multiplier
 
 ## Player Multipliers
 
+Multiplies the quota based on the number of players, configured with these 4 options
+
+- Enable Player Count Multipliers
+- Multiplier Per Player
+- Player Count Threshold
+- Player Count Cap
+
 ## Death Penalties
+
+Makes the vanilla credit penalty configurable with these 2 options:
+
+- Enable Credit Penalties
+- Credit Penalty Per Dead Player
+
+Alternative Dynamic Mode for credit penalties:
+
+- Dynamic Credit Penalties
+- Credit Penalty Percent Cap
+- Credit Penalty Percent Threshold
+- Credit Penalty Recovery Bonus
 
 # NOTE:
 
