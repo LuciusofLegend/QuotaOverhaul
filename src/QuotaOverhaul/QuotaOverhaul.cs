@@ -3,21 +3,26 @@ using Unity.Mathematics;
 
 namespace QuotaOverhaul
 {
-    public static class QuotaOverhaul
+    public class QuotaOverhaul
     {
         public static int baseProfitQuota = 0;
         public static float quotaPenaltyMultiplier = 1;
         public static float quotaPlayerMultiplier = 1;
 
         public static int recordPlayersThisQuota = 0;
-        public static int recordPlayersThisMoon = 0;
-        
-        public static LethalNetworkVariable<int> profitQuota = new LethalNetworkVariable<int>("profitQuota");
+        public static int recordPlayersThisMoon = 0; 
+
+        static LNetworkVariable<int> profitQuota = LNetworkVariable<int>.Connect("profitQuota", onValueChanged: SyncProfitQuota);
+
+        static void SyncProfitQuota(int oldValue, int newValue)
+        {
+            TimeOfDay.Instance.profitQuota = newValue;
+            Plugin.Log.LogInfo($"Profit Quota updated to {newValue}");
+        }
 
         public static void UpdateProfitQuota()
         {
-            TimeOfDay.Instance.profitQuota = (int)(baseProfitQuota * quotaPlayerMultiplier * quotaPenaltyMultiplier);
-            Plugin.Log.LogInfo($"Quota Update: {quotaPlayerMultiplier}");
+            profitQuota.Value = (int)(baseProfitQuota * quotaPlayerMultiplier * quotaPenaltyMultiplier);
         }
 
         public static float FindPlayerCountMultiplier()

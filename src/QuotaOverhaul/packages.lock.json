@@ -30,9 +30,9 @@
       },
       "Xilophor.LethalNetworkAPI": {
         "type": "Direct",
-        "requested": "[2.*, )",
-        "resolved": "2.2.0",
-        "contentHash": "5j1RIXkEZomo8cwcZBqRVymyK++XvdducL20u0LyH20oqFux04oQEWeu+mPotyqfU9GsPZF40gWQp1SUcmxfnA=="
+        "requested": "[3.*, )",
+        "resolved": "3.3.2",
+        "contentHash": "toOnyUSfGF7/AXd1SbVrPoo51yAMkzb32IwQ1UEOw4hmbKieEhu34Z2PriUfLgwGVmyRf+znWNdB1DNyOrwwsA=="
       },
       "BepInEx.BaseLib": {
         "type": "Transitive",
