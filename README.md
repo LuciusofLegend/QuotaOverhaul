@@ -45,7 +45,7 @@ Happy Modding!
 
 # Credits
 
-These three mods are the inspiration behind this overhaul
+Quota Overhaul is inspired by these 3 mods
 - Quota Tweaks by mrov
 - Save Our Loot by MrHydralisk
 - Custom Death Penalty by ImpulsiveLass

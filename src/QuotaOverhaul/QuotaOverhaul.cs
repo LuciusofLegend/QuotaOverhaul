@@ -1,3 +1,4 @@
+using LethalNetworkAPI;
 using Unity.Mathematics;
 
 namespace QuotaOverhaul
@@ -10,11 +11,12 @@ namespace QuotaOverhaul
 
         public static int recordPlayersThisQuota = 0;
         public static int recordPlayersThisMoon = 0;
+        
+        public static LethalNetworkVariable<int> profitQuota = new LethalNetworkVariable<int>("profitQuota");
 
         public static void UpdateProfitQuota()
         {
             TimeOfDay.Instance.profitQuota = (int)(baseProfitQuota * quotaPlayerMultiplier * quotaPenaltyMultiplier);
-
             Plugin.Log.LogInfo($"Quota Update: {quotaPlayerMultiplier}");
         }
 

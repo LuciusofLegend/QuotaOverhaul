@@ -40,6 +40,11 @@
       Include="LethalCompany.GameLibs.Steam"
       Version="62.0.0-ngd.0"
     />
+    <PackageReference
+        Include="Xilophor.LethalNetworkAPI"
+        Version="2.*"
+        PrivateAssets="all"
+    />
 
     <!--
       When adding additional references, ensure you use <Private>false</Private> to

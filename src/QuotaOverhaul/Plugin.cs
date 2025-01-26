@@ -5,6 +5,7 @@ using HarmonyLib;
 
 
 [BepInPlugin(PLUGIN_GUID, PLUGIN_NAME, PLUGIN_VERSION)]
+[BepInDependency("LethalNetworkAPI")]
 public class Plugin : BaseUnityPlugin
 {
     const string PLUGIN_GUID = LCMPluginInfo.PLUGIN_GUID;
