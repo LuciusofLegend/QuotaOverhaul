@@ -9,8 +9,8 @@ namespace QuotaOverhaul
         public static float quotaPenaltyMultiplier = 1;
         public static float quotaPlayerMultiplier = 1;
 
-        public static int recordPlayersThisQuota = 0;
-        public static int recordPlayersThisMoon = 0; 
+        public static int recordPlayersThisQuota = 1;
+        public static int recordPlayersThisMoon = 1; 
 
         public static bool quotaInProgress = false;
 
@@ -48,7 +48,7 @@ namespace QuotaOverhaul
         {
             Plugin.Log.LogInfo("Custom OnPlayerConnect() called");
 
-            int playerCount = StartOfRound.Instance.connectedPlayersAmount;
+            int playerCount = StartOfRound.Instance.connectedPlayersAmount + 1;
             if (!StartOfRound.Instance.shipHasLanded)
             {
                 recordPlayersThisMoon = playerCount;

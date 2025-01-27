@@ -1,4 +1,4 @@
-/*using HarmonyLib;
+using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -121,6 +121,10 @@ namespace QuotaOverhaul
 
         public static void DespawnItem(GrabbableObject item)
         {
+            if (!item.IsSpawned)
+            {
+                return;
+            }
             if (item.isHeld && item.playerHeldBy != null)
             {
                 item.playerHeldBy.DropAllHeldItems();
@@ -132,4 +136,4 @@ namespace QuotaOverhaul
             }
         }
     }
-}*/
+}
