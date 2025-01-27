@@ -1,4 +1,4 @@
-using HarmonyLib;
+/*using HarmonyLib;
 
 namespace QuotaOverhaul
 {
@@ -122,4 +122,4 @@ namespace QuotaOverhaul
             return penalty;
         }
     }
-}
+}*/
