@@ -12,6 +12,8 @@ namespace QuotaOverhaul
         public static int recordPlayersThisQuota = 0;
         public static int recordPlayersThisMoon = 0; 
 
+        public static bool quotaInProgress = false;
+
         static LNetworkVariable<int> profitQuota = LNetworkVariable<int>.Connect("profitQuota", onValueChanged: SyncProfitQuota);
 
         static void SyncProfitQuota(int oldValue, int newValue)
@@ -47,12 +49,20 @@ namespace QuotaOverhaul
             Plugin.Log.LogInfo("Custom OnPlayerConnect() called");
 
             int playerCount = StartOfRound.Instance.connectedPlayersAmount;
-            if (playerCount > recordPlayersThisMoon)
+            if (!StartOfRound.Instance.shipHasLanded)
+            {
+                recordPlayersThisMoon = playerCount;
+            }
+            else if (playerCount > recordPlayersThisMoon)
             {
                 recordPlayersThisMoon = playerCount;
                 Plugin.Log.LogInfo($"Record Players this Quota: {recordPlayersThisQuota}");
             }
-            if (playerCount > recordPlayersThisQuota)
+            if (!quotaInProgress)
+            {
+                recordPlayersThisQuota = playerCount;
+            }
+            else if (playerCount > recordPlayersThisQuota)
             {
                 recordPlayersThisQuota = playerCount;
                 UpdatePlayerCountMultiplier();

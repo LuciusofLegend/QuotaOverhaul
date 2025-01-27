@@ -7,7 +7,7 @@ namespace QuotaOverhaul
     public class QuotaVariablesPatch
     {
         [HarmonyPatch("Awake")]
-        [HarmonyPrefix]
+        [HarmonyPostfix]
         public static void SetQuotaVariables()
         {
             var quotaVariables = TimeOfDay.Instance.quotaVariables;
@@ -36,6 +36,8 @@ namespace QuotaOverhaul
         [HarmonyPatch("SetNewProfitQuota")]
         public static void Postfix()
         {
+            QuotaOverhaul.quotaInProgress = false;
+            QuotaOverhaul.recordPlayersThisQuota = StartOfRound.Instance.connectedPlayersAmount;
             QuotaOverhaul.baseProfitQuota = TimeOfDay.Instance.profitQuota;
             Plugin.Log.LogInfo($"Profit Quota: {QuotaOverhaul.baseProfitQuota}");
         }
