@@ -5,7 +5,7 @@ Quota Overhaul combines ideas from several existing mods, and makes them fully f
 
 # Features
 
-Quota Variables:  You can configure the starting quota, minimum increase, increase steepness and randomness multiplier (these are internal variables in vanilla).  Inspiration:  Quota Tweaks by mrov.
+**Quota Variables:**  You can configure the starting quota, minimum increase, increase steepness and randomness multiplier (these are internal variables in vanilla).  Inspiration:  Quota Tweaks by mrov.
 
 **Player Count Scaling:**
 The quota increases the more players you have.  This should make high player counts more balanced.  The scaling is always based on the highes number of concurrent players seen during that quota, to avoid exploits.  Very configurable.
