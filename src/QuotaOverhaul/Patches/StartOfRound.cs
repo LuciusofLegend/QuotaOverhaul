@@ -1,4 +1,5 @@
 using HarmonyLib;
+
 namespace QuotaOverhaul
 {
     [HarmonyPatch(typeof(StartOfRound), nameof(StartOfRound.OnClientConnect))]
