@@ -6,7 +6,7 @@ Quota Overhaul combines ideas from several existing mods, and makes them fully f
 # Features
 
 ### Quota Variables
-You can configure the starting quota, minimum increase, increase steepness and randomness multiplier (these are internal variables in vanilla).  Inspiration:  Quota Tweaks by mrov.
+You can configure the starting quota, minimum increase, increase steepness and randomness multiplier (these are internal variables in vanilla).
 
 ### Player Count Scaling
 The quota increases the more players you have.  This should make high player counts more balanced.  The scaling is always based on the highes number of concurrent players seen during that quota, to avoid exploits.  Very configurable.
@@ -15,13 +15,13 @@ The quota increases the more players you have.  This should make high player cou
 You can toggle fines on and off, change the percent fine per dead player, or use the new Dynamic Mode, which is more configurable and scales based on the number of players online (specifically, the record player count on a given moon run).
 
 ### Increase Quota on Death
-You get penalties to the quota for dying!  This is intended to replace losing all your scrap when all players die, and maybe the credit fines if you want.  Configurable with the same options as credit fines.  Inspiration:  Custom Death Penalty by ImpulsiveLass.
+You get penalties to the quota for dying!  This is intended to replace losing all your scrap when all players die, and maybe the credit fines if you want.  Configurable with the same options as credit fines.
 
 ### Loot Saving
-You can keep all your hard earned scrap, set a 50/50 chance for each precious piece loot, lose it all, or anything in between.  Inspiration:  Save Our Loot by MrHydralisk.
+You can keep all your hard earned scrap, set a 50/50 chance for each precious piece loot, lose it all, or anything in between.
 
 ### Equipment Loss
-You could also risk your handy equipment for an extra punishing experience.  Inspiration:  Save Our Loot by MrHydralisk.
+You could also risk your handy equipment for an extra punishing experience.
 
 # Roadmap
 
@@ -31,6 +31,7 @@ You could also risk your handy equipment for an extra punishing experience.  Ins
 - Dynamic Dungeon Size
 - Toggle exponential quota increase
 - Toggle randomness in quota increase
+- Better Company Buying Rate
 
 Feel free to submit your ideas via a github issue!
 

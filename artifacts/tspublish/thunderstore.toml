@@ -3,9 +3,8 @@
   schemaVersion="0.0.1"
 
 [package]
-  #Edit this in the CSPROJ instead, the workflow will automate copying
-  #it here for you
-  description="Big quota tweaks"
+  #Edit this in the CSPROJ instead, the workflow will automate copying it here for you
+  description="Making the quota system more fun, rewarding, and configurable!"
 
   #Change this to true if your mod has any NSFW content. Please follow the rules
   #on image and text content on your listing or your package may be removed
@@ -19,6 +18,8 @@
   #DependencyNamespace-ModName = "version.number.here"
   [package.dependencies]
     BepInEx-BepInExPack="5.4.2100"
+    xilophor-LethalNetworkAPI="3.3.2"
+    Sigurd-CSync="5.0.1"
 
 #These settings will import the repo's README.md file and the icon in the
 #same folder as this TOML file as your icon. Please replace the icon with
