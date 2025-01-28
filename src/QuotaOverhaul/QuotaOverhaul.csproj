@@ -45,6 +45,11 @@
         Version="3.*"
         PrivateAssets="all"
     />
+    <PackageReference
+        Include="Sigurd.BepInEx.Csync"
+        Version="5.*"
+        PrivateAssets="all"
+    />
 
     <!--
       When adding additional references, ensure you use <Private>false</Private> to

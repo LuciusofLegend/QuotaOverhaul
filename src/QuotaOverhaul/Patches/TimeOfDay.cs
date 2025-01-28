@@ -13,10 +13,12 @@ namespace QuotaOverhaul
             var quotaVariables = TimeOfDay.Instance.quotaVariables;
 
             quotaVariables.startingQuota = Config.startingQuota.Value;
-            quotaVariables.baseIncrease = Config.quotaMinIncrease.Value;
+            QuotaOverhaul.baseProfitQuota = quotaVariables.startingQuota;
+            quotaVariables.baseIncrease = Config.quotaBaseIncrease.Value;
             quotaVariables.increaseSteepness = Config.quotaIncreaseSteepness.Value;
             quotaVariables.randomizerMultiplier = Config.quotaRandomizerMultiplier.Value;
-            QuotaOverhaul.baseProfitQuota = quotaVariables.startingQuota;
+            quotaVariables.startingCredits = Config.startingCredits;
+            quotaVariables.deadlineDaysAmount = Config.quotaDeadline;
 
             Plugin.Log.LogInfo("Quota Variables Configured");
         }   

@@ -6,9 +6,9 @@ namespace QuotaOverhaul
     public class DeathPenaltyPatch
     {
         [HarmonyPrefix]
-        public static void SkipDefaultDeathPenalty()
+        public static bool SkipDefaultDeathPenalty()
         {
-            return;
+            return false;
         }
 
         [HarmonyPostfix]
@@ -17,7 +17,7 @@ namespace QuotaOverhaul
             float creditPenalty;
             float quotaPenalty;
             int oldQuota = TimeOfDay.Instance.profitQuota;
-            string penaltyAdditionText = $"{playersDead} casualties - {bodiesInsured} bodies recovered";
+            string penaltyAdditionText = $"{playersDead} casualties | {bodiesInsured} bodies recovered";
             string penaltyTotalText = "";
             if (Config.creditPenaltiesEnabled.Value)
             {
@@ -83,7 +83,7 @@ namespace QuotaOverhaul
             float bonusPerRecoveredBody = penaltyPerBody * Config.creditPenaltyRecoveryBonus.Value / 100;
             float penalty = (deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody) * (Config.creditPenaltyPercentCap.Value / 100);
 
-            if (penalty < 0 || penalty < Config.quotaPenaltyPercentThreshold.Value)
+            if (penalty < 0 || penalty < Config.quotaPenaltyPercentThreshold.Value / 100)
             {
                 penalty = 0;
             }
@@ -113,7 +113,7 @@ namespace QuotaOverhaul
             float bonusPerRecoveredBody = penaltyPerBody * Config.quotaPenaltyRecoveryBonus.Value / 100;
             float penalty = (deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody) * (Config.quotaPenaltyPercentCap.Value / 100);
 
-            if (penalty < 0 || penalty < Config.quotaPenaltyPercentThreshold.Value)
+            if (penalty < 0 || penalty < Config.quotaPenaltyPercentThreshold.Value / 100)
             {
                 penalty = 0;
             }

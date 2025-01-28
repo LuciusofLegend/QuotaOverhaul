@@ -29,6 +29,8 @@ You could also risk your handy equipment for an extra punishing experience.  Ins
 - Dynamic Difficulty
 - Dynamic Loot
 - Dynamic Dungeon Size
+- Toggle exponential quota increase
+- Toggle randomness in quota increase
 
 Feel free to submit your ideas via a github issue!
 
