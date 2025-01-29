@@ -20,7 +20,7 @@ public class Plugin : BaseUnityPlugin
     private void Awake()
     {
         instance = this;
-        Log = BepInEx.Logging.Logger.CreateLogSource(PLUGIN_GUID);
+        Log = BepInEx.Logging.Logger.CreateLogSource(PLUGIN_NAME);
         config = new Config(Config);
         new Harmony(PLUGIN_GUID).PatchAll();
         Log.LogInfo($"{PLUGIN_NAME} v{PLUGIN_VERSION} is loaded!");

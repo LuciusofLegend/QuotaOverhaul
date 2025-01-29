@@ -14,6 +14,7 @@ namespace QuotaOverhaul
 
             quotaVariables.startingQuota = Config.startingQuota.Value;
             QuotaOverhaul.baseProfitQuota = quotaVariables.startingQuota;
+            QuotaOverhaul.UpdateProfitQuota();
             quotaVariables.baseIncrease = Config.quotaBaseIncrease.Value;
             quotaVariables.increaseSteepness = Config.quotaIncreaseSteepness.Value;
             quotaVariables.randomizerMultiplier = Config.quotaRandomizerMultiplier.Value;

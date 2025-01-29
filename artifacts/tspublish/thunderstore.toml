@@ -3,7 +3,6 @@
   schemaVersion="0.0.1"
 
 [package]
-  #Edit this in the CSPROJ instead, the workflow will automate copying it here for you
   description="Making the quota system more fun, rewarding, and configurable!"
 
   #Change this to true if your mod has any NSFW content. Please follow the rules

@@ -2,6 +2,7 @@ using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using Unity.Netcode;
 
 namespace QuotaOverhaul
@@ -10,23 +11,52 @@ namespace QuotaOverhaul
     public class SaveLootPatch
     {
         [HarmonyPrefix]
-        public static void SkipOriginalDespawnProps()
+        public static bool SkipOriginalDespawnProps()
         {
-            return;
+            return false;
         }
 
         [HarmonyPostfix]
         public static void CustomDespawnProps(bool despawnAllItems = false)
         {
+            if (!GameNetworkManager.Instance.isHostingGame)
+            {
+                return;
+            }
+
             GrabbableObject[] items = UnityEngine.Object.FindObjectsOfType<GrabbableObject>();
+
+            try
+            {
+                VehicleController[] vehicles = UnityEngine.Object.FindObjectsByType<VehicleController>(UnityEngine.FindObjectsSortMode.None);
+                foreach (VehicleController vehicle in vehicles)
+                {
+                    if (!vehicle.magnetedToShip)
+                    {
+                        if (vehicle.NetworkObject != null)
+                        {
+                            Plugin.Log.LogInfo("Despawn vehicle");
+                            vehicle.NetworkObject.Despawn(destroy: false);
+                        }
+                    }
+                    else
+                    {
+                        vehicle.CollectItemsInTruck();
+                    }
+                }
+            }
+            catch (Exception arg)
+            {
+                Plugin.Log.LogError($"Error despawning vehicle: {arg}");
+            }
 
             if (despawnAllItems)
             {
                 foreach (GrabbableObject item in items)
                 {
                     DespawnItem(item);
-                    Plugin.Log.LogInfo("Despawned all props");
                 }
+                Plugin.Log.LogInfo("Despawned all props");
             }
 
             Random RNG = new Random(StartOfRound.Instance.randomMapSeed + 369);
@@ -62,18 +92,18 @@ namespace QuotaOverhaul
             if (Config.valueSaveEnabled?.Value ?? false)
             {
                 itemsScrap = itemsScrap.OrderByDescending((GrabbableObject item) => item.scrapValue).ToList();
-                int totalScrap = itemsScrap.Sum((GrabbableObject item) => item.scrapValue);
-                float saveScrap = totalScrap * (Config.valueSavePercent?.Value ?? 25f) / 100;
+                int totalScrapValue = itemsScrap.Sum((GrabbableObject item) => item.scrapValue);
+                float valueToSave = totalScrapValue * (Config.valueSavePercent?.Value ?? 25f) / 100;
                 foreach (GrabbableObject item in itemsScrap)
                 {
-                    totalScrap -= item.scrapValue;
-                    Plugin.Log.LogInfo($"{item.name} Lost Value {item.scrapValue}");
-                    DespawnItem(item);
-                    if (totalScrap < saveScrap)
+                    totalScrapValue -= item.scrapValue;
+                    if (totalScrapValue < valueToSave)
                     {
-                        Plugin.Log.LogInfo($"{totalScrap} Scrap Value Saved");
+                        Plugin.Log.LogInfo($"{totalScrapValue} Scrap Value Saved");
                         break;
                     }
+                    Plugin.Log.LogInfo($"{item.name} Lost. Value: {item.scrapValue}");
+                    DespawnItem(item);
                 }
             }
             else
@@ -92,7 +122,7 @@ namespace QuotaOverhaul
                         lostSCount++;
                         if (lostSCount >= (Config.scrapLossMax?.Value ?? int.MaxValue))
                         {
-                            Plugin.Log.LogInfo($"Lost total {lostSCount}");
+                            Plugin.Log.LogInfo($"Lost {lostSCount} Scrap Items");
                             break;
                         }
                     }
@@ -101,35 +131,40 @@ namespace QuotaOverhaul
             if (Config.equipmentLossEnabled?.Value ?? false)
             {
                 itemsEquipment.RemoveAll((GrabbableObject go) => !go.IsSpawned);
-                int lostECount = 0;
+                int lostEquipmentCount = 0;
                 foreach (GrabbableObject item in itemsEquipment)
                 {
-                    if (lostECount >= (Config.equipmentLossMax?.Value ?? int.MaxValue))
-                    { 
+                    if (lostEquipmentCount >= (Config.equipmentLossMax?.Value ?? int.MaxValue))
+                    {
                         break;
                     }
                     if (RNG.NextDouble() >= (1f - (Config.equipmentLossChance?.Value ?? 10f) / 100))
                     {
-                        Plugin.Log.LogInfo($"{item.name} Equipment Lost");
+                        Plugin.Log.LogInfo($"{item.name} Lost");
                         DespawnItem(item);
-                        lostECount++;
+                        lostEquipmentCount++;
                     }
                 }
-                Plugin.Log.LogInfo($"Equipment Lost total {lostECount}");
+                Plugin.Log.LogInfo($"Equipment Lost total {lostEquipmentCount}");
             }
         }
 
         public static void DespawnItem(GrabbableObject item)
         {
-            if (!item.IsSpawned)
-            {
-                return;
-            }
             if (item.isHeld && item.playerHeldBy != null)
             {
-                item.playerHeldBy.DropAllHeldItems();
+                item.playerHeldBy.DropAllHeldItemsAndSync();
             }
-            item.gameObject.GetComponent<NetworkObject>().Despawn(true);
+            NetworkObject networkComponent = item.gameObject.GetComponent<NetworkObject>();
+            if (networkComponent != null && networkComponent.IsSpawned)
+            {
+                Plugin.Log.LogInfo($"Despawning {item.name}");
+            }
+            else
+            {
+                Plugin.Log.LogDebug($"Error/warning: {item.name} prop was not spawned or did not have a NetworkObject component!  Skipped despawning and destroyed it instead.");
+                UnityEngine.Object.Destroy(item.gameObject);
+            }
             if (RoundManager.Instance.spawnedSyncedObjects.Contains(item.gameObject))
             {
                 RoundManager.Instance.spawnedSyncedObjects.Remove(item.gameObject);

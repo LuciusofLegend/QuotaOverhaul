@@ -1,7 +1,6 @@
 # QuotaOverhaul
 
-The purpose of this mod is to make the quota system as fun, rewarding, and configurable as possible.
-Quota Overhaul combines ideas from several existing mods, and makes them fully functional and compatible.
+The goal of Quota Overhaul is to make the quota system as fun, rewarding, and configurable as possible.  I've taken inspiration from several existing mods, added some stuff of my own, with some community input sprinkled on top.
 
 # Features
 
@@ -43,7 +42,7 @@ Happy Modding!
 
 # Credits
 
-Quota Overhaul is inspired by these 3 mods
+Quota Overhaul takes inspiration from:
 - Quota Tweaks by mrov
 - Save Our Loot by MrHydralisk
 - Custom Death Penalty by ImpulsiveLass
