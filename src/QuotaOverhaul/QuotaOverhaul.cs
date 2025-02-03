@@ -44,7 +44,7 @@ namespace QuotaOverhaul
             Plugin.Log.LogInfo($"New Player Multiplier: {quotaPlayerMultiplier}");
         }
 
-        public static void OnPlayerConnect()
+        public static void OnPlayerCountChanged()
         {
             Plugin.Log.LogInfo("Custom OnPlayerConnect() called");
 
@@ -56,7 +56,7 @@ namespace QuotaOverhaul
             else if (playerCount > recordPlayersThisMoon)
             {
                 recordPlayersThisMoon = playerCount;
-                Plugin.Log.LogInfo($"Record Players this Quota: {recordPlayersThisQuota}");
+                Plugin.Log.LogInfo($"Record Players this Moon: {recordPlayersThisMoon}");
             }
             if (!quotaInProgress)
             {

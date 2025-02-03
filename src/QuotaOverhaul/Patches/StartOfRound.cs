@@ -8,8 +8,19 @@ namespace QuotaOverhaul
         [HarmonyPatch]
         public static void Postfix()
         {
-            QuotaOverhaul.OnPlayerConnect();
+            QuotaOverhaul.OnPlayerCountChanged();
             Plugin.Log.LogInfo("OnPlayerConnect() patched");
+        }
+    }
+
+    [HarmonyPatch(typeof(StartOfRound), nameof(StartOfRound.OnClientDisconnect))]
+    public class OnPlayerDisconnectPatch
+    {
+        [HarmonyPatch]
+        public static void Postfix()
+        {
+            QuotaOverhaul.OnPlayerCountChanged();
+            Plugin.Log.LogInfo("OnPlayerDisconnect() patched");
         }
     }
 

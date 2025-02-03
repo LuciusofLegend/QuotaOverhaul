@@ -37,7 +37,6 @@ Feel free to submit your ideas via a github issue!
 # Bugs
 
 - Quota penalty doesn't scale with number of dead players properly
-- Quota penalty applied on the company building
 - The penalty menu looks weird
 - Someone reported a softlock.  Has not been reproduced so far
 
