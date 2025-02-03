@@ -14,12 +14,14 @@ namespace QuotaOverhaul
         [HarmonyPostfix]
         public static void CustomDeathPenalty(int playersDead, int bodiesInsured)
         {
+            bool doCreditPenalty = Config.creditPenaltiesEnabled;
             float creditPenalty;
+            bool doQuotaPenalty = Config.creditPenaltiesEnabled;
             float quotaPenalty;
             int oldQuota = TimeOfDay.Instance.profitQuota;
             string penaltyAdditionText = $"{playersDead} casualties | {bodiesInsured} bodies recovered";
             string penaltyTotalText = "";
-            if (Config.creditPenaltiesEnabled.Value)
+            if (doCreditPenalty)
             {
                 if (Config.creditPenaltiesDynamic.Value)
                 {
@@ -42,7 +44,7 @@ namespace QuotaOverhaul
                 penaltyTotalText += $"\ncharged {(int)(credits * creditPenalty)} credits";
             }
 
-            if (Config.quotaPenaltiesEnabled.Value)
+            if (doQuotaPenalty)
             {
                 if (Config.quotaPenaltiesDynamic.Value)
                 {
@@ -119,6 +121,7 @@ namespace QuotaOverhaul
             }
 
             Plugin.Log.LogInfo($"Calculated Dynamic Quota Penalty of {penalty}");
+            Plugin.Log.LogInfo($"Current Moon: {StartOfRound.Instance.currentLevel.PlanetName}");
             return penalty;
         }
     }

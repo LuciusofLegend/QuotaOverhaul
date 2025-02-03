@@ -34,6 +34,13 @@ You could also risk your handy equipment for an extra punishing experience.
 
 Feel free to submit your ideas via a github issue!
 
+# Bugs
+
+- Quota penalty doesn't scale with number of dead players properly
+- Quota penalty applied on the company building
+- The penalty menu looks weird
+- Someone reported a softlock.  Has not been reproduced so far
+
 # NOTE:
 
 Quota Overhaul is released under the MIT License, which means you are 100% free to fork it, copy it, modify it, and distribute it on any platform, under any license. If I ever stop maintaining this mod and it starts breaking with new versions of Lethal Company, I encourage you to fork it and keep the mod alive.
