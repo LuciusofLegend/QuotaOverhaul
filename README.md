@@ -2,6 +2,9 @@
 
 The goal of Quota Overhaul is to make the quota system as fun, rewarding, and configurable as possible.  I've taken inspiration from several existing mods, added some stuff of my own, with some community input sprinkled on top.
 
+**THIS PROJECT IS IN ALPHA**
+QuotaOverhaul is not in a finished state, and there are currently several bugs that need fixing.  If you encounter a bug, check the github issues to see if it has been reported.  If not, please create an issue to let me know.
+
 # Features
 
 ### Quota Variables

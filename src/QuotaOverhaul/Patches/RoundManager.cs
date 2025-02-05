@@ -14,7 +14,7 @@ namespace QuotaOverhaul
         public static bool SkipOriginalDespawnProps()
         {
             if (!Config.patchDespawnProps) return true;
-            return true;
+            return false;
         }
 
         [HarmonyPostfix]
