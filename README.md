@@ -28,17 +28,17 @@ You could also risk your handy equipment for an extra punishing experience.
 - Dynamic Difficulty
 - Dynamic Loot
 - Dynamic Dungeon Size
-- Toggle exponential quota increase
-- Toggle randomness in quota increase
-- Better Company Buying Rate
 
 Feel free to submit your ideas via a github issue!
 
-# Bugs
+# Known Issues
 
 - Quota penalty doesn't scale with number of dead players properly
 - The penalty menu looks weird
-- Someone reported a softlock.  Has not been reproduced so far
+- Per-player quota penalty doesn't work right
+- Items outside the ship don't despawn
+
+If you find a bug, github issues are also great for that.
 
 # NOTE:
 

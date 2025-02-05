@@ -13,16 +13,15 @@ namespace QuotaOverhaul
         [HarmonyPrefix]
         public static bool SkipOriginalDespawnProps()
         {
-            return false;
+            if (!Config.patchDespawnProps) return true;
+            return true;
         }
 
         [HarmonyPostfix]
         public static void CustomDespawnProps(bool despawnAllItems = false)
         {
-            if (!GameNetworkManager.Instance.isHostingGame)
-            {
-                return;
-            }
+            if (!Config.patchDespawnProps) return;
+            if (!GameNetworkManager.Instance.isHostingGame) return;
 
             GrabbableObject[] items = UnityEngine.Object.FindObjectsOfType<GrabbableObject>();
 

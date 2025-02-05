@@ -7,6 +7,7 @@ namespace QuotaOverhaul
     public class Config : SyncedConfig2<Config>
     {
         // Quota settings
+        [SyncedEntryField] public static SyncedEntry<int> startingCredits;
         [SyncedEntryField] public static SyncedEntry<int> startingQuota;
         [SyncedEntryField] public static SyncedEntry<int> quotaBaseIncrease;
         [SyncedEntryField] public static SyncedEntry<float> quotaIncreaseSteepness;
@@ -45,7 +46,8 @@ namespace QuotaOverhaul
         [SyncedEntryField] public static SyncedEntry<float> equipmentLossChance;
         [SyncedEntryField] public static SyncedEntry<int> equipmentLossMax;
 
-        [SyncedEntryField] public static SyncedEntry<int> startingCredits;
+        [SyncedEntryField] public static SyncedEntry<bool> patchDeathPenalty;
+        [SyncedEntryField] public static SyncedEntry<bool> patchDespawnProps;
 
         public Config(ConfigFile config) : base(Plugin.PLUGIN_GUID)
         {
@@ -79,13 +81,15 @@ namespace QuotaOverhaul
             saveAllChance = config.BindSyncedEntry("Loot Saving", "Save All Chance", 100f, "A percent chance of all items being saved. \nValues between 0-100 \nVanilla:0");
             saveEachChance = config.BindSyncedEntry("Loot Saving", "Save Each Chance", 50f, "A percent chance of each item being saved.\nApplied after SaveAllChance. \nValues between 0-100 \nVanilla:0");
             scrapLossMax = config.BindSyncedEntry("Loot Saving", "Scrap Loss Max", int.MaxValue, $"The maximum amount of items that can be lost.\nApplied after SaveEachChance.");
-
             valueSaveEnabled = config.BindSyncedEntry("Loot Saving", "Value Save Enabled", true, "Save a percent of total scrap value.\nApplied after SaveAllChance and prevent SaveEachChance. \nVanilla:false.");
             valueSavePercent = config.BindSyncedEntry("Loot Saving", "Value Save Percent", 100f, "The percentage of total scrap value to save. \nValues between 0-100");
 
             equipmentLossEnabled = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Enabled", false, "Allow equipment to be lost. \nVanilla:false.");
             equipmentLossChance = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Chance", 10f, "A chance of each equipment item being lost. \nApplied after SaveAllChance. \nValues between 0-100 \nVanilla: 0");
             equipmentLossMax = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Max", int.MaxValue, $"The maximum amount of equipment that can be lost.\nApplied after EquipmentLossChance.");
+
+            patchDeathPenalty = config.BindSyncedEntry("Patches (ADVANCED)", "Death Penalty", true, "Set this to false to use the vanilla DeathPenalty function and ignore the other options around death penalties.");
+            patchDespawnProps = config.BindSyncedEntry("Patches (ADVANCED)", "Despawn Props", true, "Set this to false to use the vanilla DespawnProps function and ignore the other options around scrap loss/saving.");
 
             ConfigManager.Register(this);
         } 

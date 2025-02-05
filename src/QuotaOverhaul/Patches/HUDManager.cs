@@ -8,12 +8,15 @@ namespace QuotaOverhaul
         [HarmonyPrefix]
         public static bool SkipDefaultDeathPenalty()
         {
+            if (!Config.patchDeathPenalty) return true;
             return false;
         }
 
         [HarmonyPostfix]
         public static void CustomDeathPenalty(int playersDead, int bodiesInsured)
         {
+            if (!Config.patchDeathPenalty) return;
+            
             bool doCreditPenalty = Config.creditPenaltiesEnabled && (Config.creditPenaltiesOnGordion || StartOfRound.Instance.currentLevel.PlanetName != "71 Gordion");
             float creditPenalty;
             bool doQuotaPenalty = Config.quotaPenaltiesEnabled && (Config.quotaPenaltiesOnGordion || StartOfRound.Instance.currentLevel.PlanetName != "71 Gordion");
