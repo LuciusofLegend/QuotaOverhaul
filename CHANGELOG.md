@@ -2,7 +2,7 @@
 
 ### 1.2.3
 
-- Fix icon dimensions
+- New icon by Endoxicom
 
 ### 1.2.2
 

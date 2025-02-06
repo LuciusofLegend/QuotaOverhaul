@@ -59,4 +59,4 @@ Quota Overhaul takes inspiration from:
 - Save Our Loot by MrHydralisk
 - Custom Death Penalty by ImpulsiveLass
 
-Icon by Cirno the 9th!
+Icon by @Endoxicom!
