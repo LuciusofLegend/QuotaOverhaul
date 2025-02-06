@@ -1,5 +1,9 @@
 # QuotaOverhaul Changelog
 
+## 1.2.5
+
+- Fix issue where the quota would be stuck at zero
+
 ## 1.2.4
 
 - New icon by endoxicom
