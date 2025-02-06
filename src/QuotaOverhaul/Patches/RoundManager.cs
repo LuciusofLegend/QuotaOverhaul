@@ -2,7 +2,7 @@ using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.NetworkInformation;
+
 using Unity.Netcode;
 
 namespace QuotaOverhaul
@@ -158,6 +158,7 @@ namespace QuotaOverhaul
             if (networkComponent != null && networkComponent.IsSpawned)
             {
                 Plugin.Log.LogInfo($"Despawning {item.name}");
+                networkComponent.Despawn();
             }
             else
             {

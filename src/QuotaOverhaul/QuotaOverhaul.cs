@@ -14,7 +14,7 @@ namespace QuotaOverhaul
 
         public static bool quotaInProgress = false;
 
-        static LNetworkVariable<int> profitQuota = LNetworkVariable<int>.Connect("profitQuota", onValueChanged: SyncProfitQuota);
+        public static LNetworkVariable<int> profitQuota = LNetworkVariable<int>.Connect("profitQuota", onValueChanged: SyncProfitQuota);
 
         static void SyncProfitQuota(int oldValue, int newValue)
         {

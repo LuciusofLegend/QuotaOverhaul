@@ -1,5 +1,5 @@
 # QuotaOverhaul Changelog
 
-## Describe your changes for each release here
+## 1.2.0
 
-The contents of this file will display in the Changelog tab on the Thunderstore
+- Fix props not despawning when leaving a moon

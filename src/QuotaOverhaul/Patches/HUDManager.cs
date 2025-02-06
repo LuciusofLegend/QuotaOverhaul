@@ -16,7 +16,7 @@ namespace QuotaOverhaul
         public static void CustomDeathPenalty(int playersDead, int bodiesInsured)
         {
             if (!Config.patchDeathPenalty) return;
-            
+
             bool doCreditPenalty = Config.creditPenaltiesEnabled && (Config.creditPenaltiesOnGordion || StartOfRound.Instance.currentLevel.PlanetName != "71 Gordion");
             float creditPenalty;
             bool doQuotaPenalty = Config.quotaPenaltiesEnabled && (Config.quotaPenaltiesOnGordion || StartOfRound.Instance.currentLevel.PlanetName != "71 Gordion");
@@ -109,7 +109,7 @@ namespace QuotaOverhaul
                 penalty = 0;
             }
 
-            Plugin.Log.LogInfo($"Calculated Quota Penalty of {QuotaOverhaul.quotaPlayerMultiplier}");
+            Plugin.Log.LogInfo($"Calculated Quota Penalty of {penalty}");
             return penalty;
         }
 
