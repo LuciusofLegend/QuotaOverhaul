@@ -2,6 +2,16 @@ using HarmonyLib;
 
 namespace QuotaOverhaul
 {
+    [HarmonyPatch(typeof(StartOfRound), nameof(StartOfRound.SetTimeAndPlanetToSavedSettings))]
+    public class LoadSettingsPatch
+    {
+        [HarmonyPatch]
+        public static void Postfix()
+        {
+            QuotaOverhaul.LoadData();
+        }
+    }
+
     [HarmonyPatch(typeof(StartOfRound), nameof(StartOfRound.OnClientConnect))]
     public class OnPlayerConnectPatch
     {
