@@ -36,10 +36,8 @@ Feel free to submit your ideas via a github issue!
 
 # Known Issues
 
-- Quota penalty doesn't scale with number of dead players properly
-- The penalty menu looks weird
-- Per-player quota penalty doesn't work right
-- Items outside the ship don't despawn
+- Quota penalty doesn't scale with number of dead players properly (might be fixed)
+- The penalty menu looks a little weird
 
 If you find a bug, github issues are also great for that.
 

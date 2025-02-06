@@ -85,7 +85,6 @@ namespace QuotaOverhaul
         public static float CalculateDynamicCreditPenalty(int deadBodies, int recoveredBodies)
         {
             float penaltyPerBody = 1 / QuotaOverhaul.recordPlayersThisMoon * Config.creditPenaltyPercentCap.Value / 100;
-            //float penaltyPerBody = 1 / 3;
             float bonusPerRecoveredBody = penaltyPerBody * Config.creditPenaltyRecoveryBonus.Value / 100;
             float penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
 
@@ -115,14 +114,15 @@ namespace QuotaOverhaul
 
         public static float CalculateDynamicQuotaPenalty(int deadBodies, int recoveredBodies)
         {
-            float penaltyPerBody = 1 / QuotaOverhaul.recordPlayersThisMoon * Config.quotaPenaltyPercentCap.Value / 100;
-            //float penaltyPerBody = 1 / 3;
+            Plugin.Log.LogInfo($"Calculaing Dynamic Quota Penalty");
+            float penaltyPerBody = 1f / QuotaOverhaul.recordPlayersThisMoon * Config.quotaPenaltyPercentCap.Value / 100f;
             float bonusPerRecoveredBody = penaltyPerBody * Config.quotaPenaltyRecoveryBonus.Value / 100;
             float penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
 
             if (penalty < 0 || penalty < Config.quotaPenaltyPercentThreshold.Value / 100)
             {
                 penalty = 0;
+                Plugin.Log.LogInfo($"Penalty fell below threshold of {Config.quotaPenaltyPercentThreshold.Value / 100}");
             }
 
             Plugin.Log.LogInfo($"Calculated Dynamic Quota Penalty of {penalty}");

@@ -1,5 +1,9 @@
 # QuotaOverhaul Changelog
 
+## 1.2.1
+
+- Fix Dynamic Quota Penalty always being zero
+
 ## 1.2.0
 
 - Fix props not despawning when leaving a moon
