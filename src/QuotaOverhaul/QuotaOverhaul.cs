@@ -1,3 +1,5 @@
+using LethalModDataLib.Attributes;
+using LethalModDataLib.Enums;
 using LethalNetworkAPI;
 using Unity.Mathematics;
 
@@ -5,15 +7,21 @@ namespace QuotaOverhaul
 {
     public class QuotaOverhaul
     {
+        [ModData(SaveWhen.OnSave, LoadWhen.OnLoad, SaveLocation.CurrentSave)]
         public static int baseProfitQuota = 0;
-        public static float quotaPenaltyMultiplier = 1;
-        public static float quotaPlayerMultiplier = 1;
+        [ModData(SaveWhen.OnSave, LoadWhen.OnLoad, SaveLocation.CurrentSave)]
+        public static double quotaPenaltyMultiplier = 1;
+        public static double quotaPlayerMultiplier = 1;
 
+        [ModData(SaveWhen.OnSave, LoadWhen.OnLoad, SaveLocation.CurrentSave)]
         public static int recordPlayersThisQuota = 1;
+        [ModData(SaveWhen.OnSave, LoadWhen.OnLoad, SaveLocation.CurrentSave)]
         public static int recordPlayersThisMoon = 1; 
 
+        [ModData(SaveWhen.OnSave, LoadWhen.OnLoad, SaveLocation.CurrentSave)]
         public static bool quotaInProgress = false;
 
+        [ModData(SaveWhen.OnSave, LoadWhen.OnLoad, SaveLocation.CurrentSave)]
         public static LNetworkVariable<int> profitQuota = LNetworkVariable<int>.Connect("profitQuota", onValueChanged: SyncProfitQuota);
 
         static void SyncProfitQuota(int oldValue, int newValue)
