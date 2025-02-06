@@ -73,8 +73,8 @@ namespace QuotaOverhaul
 
         public static double CalculateCreditPenalty(int deadBodies, int recoveredBodies)
         {
-            double penaltyPerBody = Config.creditPenaltyPercentPerPlayer.Value / 100;
-            double bonusPerRecoveredBody = penaltyPerBody * Config.quotaPenaltyRecoveryBonus.Value / 100;
+            double penaltyPerBody = Config.creditPenaltyPercentPerPlayer.Value / 100d;
+            double bonusPerRecoveredBody = penaltyPerBody * Config.quotaPenaltyRecoveryBonus.Value / 100d;
             double penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
 
             if (penalty < 0)
@@ -88,11 +88,11 @@ namespace QuotaOverhaul
 
         public static double CalculateDynamicCreditPenalty(int deadBodies, int recoveredBodies)
         {
-            double penaltyPerBody = 1 / QuotaOverhaul.recordPlayersThisMoon * Config.creditPenaltyPercentCap.Value / 100;
-            double bonusPerRecoveredBody = penaltyPerBody * Config.creditPenaltyRecoveryBonus.Value / 100;
+            double penaltyPerBody = 1d / QuotaOverhaul.recordPlayersThisMoon * Config.creditPenaltyPercentCap.Value / 100d;
+            double bonusPerRecoveredBody = penaltyPerBody * Config.creditPenaltyRecoveryBonus.Value / 100d;
             double penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
 
-            if (penalty < 0 || penalty < Config.quotaPenaltyPercentThreshold.Value / 100)
+            if (penalty < 0 || penalty < Config.quotaPenaltyPercentThreshold.Value / 100d)
             {
                 penalty = 0;
             }
@@ -103,8 +103,8 @@ namespace QuotaOverhaul
 
         public static double CalculateQuotaPenalty(int deadBodies, int recoveredBodies)
         {
-            double penaltyPerBody = Config.quotaPenaltyPercentPerPlayer.Value / 100;
-            double bonusPerRecoveredBody = penaltyPerBody * Config.quotaPenaltyRecoveryBonus.Value / 100;
+            double penaltyPerBody = Config.quotaPenaltyPercentPerPlayer.Value / 100d;
+            double bonusPerRecoveredBody = penaltyPerBody * Config.quotaPenaltyRecoveryBonus.Value / 100d;
             double penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
 
             if (penalty < 0)

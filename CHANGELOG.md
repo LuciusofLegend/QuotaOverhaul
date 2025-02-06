@@ -2,7 +2,8 @@
 
 ## 1.2.1
 
-- Fix Dynamic Quota Penalty always being zero
+- Fixed Dynamic Quota Penalty always being zero
+- Added state saving
 
 ## 1.2.0
 
