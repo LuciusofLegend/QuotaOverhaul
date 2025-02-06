@@ -1,6 +1,6 @@
 # QuotaOverhaul
 
-The goal of Quota Overhaul is to make the quota system as fun, rewarding, and configurable as possible.  I've taken inspiration from several existing mods, added some stuff of my own, with some community input sprinkled on top.
+The goal of Quota Overhaul is to make the quota system as fun, rewarding, and configurable as possible.  I've taken inspiration from several existing mods, added some stuff of my own, and I'm always taking input from the community.
 
 **THIS PROJECT IS IN ALPHA**
 QuotaOverhaul is not in a finished state, and there are currently several bugs that need fixing.  If you encounter a bug, check the github issues to see if it has been reported.  If not, please create an issue to let me know.
@@ -11,12 +11,12 @@ QuotaOverhaul is not in a finished state, and there are currently several bugs t
 You can configure the starting quota, minimum increase, increase steepness and randomness multiplier (these are internal variables in vanilla).
 
 ### Player Count Scaling
-The quota increases the more players you have.  This should make high player counts more balanced.  The scaling is always based on the highes number of concurrent players seen during that quota, to avoid exploits.  Very configurable.
+The quota increases the more players you have.  This should make high player counts more balanced.  The scaling is always based on the highest number of concurrent players during the current quota, to avoid exploits.  Very configurable.
 
 ### Configurable Credit Fines
-You can toggle fines on and off, change the percent fine per dead player, or use the new Dynamic Mode, which is more configurable and scales based on the number of players online (specifically, the record player count on a given moon run).
+You can toggle fines on and off, change the percent fine per dead player, or use the new Dynamic Mode, which is more configurable and scales based on the number of players online (specifically, the highest player count on a given moon run).
 
-### Increase Quota on Death
+### Quota Death Penalties
 You get penalties to the quota for dying!  This is intended to replace losing all your scrap when all players die, and maybe the credit fines if you want.  Configurable with the same options as credit fines.
 
 ### Loot Saving
@@ -37,7 +37,6 @@ Feel free to submit your ideas via a github issue!
 # Known Issues
 
 - The penalty menu looks a little weird
-- A few bits of state aren't saved between sessions
 
 If you find a bug, github issues are also great for that.
 
