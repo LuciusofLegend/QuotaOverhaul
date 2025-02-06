@@ -13,6 +13,7 @@ namespace QuotaOverhaul
         [SyncedEntryField] public static SyncedEntry<float> quotaIncreaseSteepness;
         [SyncedEntryField] public static SyncedEntry<float> quotaRandomizerMultiplier;
         [SyncedEntryField] public static SyncedEntry<int> quotaDeadline;
+        [SyncedEntryField] public static SyncedEntry<int> quotaEarlyFinishLine;
         [SyncedEntryField] public static SyncedEntry<bool> quotaEnablePlayerMultiplier;
         [SyncedEntryField] public static SyncedEntry<int> quotaPlayerThreshold;
         [SyncedEntryField] public static SyncedEntry<int> quotaPlayerCap;
@@ -57,6 +58,7 @@ namespace QuotaOverhaul
             quotaIncreaseSteepness = config.BindSyncedEntry("Quota Settings", "Quota Increase Steepness", 4f, "The steepness of the quota increase curve - higher value means a less steep exponential increase. \nVanilla: 4");
             quotaRandomizerMultiplier = config.BindSyncedEntry("Quota Settings", "Quota Randomizer Multiplier", 1f, "The multiplier for the quota randomizer - this determines the severity of the randomizer curve. \nVanilla: 1");
             quotaDeadline = config.BindSyncedEntry("Quota Settings", "Quota Deadline", 3, "The number of days you are given to complete each quota.  \nVanilla: 3");
+            quotaEarlyFinishLine = config.BindSyncedEntry("Quota Settings", "Early Finish Line", 0, "The minimum number of days that need to pass before the quota is allowed to end.  Values lower than 0 make this equal to the Quota Deadline. \nVanilla: 0");
             quotaEnablePlayerMultiplier = config.BindSyncedEntry("Quota Settings", "Enable Player Count Multiplier", true, "Multiply the quota based on the number of players.\nVanilla: false");
             quotaPlayerThreshold = config.BindSyncedEntry("Quota Settings", "Player Count Threshold", 3, "The quota multiplier will increase for every player beyond this threshold.");
             quotaPlayerCap = config.BindSyncedEntry("Quota Settings", "Player Count Cap", 8, "Adding more players beyond this cap will not increase the quota multiplier.");

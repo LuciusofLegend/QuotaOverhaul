@@ -7,8 +7,14 @@ QuotaOverhaul is not in a finished state.  There are no known issues currently, 
 
 # Features
 
+### Starting Credits
+You can configure the starting credits.  Yay!
+
 ### Quota Variables
-You can configure the starting quota, minimum increase, increase steepness and randomness multiplier (these are internal variables in vanilla).
+You can configure the starting quota, change other settings for how fast it increases, and modify the impact of RNG.
+
+### Quota Deadline
+You can configure the number of days you have to complete the quota.  You can also configure the soonest day that the quota is allowed to end.
 
 ### Player Count Scaling
 The quota increases the more players you have.  This should make high player counts more balanced.  The scaling is always based on the highest number of concurrent players during the current quota, to avoid exploits.  Very configurable.
@@ -20,17 +26,17 @@ You can toggle fines on and off, change the percent fine per dead player, or use
 You get penalties to the quota for dying!  This is intended to replace losing all your scrap when all players die, and maybe the credit fines if you want.  Configurable with the same options as credit fines.
 
 ### Loot Saving
-You can keep all your hard earned scrap, set a 50/50 chance for each precious piece loot, lose it all, or anything in between.
+You can configure exactly what happens to your loot when all players die.  You can keep it all, lose it all like vanilla, set a chance for each item to be saved, or a collective chance for your whole hoard.
 
 ### Equipment Loss
-You could also risk your handy equipment for an extra punishing experience.
+Configurable equipment loss!  This has similar settings to loot saving.
 
 # Roadmap
 
-- Make an icon
 - Dynamic Difficulty
 - Dynamic Loot
 - Dynamic Dungeon Size
+- Dynamic Loot Saving
 
 Feel free to submit your ideas via a github issue!
 
@@ -52,3 +58,5 @@ Quota Overhaul takes inspiration from:
 - Quota Tweaks by mrov
 - Save Our Loot by MrHydralisk
 - Custom Death Penalty by ImpulsiveLass
+
+Icon by Cirno the 9th!
