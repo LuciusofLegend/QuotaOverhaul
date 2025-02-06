@@ -1,5 +1,9 @@
 # QuotaOverhaul Changelog
 
+### 1.2.3
+
+- Fix icon dimensions
+
 ### 1.2.2
 
 - Added an option to set the earliest day the quota is allowed to end
