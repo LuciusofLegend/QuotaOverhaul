@@ -1,8 +1,12 @@
 # QuotaOverhaul Changelog
 
+## 1.2.4
+
+- New icon by endoxicom
+
 ### 1.2.3
 
-- New icon by Endoxicom
+- Fix icon dimensions
 
 ### 1.2.2
 
