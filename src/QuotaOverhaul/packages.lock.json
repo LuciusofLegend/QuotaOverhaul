@@ -28,17 +28,6 @@
           "UnityEngine.Modules": "2022.3.9"
         }
       },
-      "MaxWasUnavailable.LethalModDataLib": {
-        "type": "Direct",
-        "requested": "[1.2.*, )",
-        "resolved": "1.2.2",
-        "contentHash": "sIvyoqkr6YH9UMxhPjw7i7W9JyRFNFwt9Dx+eDGT+JbuHx1PzAQvWiIb7GNpzE6eeHy1UDjjPE0N859YMXcN3A==",
-        "dependencies": {
-          "BepInEx.Core": "5.4.21",
-          "BepInEx.PluginInfoProps": "1.1.0",
-          "UnityEngine.Modules": "2022.3.9"
-        }
-      },
       "Sigurd.BepInEx.CSync": {
         "type": "Direct",
         "requested": "[5.*, )",
@@ -60,11 +49,6 @@
         "type": "Transitive",
         "resolved": "5.4.20",
         "contentHash": "0bXgYxbCEN2Ixp3kiFEhyw+RASeFQeg/ww+lbMt7if6XMeVS60eg6epNsMA8Jbx57dmNOzNevkKKw8mP8SUMqw=="
-      },
-      "BepInEx.PluginInfoProps": {
-        "type": "Transitive",
-        "resolved": "1.1.0",
-        "contentHash": "RqM3aaGs8Hc2m0D+8aSt9mv09rCMYNIF35NB3D6KA2zSpcXJh/9ZVWrPlIUJfA8KYzodSWcCMUexEW24fjwR3w=="
       },
       "HarmonyX": {
         "type": "Transitive",
