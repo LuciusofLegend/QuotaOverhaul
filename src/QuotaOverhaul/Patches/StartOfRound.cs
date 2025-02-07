@@ -8,6 +8,7 @@ namespace QuotaOverhaul
         [HarmonyPatch]
         public static void Postfix()
         {
+            if (!GameNetworkManager.Instance.isHostingGame) return;
             QuotaOverhaul.LoadData();
         }
     }
@@ -18,6 +19,7 @@ namespace QuotaOverhaul
         [HarmonyPatch]
         public static void Postfix()
         {
+            if (!GameNetworkManager.Instance.isHostingGame) return;
             QuotaOverhaul.OnPlayerCountChanged();
             Plugin.Log.LogInfo("OnPlayerConnect() patched");
         }
@@ -29,6 +31,7 @@ namespace QuotaOverhaul
         [HarmonyPatch]
         public static void Postfix()
         {
+            if (!GameNetworkManager.Instance.isHostingGame) return;
             QuotaOverhaul.OnPlayerCountChanged();
             Plugin.Log.LogInfo("OnPlayerDisconnect() patched");
         }
@@ -40,6 +43,7 @@ namespace QuotaOverhaul
         [HarmonyPatch]
         public static void Postfix()
         {
+            if (!GameNetworkManager.Instance.isHostingGame) return;
             QuotaOverhaul.quotaInProgress = true;
         }
     }

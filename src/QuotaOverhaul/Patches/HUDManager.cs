@@ -16,6 +16,7 @@ namespace QuotaOverhaul
         public static void CustomDeathPenalty(int playersDead, int bodiesInsured)
         {
             if (!Config.patchDeathPenalty) return;
+            if (!GameNetworkManager.Instance.isHostingGame) return;
 
             bool doCreditPenalty = Config.creditPenaltiesEnabled && (Config.creditPenaltiesOnGordion || StartOfRound.Instance.currentLevel.PlanetName != "71 Gordion");
             double creditPenalty;

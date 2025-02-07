@@ -10,6 +10,7 @@ namespace QuotaOverhaul
         [HarmonyPostfix]
         public static void SetQuotaVariables()
         {
+            if (!GameNetworkManager.Instance.isHostingGame) return;
             var quotaVariables = TimeOfDay.Instance.quotaVariables;
 
             quotaVariables.startingQuota = Config.startingQuota.Value;
@@ -34,11 +35,8 @@ namespace QuotaOverhaul
         [HarmonyPatch("SetNewProfitQuota")]
         public static bool Prefix()
         {
+            if (!GameNetworkManager.Instance.isHostingGame) return false;
             if (!CanFinishQuota()) return false;
-            if (GameNetworkManager.Instance.isHostingGame)
-            {
-                QuotaOverhaul.profitQuota.Value = QuotaOverhaul.baseProfitQuota;
-            }
             Plugin.Log.LogInfo("Calculating New Profit Quota...");
             return true;
         }
@@ -46,6 +44,7 @@ namespace QuotaOverhaul
         [HarmonyPatch("SetNewProfitQuota")]
         public static void Postfix()
         {
+            if (!GameNetworkManager.Instance.isHostingGame) return;
             if (!CanFinishQuota()) return;
             QuotaOverhaul.quotaInProgress = false;
             QuotaOverhaul.quotaPenaltyMultiplier = 1;
