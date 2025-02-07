@@ -1,5 +1,9 @@
 # QuotaOverhaul Changelog
 
+## 1.2.6
+
+- Make most things only run host-side.  Should hopefully fix a bug or two.
+
 ## 1.2.5
 
 - Fix issue where the quota would be stuck at zero
