@@ -7,48 +7,48 @@ namespace QuotaOverhaul
     public class Config : SyncedConfig2<Config>
     {
         // Quota settings
-        [SyncedEntryField] public static SyncedEntry<int> startingCredits;
-        [SyncedEntryField] public static SyncedEntry<int> startingQuota;
-        [SyncedEntryField] public static SyncedEntry<int> quotaBaseIncrease;
-        [SyncedEntryField] public static SyncedEntry<float> quotaIncreaseSteepness;
-        [SyncedEntryField] public static SyncedEntry<float> quotaRandomizerMultiplier;
-        [SyncedEntryField] public static SyncedEntry<int> quotaDeadline;
-        [SyncedEntryField] public static SyncedEntry<int> quotaEarlyFinishLine;
-        [SyncedEntryField] public static SyncedEntry<bool> quotaEnablePlayerMultiplier;
-        [SyncedEntryField] public static SyncedEntry<int> quotaPlayerThreshold;
-        [SyncedEntryField] public static SyncedEntry<int> quotaPlayerCap;
-        [SyncedEntryField] public static SyncedEntry<float> quotaMultPerPlayer;
+        [SyncedEntryField] public static SyncedEntry<int>? startingCredits;
+        [SyncedEntryField] public static SyncedEntry<int>? startingQuota;
+        [SyncedEntryField] public static SyncedEntry<int>? quotaBaseIncrease;
+        [SyncedEntryField] public static SyncedEntry<float>? quotaIncreaseSteepness;
+        [SyncedEntryField] public static SyncedEntry<float>? quotaRandomizerMultiplier;
+        [SyncedEntryField] public static SyncedEntry<int>? quotaDeadline;
+        [SyncedEntryField] public static SyncedEntry<int>? quotaEarlyFinishLine;
+        [SyncedEntryField] public static SyncedEntry<bool>? quotaEnablePlayerMultiplier;
+        [SyncedEntryField] public static SyncedEntry<int>? quotaPlayerThreshold;
+        [SyncedEntryField] public static SyncedEntry<int>? quotaPlayerCap;
+        [SyncedEntryField] public static SyncedEntry<float>? quotaMultPerPlayer;
 
-        [SyncedEntryField] public static SyncedEntry<bool> creditPenaltiesEnabled;
-        [SyncedEntryField] public static SyncedEntry<bool> creditPenaltiesOnGordion;
-        [SyncedEntryField] public static SyncedEntry<float> creditPenaltyPercentPerPlayer;
-        [SyncedEntryField] public static SyncedEntry<bool> creditPenaltiesDynamic;
-        [SyncedEntryField] public static SyncedEntry<float> creditPenaltyPercentCap;
-        [SyncedEntryField] public static SyncedEntry<float> creditPenaltyPercentThreshold;
-        [SyncedEntryField] public static SyncedEntry<float> creditPenaltyRecoveryBonus;
+        [SyncedEntryField] public static SyncedEntry<bool>? creditPenaltiesEnabled;
+        [SyncedEntryField] public static SyncedEntry<bool>? creditPenaltiesOnGordion;
+        [SyncedEntryField] public static SyncedEntry<float>? creditPenaltyPercentPerPlayer;
+        [SyncedEntryField] public static SyncedEntry<bool>? creditPenaltiesDynamic;
+        [SyncedEntryField] public static SyncedEntry<float>? creditPenaltyPercentCap;
+        [SyncedEntryField] public static SyncedEntry<float>? creditPenaltyPercentThreshold;
+        [SyncedEntryField] public static SyncedEntry<float>? creditPenaltyRecoveryBonus;
 
 
-        [SyncedEntryField] public static SyncedEntry<bool> quotaPenaltiesEnabled;
-        [SyncedEntryField] public static SyncedEntry<bool> quotaPenaltiesOnGordion;
-        [SyncedEntryField] public static SyncedEntry<float> quotaPenaltyPercentPerPlayer;
-        [SyncedEntryField] public static SyncedEntry<bool> quotaPenaltiesDynamic;
-        [SyncedEntryField] public static SyncedEntry<float> quotaPenaltyPercentCap;
-        [SyncedEntryField] public static SyncedEntry<float> quotaPenaltyPercentThreshold;
-        [SyncedEntryField] public static SyncedEntry<float> quotaPenaltyRecoveryBonus;
+        [SyncedEntryField] public static SyncedEntry<bool>? quotaPenaltiesEnabled;
+        [SyncedEntryField] public static SyncedEntry<bool>? quotaPenaltiesOnGordion;
+        [SyncedEntryField] public static SyncedEntry<float>? quotaPenaltyPercentPerPlayer;
+        [SyncedEntryField] public static SyncedEntry<bool>? quotaPenaltiesDynamic;
+        [SyncedEntryField] public static SyncedEntry<float>? quotaPenaltyPercentCap;
+        [SyncedEntryField] public static SyncedEntry<float>? quotaPenaltyPercentThreshold;
+        [SyncedEntryField] public static SyncedEntry<float>? quotaPenaltyRecoveryBonus;
 
-        [SyncedEntryField] public static SyncedEntry<float> saveAllChance;
-        [SyncedEntryField] public static SyncedEntry<float> saveEachChance;
-        [SyncedEntryField] public static SyncedEntry<int> scrapLossMax;
+        [SyncedEntryField] public static SyncedEntry<float>? saveAllChance;
+        [SyncedEntryField] public static SyncedEntry<float>? saveEachChance;
+        [SyncedEntryField] public static SyncedEntry<int>? scrapLossMax;
 
-        [SyncedEntryField] public static SyncedEntry<bool> valueSaveEnabled;
-        [SyncedEntryField] public static SyncedEntry<float> valueSavePercent;
+        [SyncedEntryField] public static SyncedEntry<bool>? valueSaveEnabled;
+        [SyncedEntryField] public static SyncedEntry<float>? valueSavePercent;
 
-        [SyncedEntryField] public static SyncedEntry<bool> equipmentLossEnabled;
-        [SyncedEntryField] public static SyncedEntry<float> equipmentLossChance;
-        [SyncedEntryField] public static SyncedEntry<int> equipmentLossMax;
+        [SyncedEntryField] public static SyncedEntry<bool>? equipmentLossEnabled;
+        [SyncedEntryField] public static SyncedEntry<float>? equipmentLossChance;
+        [SyncedEntryField] public static SyncedEntry<int>? equipmentLossMax;
 
-        [SyncedEntryField] public static SyncedEntry<bool> patchDeathPenalty;
-        [SyncedEntryField] public static SyncedEntry<bool> patchDespawnProps;
+        [SyncedEntryField] public static SyncedEntry<bool>? patchDeathPenalty;
+        [SyncedEntryField] public static SyncedEntry<bool>? patchDespawnProps;
 
         public Config(ConfigFile config) : base(Plugin.PLUGIN_GUID)
         {
