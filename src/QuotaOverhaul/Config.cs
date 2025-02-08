@@ -7,48 +7,45 @@ namespace QuotaOverhaul
     public class Config : SyncedConfig2<Config>
     {
         // Quota settings
-        [SyncedEntryField] public static SyncedEntry<int>? startingCredits;
-        [SyncedEntryField] public static SyncedEntry<int>? startingQuota;
-        [SyncedEntryField] public static SyncedEntry<int>? quotaBaseIncrease;
-        [SyncedEntryField] public static SyncedEntry<float>? quotaIncreaseSteepness;
-        [SyncedEntryField] public static SyncedEntry<float>? quotaRandomizerMultiplier;
-        [SyncedEntryField] public static SyncedEntry<int>? quotaDeadline;
-        [SyncedEntryField] public static SyncedEntry<int>? quotaEarlyFinishLine;
-        [SyncedEntryField] public static SyncedEntry<bool>? quotaEnablePlayerMultiplier;
-        [SyncedEntryField] public static SyncedEntry<int>? quotaPlayerThreshold;
-        [SyncedEntryField] public static SyncedEntry<int>? quotaPlayerCap;
-        [SyncedEntryField] public static SyncedEntry<float>? quotaMultPerPlayer;
+        [SyncedEntryField] public static SyncedEntry<int> startingCredits;
+        [SyncedEntryField] public static SyncedEntry<int> startingQuota;
+        [SyncedEntryField] public static SyncedEntry<int> quotaBaseIncrease;
+        [SyncedEntryField] public static SyncedEntry<float> quotaIncreaseSteepness;
+        [SyncedEntryField] public static SyncedEntry<float> quotaRandomizerMultiplier;
+        [SyncedEntryField] public static SyncedEntry<int> quotaDeadline;
+        [SyncedEntryField] public static SyncedEntry<int> quotaEarlyFinishLine;
+        [SyncedEntryField] public static SyncedEntry<bool> quotaEnablePlayerMultiplier;
+        [SyncedEntryField] public static SyncedEntry<int> quotaPlayerThreshold;
+        [SyncedEntryField] public static SyncedEntry<int> quotaPlayerCap;
+        [SyncedEntryField] public static SyncedEntry<float> quotaMultPerPlayer;
 
-        [SyncedEntryField] public static SyncedEntry<bool>? creditPenaltiesEnabled;
-        [SyncedEntryField] public static SyncedEntry<bool>? creditPenaltiesOnGordion;
-        [SyncedEntryField] public static SyncedEntry<float>? creditPenaltyPercentPerPlayer;
-        [SyncedEntryField] public static SyncedEntry<bool>? creditPenaltiesDynamic;
-        [SyncedEntryField] public static SyncedEntry<float>? creditPenaltyPercentCap;
-        [SyncedEntryField] public static SyncedEntry<float>? creditPenaltyPercentThreshold;
-        [SyncedEntryField] public static SyncedEntry<float>? creditPenaltyRecoveryBonus;
+        [SyncedEntryField] public static SyncedEntry<bool> creditPenaltiesEnabled;
+        [SyncedEntryField] public static SyncedEntry<bool> creditPenaltiesOnGordion;
+        [SyncedEntryField] public static SyncedEntry<float> creditPenaltyPercentPerPlayer;
+        [SyncedEntryField] public static SyncedEntry<bool> creditPenaltiesDynamic;
+        [SyncedEntryField] public static SyncedEntry<float> creditPenaltyPercentCap;
+        [SyncedEntryField] public static SyncedEntry<float> creditPenaltyPercentThreshold;
+        [SyncedEntryField] public static SyncedEntry<float> creditPenaltyRecoveryBonus;
 
 
-        [SyncedEntryField] public static SyncedEntry<bool>? quotaPenaltiesEnabled;
-        [SyncedEntryField] public static SyncedEntry<bool>? quotaPenaltiesOnGordion;
-        [SyncedEntryField] public static SyncedEntry<float>? quotaPenaltyPercentPerPlayer;
-        [SyncedEntryField] public static SyncedEntry<bool>? quotaPenaltiesDynamic;
-        [SyncedEntryField] public static SyncedEntry<float>? quotaPenaltyPercentCap;
-        [SyncedEntryField] public static SyncedEntry<float>? quotaPenaltyPercentThreshold;
-        [SyncedEntryField] public static SyncedEntry<float>? quotaPenaltyRecoveryBonus;
+        [SyncedEntryField] public static SyncedEntry<bool> quotaPenaltiesEnabled;
+        [SyncedEntryField] public static SyncedEntry<bool> quotaPenaltiesOnGordion;
+        [SyncedEntryField] public static SyncedEntry<float> quotaPenaltyPercentPerPlayer;
+        [SyncedEntryField] public static SyncedEntry<bool> quotaPenaltiesDynamic;
+        [SyncedEntryField] public static SyncedEntry<float> quotaPenaltyPercentCap;
+        [SyncedEntryField] public static SyncedEntry<float> quotaPenaltyPercentThreshold;
+        [SyncedEntryField] public static SyncedEntry<float> quotaPenaltyRecoveryBonus;
 
-        [SyncedEntryField] public static SyncedEntry<float>? saveAllChance;
-        [SyncedEntryField] public static SyncedEntry<float>? saveEachChance;
-        [SyncedEntryField] public static SyncedEntry<int>? scrapLossMax;
+        [SyncedEntryField] public static SyncedEntry<float> saveAllChance;
+        [SyncedEntryField] public static SyncedEntry<float> saveEachChance;
+        [SyncedEntryField] public static SyncedEntry<int> scrapLossMax;
 
-        [SyncedEntryField] public static SyncedEntry<bool>? valueSaveEnabled;
-        [SyncedEntryField] public static SyncedEntry<float>? valueSavePercent;
+        [SyncedEntryField] public static SyncedEntry<bool> valueSaveEnabled;
+        [SyncedEntryField] public static SyncedEntry<float> valueSavePercent;
 
-        [SyncedEntryField] public static SyncedEntry<bool>? equipmentLossEnabled;
-        [SyncedEntryField] public static SyncedEntry<float>? equipmentLossChance;
-        [SyncedEntryField] public static SyncedEntry<int>? equipmentLossMax;
-
-        [SyncedEntryField] public static SyncedEntry<bool>? patchDeathPenalty;
-        [SyncedEntryField] public static SyncedEntry<bool>? patchDespawnProps;
+        [SyncedEntryField] public static SyncedEntry<bool> equipmentLossEnabled;
+        [SyncedEntryField] public static SyncedEntry<float> equipmentLossChance;
+        [SyncedEntryField] public static SyncedEntry<int> equipmentLossMax;
 
         public Config(ConfigFile config) : base(Plugin.PLUGIN_GUID)
         {
@@ -89,9 +86,6 @@ namespace QuotaOverhaul
             equipmentLossEnabled = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Enabled", false, "Allow equipment to be lost. \nVanilla:false.");
             equipmentLossChance = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Chance", 10f, "A chance of each equipment item being lost. \nApplied after SaveAllChance. \nValues between 0-100 \nVanilla: 0");
             equipmentLossMax = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Max", int.MaxValue, $"The maximum amount of equipment that can be lost.\nApplied after EquipmentLossChance.");
-
-            patchDeathPenalty = config.BindSyncedEntry("Patches (ADVANCED)", "Death Penalty", true, "Set this to false to use the vanilla DeathPenalty function and ignore the other options around death penalties.");
-            patchDespawnProps = config.BindSyncedEntry("Patches (ADVANCED)", "Despawn Props", true, "Set this to false to use the vanilla DespawnProps function and ignore the other options around scrap loss/saving.");
 
             ConfigManager.Register(this);
         } 

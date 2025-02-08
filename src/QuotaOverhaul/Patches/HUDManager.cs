@@ -5,19 +5,13 @@ namespace QuotaOverhaul
     [HarmonyPatch(typeof(HUDManager), nameof(HUDManager.ApplyPenalty))]
     public class DeathPenaltyPatch
     {
-        [HarmonyPrefix]
-        public static bool SkipDefaultDeathPenalty()
+        public static bool Prefix()
         {
-            if (!Config.patchDeathPenalty) return true;
             return false;
         }
 
-        [HarmonyPostfix]
-        public static void CustomDeathPenalty(int playersDead, int bodiesInsured)
+        public static void Postfix(int playersDead, int bodiesInsured)
         {
-            if (!Config.patchDeathPenalty) return;
-            if (!GameNetworkManager.Instance.isHostingGame) return;
-
             bool doCreditPenalty = Config.creditPenaltiesEnabled && (Config.creditPenaltiesOnGordion || StartOfRound.Instance.currentLevel.PlanetName != "71 Gordion");
             double creditPenalty;
 
@@ -42,10 +36,14 @@ namespace QuotaOverhaul
 
                 Terminal terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
                 int credits = terminal.groupCredits;
-                terminal.groupCredits -= (int)(credits * creditPenalty);
-                if (terminal.groupCredits < 0)
+
+                if (GameNetworkManager.Instance.isHostingGame)
                 {
-                    terminal.groupCredits = 0;
+                    terminal.groupCredits -= (int)(credits * creditPenalty);
+                    if (terminal.groupCredits < 0)
+                    {
+                        terminal.groupCredits = 0;
+                    }
                 }
 
                 penaltyAdditionText += $"\nCREDITS: -{(int)(creditPenalty * 100)}%";
@@ -62,8 +60,9 @@ namespace QuotaOverhaul
                 {
                     quotaPenalty = CalculateQuotaPenalty(playersDead, bodiesInsured);
                 }
+
                 QuotaOverhaul.quotaPenaltyMultiplier += quotaPenalty;
-                QuotaOverhaul.UpdateProfitQuota();
+                QuotaOverhaul.SetProftQuota(QuotaOverhaul.CalculateProfitQuota());
 
                 penaltyAdditionText += $"\nQUOTA: +{(int)(quotaPenalty * 100)}%";
                 penaltyTotalText += $"\nraised quota by {TimeOfDay.Instance.profitQuota - oldQuota}";

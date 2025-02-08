@@ -4,9 +4,9 @@ namespace QuotaOverhaul{
     [HarmonyPatch(typeof(GameNetworkManager), nameof(GameNetworkManager.SaveGame))]
     public class SaveGamePatch
     {
-        [HarmonyPatch]
         public static void Postfix()
         {
+            if (!GameNetworkManager.Instance.isHostingGame) return;
             QuotaOverhaul.SaveData();
         }
     }

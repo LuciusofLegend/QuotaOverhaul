@@ -10,17 +10,13 @@ namespace QuotaOverhaul
     [HarmonyPatch(typeof(RoundManager), nameof(RoundManager.DespawnPropsAtEndOfRound))]
     public class SaveLootPatch
     {
-        [HarmonyPrefix]
-        public static bool SkipOriginalDespawnProps()
+        public static bool Prefix()
         {
-            if (!Config.patchDespawnProps) return true;
             return false;
         }
 
-        [HarmonyPostfix]
-        public static void CustomDespawnProps(bool despawnAllItems = false)
+        public static void Postifx(bool despawnAllItems = false)
         {
-            if (!Config.patchDespawnProps) return;
             if (!GameNetworkManager.Instance.isHostingGame) return;
 
             GrabbableObject[] items = UnityEngine.Object.FindObjectsOfType<GrabbableObject>();
