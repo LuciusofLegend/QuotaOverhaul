@@ -1,5 +1,9 @@
 # QuotaOverhaul Changelog
 
+## 1.3.1
+
+- Postifx() to Postfix() :D
+
 ## 1.3.0
 
 - Fix some syncing issues
