@@ -15,11 +15,14 @@ namespace QuotaOverhaul
             return false;
         }
 
-        public static void Postifx(bool despawnAllItems = false)
+        public static void Postfix(bool despawnAllItems = false)
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
 
             GrabbableObject[] items = UnityEngine.Object.FindObjectsOfType<GrabbableObject>();
+
+            Plugin.Log.LogInfo("Despawning props!");
+            Plugin.Log.LogInfo($"Found {items.Length} props");
 
             try
             {
@@ -30,7 +33,7 @@ namespace QuotaOverhaul
                     {
                         if (vehicle.NetworkObject != null)
                         {
-                            Plugin.Log.LogInfo("Despawn vehicle");
+                            Plugin.Log.LogInfo("Despawned vehicle");
                             vehicle.NetworkObject.Despawn(destroy: false);
                         }
                     }
