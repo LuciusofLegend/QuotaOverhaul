@@ -15,7 +15,7 @@ namespace QuotaOverhaul
             return false;
         }
 
-        public static void Postifx(bool despawnAllItems = false)
+        public static void Postfix(bool despawnAllItems = false)
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
 
