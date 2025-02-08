@@ -1,5 +1,10 @@
 # QuotaOverhaul Changelog
 
+## 1.3.0
+
+- Fix some syncing issues
+- Rearrange some things internally
+
 ## 1.2.6
 
 - Make most things only run host-side.  Should hopefully fix a bug or two.
