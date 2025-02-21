@@ -1,4 +1,3 @@
-using Discord;
 using LethalNetworkAPI;
 using Unity.Mathematics;
 
@@ -14,12 +13,6 @@ namespace QuotaOverhaul
         public static bool quotaInProgress = false;
 
         public static LNetworkVariable<int> profitQuota = LNetworkVariable<int>.Connect(nameof(profitQuota), onValueChanged: SyncProfitQuota);
-
-        public static void SetProftQuota(int value)
-        {
-            if (!GameNetworkManager.Instance.isHostingGame) return;
-            profitQuota.Value = value;
-        }
 
         static void SyncProfitQuota(int oldValue, int newValue)
         {
@@ -42,15 +35,14 @@ namespace QuotaOverhaul
                 return;
             }
             quotaPlayerMultiplier = CalculatePlayerCountMultiplier();
-            SetProftQuota(CalculateProfitQuota());
+            profitQuota.Value = CalculateProfitQuota();
 
             Plugin.Log.LogInfo($"Player Count Multiplier: {quotaPlayerMultiplier}");
         }
         
         public static double CalculatePlayerCountMultiplier()
         {
-            int playersCounted = recordPlayersThisQuota;
-            playersCounted = math.clamp(recordPlayersThisQuota, Config.quotaPlayerThreshold.Value, Config.quotaPlayerCap.Value);
+            int playersCounted = math.clamp(recordPlayersThisQuota, Config.quotaPlayerThreshold.Value, Config.quotaPlayerCap.Value);
             playersCounted -= Config.quotaPlayerThreshold.Value;
             return Config.quotaMultPerPlayer.Value * math.max(playersCounted, 0);
         }
@@ -59,7 +51,7 @@ namespace QuotaOverhaul
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
 
-            var quotaVariables = TimeOfDay.Instance.quotaVariables;
+            QuotaSettings quotaVariables = TimeOfDay.Instance.quotaVariables;
 
             quotaVariables.startingQuota = Config.startingQuota.Value;
             quotaVariables.baseIncrease = Config.quotaBaseIncrease.Value;
@@ -87,7 +79,7 @@ namespace QuotaOverhaul
             quotaInProgress = false;
             quotaPenaltyMultiplier = 1;
             recordPlayersThisQuota = StartOfRound.Instance.connectedPlayersAmount;
-            SetProftQuota(CalculateProfitQuota());
+            profitQuota.Value = CalculateProfitQuota();
         }
 
         public static void OnPlayerCountChanged()
@@ -116,6 +108,8 @@ namespace QuotaOverhaul
 
         public static void LoadData()
         {
+            if (!GameNetworkManager.Instance.isHostingGame) return;
+
             string saveFile = GameNetworkManager.Instance.currentSaveFileName;
             if (ES3.KeyExists(nameof(baseProfitQuota), saveFile)) baseProfitQuota = ES3.Load<int>(nameof(baseProfitQuota), saveFile);
             else baseProfitQuota = Config.startingQuota;
@@ -126,6 +120,8 @@ namespace QuotaOverhaul
 
         public static void SaveData()
         {
+            if (!GameNetworkManager.Instance.isHostingGame) return;
+            
             string saveFile = GameNetworkManager.Instance.currentSaveFileName;
             ES3.Save<int>(nameof(baseProfitQuota), baseProfitQuota, saveFile);
             ES3.Save<double>(nameof(quotaPenaltyMultiplier), quotaPenaltyMultiplier, saveFile);

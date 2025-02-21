@@ -14,15 +14,17 @@ public class Plugin : BaseUnityPlugin
     public const string PLUGIN_VERSION = LCMPluginInfo.PLUGIN_VERSION; 
 
     public static Plugin instance;
+    public static Harmony harmony;
     public static ManualLogSource Log;
     internal static new Config config;
 
     private void Awake()
     {
         instance = this;
+        harmony = new Harmony(PLUGIN_GUID);
         Log = BepInEx.Logging.Logger.CreateLogSource(PLUGIN_NAME);
         config = new Config(Config);
-        new Harmony(PLUGIN_GUID).PatchAll();
+        harmony.PatchAll();
         Log.LogInfo($"{PLUGIN_NAME} v{PLUGIN_VERSION} is loaded!");
     }
 }

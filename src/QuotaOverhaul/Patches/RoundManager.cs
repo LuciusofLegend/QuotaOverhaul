@@ -1,66 +1,73 @@
-using HarmonyLib;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using HarmonyLib;
 using Unity.Netcode;
+using UnityEngine;
 
 namespace QuotaOverhaul
 {
     [HarmonyPatch(typeof(RoundManager), nameof(RoundManager.DespawnPropsAtEndOfRound))]
-    public class SaveLootPatch
+    public class DespawnPropsPatch
     {
-        public static bool Prefix()
+
+        [HarmonyPrefix]
+        public static bool SkipOriginalDespawnProps()
         {
             return false;
         }
 
-        public static void Postfix(bool despawnAllItems = false)
+        [HarmonyPostfix]
+        public static void CustomDespawnProps(bool despawnAllItems = false)
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
 
-            GrabbableObject[] items = UnityEngine.Object.FindObjectsOfType<GrabbableObject>();
-
-            try
+            VehicleController[] vehicles = UnityEngine.Object.FindObjectsOfType<VehicleController>();
+            foreach (VehicleController vehicle in vehicles)
             {
-                VehicleController[] vehicles = UnityEngine.Object.FindObjectsByType<VehicleController>(UnityEngine.FindObjectsSortMode.None);
-                foreach (VehicleController vehicle in vehicles)
+                DespawnVehicle(vehicle);
+            }
+
+            BeltBagItem[] beltBags = UnityEngine.Object.FindObjectsOfType<BeltBagItem>();
+            foreach (BeltBagItem beltBag in beltBags)
+            {
+                if (beltBag.insideAnotherBeltBag && (beltBag.insideAnotherBeltBag.isInShipRoom || beltBag.insideAnotherBeltBag.isHeld))
                 {
-                    if (!vehicle.magnetedToShip)
+                    beltBag.isInElevator = true;
+                    beltBag.isInShipRoom = true;
+                }
+                if (beltBag.isInShipRoom || beltBag.isHeld)
+                {
+                    foreach (GrabbableObject objectInBag in beltBag.objectsInBag)
                     {
-                        if (vehicle.NetworkObject != null)
-                        {
-                            Plugin.Log.LogInfo("Despawn vehicle");
-                            vehicle.NetworkObject.Despawn(destroy: false);
-                        }
-                    }
-                    else
-                    {
-                        vehicle.CollectItemsInTruck();
+                        objectInBag.isInElevator = true;
+                        objectInBag.isInShipRoom = true;
                     }
                 }
             }
-            catch (Exception arg)
-            {
-                Plugin.Log.LogError($"Error despawning vehicle: {arg}");
-            }
+
+            System.Random RNG = new System.Random(StartOfRound.Instance.randomMapSeed + 369);
+            List<GrabbableObject> items = UnityEngine.Object.FindObjectsOfType<GrabbableObject>().ToList();
+            List<GrabbableObject> itemsInside = new List<GrabbableObject>();
 
             if (despawnAllItems)
             {
+                Plugin.Log.LogInfo("Despawning all items");
                 foreach (GrabbableObject item in items)
                 {
                     DespawnItem(item);
                 }
-                Plugin.Log.LogInfo("Despawned all props");
+                return;
             }
 
-            Random RNG = new Random(StartOfRound.Instance.randomMapSeed + 369);
-            List<GrabbableObject> itemsInside = new List<GrabbableObject>();
             foreach (GrabbableObject item in items)
             {
+                if (item == null) continue;
+
                 if (!(item.isInShipRoom || item.isHeld) || item.deactivated)
                 {
-                    Plugin.Log.LogInfo($"{item.name} Lost Outside");
+                    Plugin.Log.LogInfo($"{item.itemProperties.itemName ?? item.name} Lost Outside");
                     DespawnItem(item);
                 }
                 else
@@ -69,78 +76,111 @@ namespace QuotaOverhaul
                 }
             }
 
-            if (!StartOfRound.Instance.allPlayersDead)
+            if (!StartOfRound.Instance.allPlayersDead) return;
+
+            ILookup<bool, GrabbableObject> itemIsScrapLookup = itemsInside.ToLookup((GrabbableObject item) => item.itemProperties.isScrap);
+            List<GrabbableObject> itemsScrap = itemIsScrapLookup[true].ToList();
+            List<GrabbableObject> itemsEquipment = itemIsScrapLookup[false].ToList();
+            List<string> lostItems = [];
+
+            bool itemsAreSafe = false;
+            if (RNG.NextDouble() < Config.itemsSafeChance.Value / 100) itemsAreSafe = true;
+
+            if (!Config.scrapLossEnabled.Value)
             {
-                return;
+                Plugin.Log.LogInfo("Scrap loss is disabled");
             }
-            if (RNG.NextDouble() >= (1f - (Config.saveAllChance?.Value ?? 25f) / 100))
+            else if (!itemsAreSafe)
             {
-                Plugin.Log.LogInfo("All Saved");
-                return;
+                itemsScrap.RemoveAll((GrabbableObject item) => !item.IsSpawned);
+                int totalScrapValue = itemsScrap.Sum((GrabbableObject scrap) => scrap.scrapValue);
+                int scrapLost = 0;
+                int scrapValueLost = 0;
+
+                if (Config.valueLossEnabled.Value)
+                {
+                    itemsScrap = itemsScrap.OrderByDescending((GrabbableObject scrap) => scrap.scrapValue).ToList();
+                    int valueToLose = (int)(totalScrapValue * Config.valueLossPercent.Value / 100);
+                    foreach (GrabbableObject scrap in itemsScrap)
+                    {
+                        if (scrapValueLost >= valueToLose || scrapLost >= Config.maxLostScrapItems.Value) break;
+                        scrapValueLost += scrap.scrapValue;
+                        scrapLost++;
+                        lostItems.Add(scrap.itemProperties?.itemName ?? scrap.name);
+                        DespawnItem(scrap);
+                        Plugin.Log.LogInfo($"Lost {scrap.name} worth {scrap.scrapValue}");
+                    }
+                    itemsScrap.RemoveAll((GrabbableObject item) => !item.IsSpawned);
+                    Plugin.Log.LogInfo($"Value Loss: {scrapValueLost}$ of scrap lost");
+                }
+
+                foreach (GrabbableObject scrap in itemsScrap)
+                {
+                    if (RNG.NextDouble() < Config.loseEachScrapChance.Value / 100)
+                    {
+                        if (scrapLost >= Config.maxLostScrapItems.Value) break;
+                        scrapValueLost += scrap.scrapValue;
+                        scrapLost++;
+                        lostItems.Add(scrap.itemProperties?.itemName ?? scrap.name);
+                        DespawnItem(scrap);
+                        Plugin.Log.LogInfo($"Lost {scrap.name} worth {scrap.scrapValue}");
+                    }
+                }
+
+                Plugin.Log.LogInfo($"Lost {scrapLost} scrap items worth {scrapValueLost}");
             }
 
-            var result = itemsInside.ToLookup((GrabbableObject go) => go.itemProperties.isScrap);
-            List<GrabbableObject> itemsScrap = result[true].ToList();
-            List<GrabbableObject> itemsEquipment = result[false].ToList();
+            if (!Config.equipmentLossEnabled.Value)
+            {
+                Plugin.Log.LogInfo("Equipment loss is disabled");
+            }
+            else if (!itemsAreSafe)
+            {
+                itemsEquipment.RemoveAll((GrabbableObject item) => !item.IsSpawned);
+                int equipmentLost = 0;
+                foreach (GrabbableObject equipment in itemsEquipment)
+                {
+                    if (RNG.NextDouble() < Config.loseEachEquipmentChance.Value / 100)
+                    {
+                        equipmentLost++;
+                        if (equipmentLost > Config.maxLostEquipmentItems.Value) break;
+                        lostItems.Add(equipment.itemProperties?.itemName ?? equipment.name);
+                        DespawnItem(equipment);
+                        Plugin.Log.LogInfo($"Lost {equipment.name}");
+                    }
+                }
+                Plugin.Log.LogInfo($"Lost {equipmentLost} equipment items");
+            }
 
-            itemsScrap.RemoveAll((GrabbableObject item) => !item.IsSpawned);
-            if (Config.valueSaveEnabled?.Value ?? false)
+            if (lostItems.Count() > 0)
             {
-                itemsScrap = itemsScrap.OrderByDescending((GrabbableObject item) => item.scrapValue).ToList();
-                int totalScrapValue = itemsScrap.Sum((GrabbableObject item) => item.scrapValue);
-                float valueToSave = totalScrapValue * (Config.valueSavePercent?.Value ?? 25f) / 100;
-                foreach (GrabbableObject item in itemsScrap)
+                string msg = $"Lost items ({lostItems.Count()}/{itemsInside.Count()}): ";
+                msg += string.Join("; ", lostItems.GroupBy(s => s).Select(s => new { name = s.Key, count = s.Count() }).Select(item => item.count > 1 ? $"{item.name} x{item.count}" : item.name));
+                HUDManager.Instance.StartCoroutine(DisplayAlert(bodyAlertText: "", messageText: msg));
+            }
+;
+        }
+
+        public static void DespawnVehicle(VehicleController vehicle)
+        {
+            try
+            {
+                if (!vehicle.magnetedToShip)
                 {
-                    totalScrapValue -= item.scrapValue;
-                    if (totalScrapValue < valueToSave)
+                    if (vehicle.NetworkObject != null)
                     {
-                        Plugin.Log.LogInfo($"{totalScrapValue} Scrap Value Saved");
-                        break;
+                        vehicle.NetworkObject.Despawn(false);
+                        Plugin.Log.LogInfo("Despawned vehicle");
                     }
-                    Plugin.Log.LogInfo($"{item.name} Lost. Value: {item.scrapValue}");
-                    DespawnItem(item);
+                }
+                else
+                {
+                    vehicle.CollectItemsInTruck();
                 }
             }
-            else
+            catch (Exception arg)
             {
-                int lostSCount = 0;
-                foreach (GrabbableObject item in itemsScrap)
-                {
-                    if (RNG.NextDouble() >= (1f - (Config.saveEachChance?.Value ?? 50f) / 100))
-                    {
-                        Plugin.Log.LogInfo($"{item.name} Saved");
-                    }
-                    else
-                    {
-                        Plugin.Log.LogInfo($"{item.name} Lost");
-                        DespawnItem(item);
-                        lostSCount++;
-                        if (lostSCount >= (Config.scrapLossMax?.Value ?? int.MaxValue))
-                        {
-                            Plugin.Log.LogInfo($"Lost {lostSCount} Scrap Items");
-                            break;
-                        }
-                    }
-                }
-            }
-            if (Config.equipmentLossEnabled?.Value ?? false)
-            {
-                itemsEquipment.RemoveAll((GrabbableObject go) => !go.IsSpawned);
-                int lostEquipmentCount = 0;
-                foreach (GrabbableObject item in itemsEquipment)
-                {
-                    if (lostEquipmentCount >= (Config.equipmentLossMax?.Value ?? int.MaxValue))
-                    {
-                        break;
-                    }
-                    if (RNG.NextDouble() >= (1f - (Config.equipmentLossChance?.Value ?? 10f) / 100))
-                    {
-                        Plugin.Log.LogInfo($"{item.name} Lost");
-                        DespawnItem(item);
-                        lostEquipmentCount++;
-                    }
-                }
-                Plugin.Log.LogInfo($"Equipment Lost total {lostEquipmentCount}");
+                Plugin.Log.LogError($"Error despawning vehicle: {arg}");
             }
         }
 
@@ -153,17 +193,40 @@ namespace QuotaOverhaul
             NetworkObject networkComponent = item.gameObject.GetComponent<NetworkObject>();
             if (networkComponent != null && networkComponent.IsSpawned)
             {
-                Plugin.Log.LogInfo($"Despawning {item.name}");
+                Plugin.Log.LogInfo($"Despawning {item.itemProperties.itemName ?? item.name}");
                 networkComponent.Despawn();
             }
             else
             {
-                Plugin.Log.LogDebug($"Error/warning: {item.name} prop was not spawned or did not have a NetworkObject component!  Skipped despawning and destroyed it instead.");
+                Plugin.Log.LogDebug($"Error/warning: {item.itemProperties.itemName ?? item.itemProperties.itemName ?? item.name} was not spawned or did not have a NetworkObject component!  Skipped despawning and destroyed it instead.");
                 UnityEngine.Object.Destroy(item.gameObject);
             }
             if (RoundManager.Instance.spawnedSyncedObjects.Contains(item.gameObject))
             {
                 RoundManager.Instance.spawnedSyncedObjects.Remove(item.gameObject);
+            }
+        }
+
+        public static IEnumerator DisplayAlert(string headerAlertText = "Quota Overhaul", string bodyAlertText = "", string messageText = "")
+        {
+            int index = 0;
+            while (index < 20)
+            {
+                if (StartOfRound.Instance.inShipPhase)
+                {
+                    break;
+                }
+                index++;
+                yield return new WaitForSeconds(5f);
+            }
+            yield return new WaitForSeconds(2f);
+            if (!(string.IsNullOrEmpty(headerAlertText) && string.IsNullOrEmpty(bodyAlertText)))
+            {
+                HUDManager.Instance.DisplayTip(headerAlertText, bodyAlertText);
+            }
+            if (!string.IsNullOrEmpty(messageText))
+            {
+                HUDManager.Instance.AddTextToChatOnServer(messageText);
             }
         }
     }

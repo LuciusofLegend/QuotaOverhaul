@@ -36,16 +36,17 @@ namespace QuotaOverhaul
         [SyncedEntryField] public static SyncedEntry<float> quotaPenaltyPercentThreshold;
         [SyncedEntryField] public static SyncedEntry<float> quotaPenaltyRecoveryBonus;
 
-        [SyncedEntryField] public static SyncedEntry<float> saveAllChance;
-        [SyncedEntryField] public static SyncedEntry<float> saveEachChance;
-        [SyncedEntryField] public static SyncedEntry<int> scrapLossMax;
+        [SyncedEntryField] public static SyncedEntry<bool> scrapLossEnabled;
+        [SyncedEntryField] public static SyncedEntry<float> itemsSafeChance;
+        [SyncedEntryField] public static SyncedEntry<float> loseEachScrapChance;
+        [SyncedEntryField] public static SyncedEntry<int> maxLostScrapItems;
 
-        [SyncedEntryField] public static SyncedEntry<bool> valueSaveEnabled;
-        [SyncedEntryField] public static SyncedEntry<float> valueSavePercent;
+        [SyncedEntryField] public static SyncedEntry<bool> valueLossEnabled;
+        [SyncedEntryField] public static SyncedEntry<float> valueLossPercent;
 
         [SyncedEntryField] public static SyncedEntry<bool> equipmentLossEnabled;
-        [SyncedEntryField] public static SyncedEntry<float> equipmentLossChance;
-        [SyncedEntryField] public static SyncedEntry<int> equipmentLossMax;
+        [SyncedEntryField] public static SyncedEntry<float> loseEachEquipmentChance;
+        [SyncedEntryField] public static SyncedEntry<int> maxLostEquipmentItems;
 
         public Config(ConfigFile config) : base(Plugin.PLUGIN_GUID)
         {
@@ -77,15 +78,16 @@ namespace QuotaOverhaul
             quotaPenaltyPercentThreshold = config.BindSyncedEntry("Quota Penalties", "Penalty Threshold Percent", 15f, "Applied after penalty is calculated. If the penalty falls below this threshold, the penalty is set to 0. Increasing this value makes minor slip-ups more forgiving. \nValues between 0-100");
             quotaPenaltyRecoveryBonus = config.BindSyncedEntry("Quota Penalties", "Body Recovery Bonus", 50f, "How much of the penalty to forgive for recovering bodies. A higher value means a higher incentive to recover bodies.  Applies to both normal and dynamic modes. \nValues between 0-100");
             
-            saveAllChance = config.BindSyncedEntry("Loot Saving", "Save All Chance", 100f, "A percent chance of all items being saved. \nValues between 0-100 \nVanilla:0");
-            saveEachChance = config.BindSyncedEntry("Loot Saving", "Save Each Chance", 50f, "A percent chance of each item being saved.\nApplied after SaveAllChance. \nValues between 0-100 \nVanilla:0");
-            scrapLossMax = config.BindSyncedEntry("Loot Saving", "Scrap Loss Max", int.MaxValue, $"The maximum amount of items that can be lost.\nApplied after SaveEachChance.");
-            valueSaveEnabled = config.BindSyncedEntry("Loot Saving", "Value Save Enabled", true, "Save a percent of total scrap value.\nApplied after SaveAllChance and prevent SaveEachChance. \nVanilla:false.");
-            valueSavePercent = config.BindSyncedEntry("Loot Saving", "Value Save Percent", 100f, "The percentage of total scrap value to save. \nValues between 0-100");
+            scrapLossEnabled = config.BindSyncedEntry("Scrap Loss", "Scrap Loss Enabled", false, "Toggle losing scrap when all players die. \nVanilla: true");
+            itemsSafeChance = config.BindSyncedEntry("Scrap Loss", "Safe Chance", 25f, "A percent chance of all scrap and equipment being safe. When your items are 'safe' it overrides all other settings. \nValues between 0-100 \nVanilla: 0");
+            valueLossEnabled = config.BindSyncedEntry("Scrap Loss", "Value Loss Enabled", false, "Lose a percent of total scrap value. \nVanilla: false.");
+            valueLossPercent = config.BindSyncedEntry("Scrap Loss", "Value Loss Percent", 100f, "The percentage of total scrap value to lose. \nValues between 0-100");
+            loseEachScrapChance = config.BindSyncedEntry("Scrap Loss", "Lose Each Chance", 50f, "A percent chance of each item being lost. \nValues between 0-100 \nVanilla: 0");
+            maxLostScrapItems = config.BindSyncedEntry("Scrap Loss", "Scrap Loss Max", int.MaxValue, $"The maximum number of scrap items that can be lost.");
 
-            equipmentLossEnabled = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Enabled", false, "Allow equipment to be lost. \nVanilla:false.");
-            equipmentLossChance = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Chance", 10f, "A chance of each equipment item being lost. \nApplied after SaveAllChance. \nValues between 0-100 \nVanilla: 0");
-            equipmentLossMax = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Max", int.MaxValue, $"The maximum amount of equipment that can be lost.\nApplied after EquipmentLossChance.");
+            equipmentLossEnabled = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Enabled", false, "Allow equipment to be lost. \nVanilla: false.");
+            loseEachEquipmentChance = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Chance", 10f, "A chance of each equipment item being lost. \nApplied after SaveAllChance. \nValues between 0-100 \nVanilla: 0");
+            maxLostEquipmentItems = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Max", int.MaxValue, $"The maximum amount of equipment that can be lost.\nApplied after EquipmentLossChance.");
 
             ConfigManager.Register(this);
         } 

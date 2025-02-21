@@ -62,7 +62,7 @@ namespace QuotaOverhaul
                 }
 
                 QuotaOverhaul.quotaPenaltyMultiplier += quotaPenalty;
-                QuotaOverhaul.SetProftQuota(QuotaOverhaul.CalculateProfitQuota());
+                QuotaOverhaul.profitQuota.Value = QuotaOverhaul.CalculateProfitQuota();
 
                 penaltyAdditionText += $"\nQUOTA: +{(int)(quotaPenalty * 100)}%";
                 penaltyTotalText += $"\nraised quota by {TimeOfDay.Instance.profitQuota - oldQuota}";

@@ -2,8 +2,8 @@
 
 The goal of Quota Overhaul is to make the quota system as fun, rewarding, and configurable as possible.  I've taken inspiration from several existing mods, added some stuff of my own, and I'm always taking input from the community.
 
-**THIS PROJECT IS IN ALPHA**
-Here be bugs!  Probably.  I'm actively fixing issues as they are reported.  If you encounter a bug, check the github issues to see if it has been reported.  If not, please create an issue to let me know.
+### THIS PROJECT IS IN ALPHA
+Here be bugs!  Probably.  I'm actively fixing issues as they arise.  If you encounter a bug, check the github issues to see if it has been reported.  If not, please create an issue to let me know.
 
 # Features
 
@@ -38,25 +38,21 @@ Configurable equipment loss!  This has similar settings to loot saving.
 - Dynamic Dungeon Size
 - Dynamic Loot Saving
 
-Feel free to submit your ideas via a github issue!
-
 # Known Issues
 
 - The penalty menu looks a little weird
 
-If you find a bug, github issues are also great for that.
-
-# NOTE:
-
-Quota Overhaul is released under the MIT License, which means you are 100% free to fork it, copy it, modify it, and distribute it on any platform, under any license. If I ever stop maintaining this mod and it starts breaking with new versions of Lethal Company, I encourage you to fork it and keep the mod alive.
-
-Happy Modding!
-
 # Credits
 
-Quota Overhaul takes inspiration from:
+Quota Overhaul takes inspiration and code from:
 - Quota Tweaks by mrov
 - Save Our Loot by MrHydralisk
 - Custom Death Penalty by ImpulsiveLass
 
 Icon by @Endoxicom!
+
+### NOTE:
+
+Quota Overhaul is released under the MIT License, which means you are 100% free to fork it, copy it, modify it, and distribute it on any platform, under any license. If I ever stop maintaining this mod and it starts breaking with new versions of Lethal Company, I encourage you to fork it and keep the mod alive.
+
+Happy Modding!
