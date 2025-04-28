@@ -53,7 +53,7 @@ namespace QuotaOverhaul
             startingCredits = config.BindSyncedEntry("Quota Settings", "Starting Credits", 60, "The amount of money you start with. \nVanilla: 60");
             startingQuota = config.BindSyncedEntry("Quota Settings", "Starting Quota", 300, "The quota value at the start of a new game. \nVanilla: 130");
             quotaBaseIncrease = config.BindSyncedEntry("Quota Settings", "Quota Base Increase", 200, "The minimum amount of quota increase. \nVanilla: 200");
-            quotaIncreaseSteepness = config.BindSyncedEntry("Quota Settings", "Quota Increase Steepness", 4f, "The steepness of the quota increase curve - higher value means a less steep exponential increase. \nVanilla: 4");
+            quotaIncreaseSteepness = config.BindSyncedEntry("Quota Settings", "Quota Increase Steepness", 4f, "The steepness of the quota increase curve - higher value means a more steep exponential increase. \nVanilla: 4");
             quotaRandomizerMultiplier = config.BindSyncedEntry("Quota Settings", "Quota Randomizer Multiplier", 1f, "The multiplier for the quota randomizer - this determines the severity of the randomizer curve. \nVanilla: 1");
             quotaDeadline = config.BindSyncedEntry("Quota Settings", "Quota Deadline", 3, "The number of days you are given to complete each quota.  \nVanilla: 3");
             quotaEarlyFinishLine = config.BindSyncedEntry("Quota Settings", "Early Finish Line", 0, "The minimum number of days that need to pass before the quota is allowed to end.  Values lower than 0 make this equal to the Quota Deadline. \nVanilla: 0");
@@ -90,6 +90,6 @@ namespace QuotaOverhaul
             maxLostEquipmentItems = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Max", int.MaxValue, $"The maximum amount of equipment that can be lost.\nApplied after EquipmentLossChance.");
 
             ConfigManager.Register(this);
-        } 
+        }
     }
 }

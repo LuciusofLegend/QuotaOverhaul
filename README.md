@@ -2,8 +2,8 @@
 
 The goal of Quota Overhaul is to make the quota system as fun, rewarding, and configurable as possible.  I've taken inspiration from several existing mods, added some stuff of my own, and I'm always taking input from the community.
 
-### THIS PROJECT IS IN ALPHA
-Here be bugs!  Probably.  I'm actively fixing issues as they arise.  If you encounter a bug, check the github issues to see if it has been reported.  If not, please create an issue to let me know.
+## ATTENTION! THIS MOD IS BROKEN
+I found it quite difficult to test in multiplayer, which has led to several critical bugs.  I'll remove this message if I eventually get the issues fixed.  In the meantime, the code is under the permissive MIT license, so feel free to fork this, reupload it, anything you want.
 
 # Features
 
@@ -33,6 +33,7 @@ Configurable equipment loss!  This has similar settings to loot saving.
 
 # Roadmap
 
+- Fix the glaring bugs
 - Dynamic Difficulty
 - Dynamic Loot
 - Dynamic Dungeon Size

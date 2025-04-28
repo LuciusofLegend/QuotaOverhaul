@@ -112,7 +112,6 @@ namespace QuotaOverhaul
 
             string saveFile = GameNetworkManager.Instance.currentSaveFileName;
             if (ES3.KeyExists(nameof(baseProfitQuota), saveFile)) baseProfitQuota = ES3.Load<int>(nameof(baseProfitQuota), saveFile);
-            else baseProfitQuota = Config.startingQuota;
             if (ES3.KeyExists(nameof(quotaPenaltyMultiplier), saveFile)) quotaPenaltyMultiplier = ES3.Load<double>(nameof(quotaPenaltyMultiplier), saveFile);
             if (ES3.KeyExists(nameof(recordPlayersThisQuota), saveFile)) recordPlayersThisQuota =  ES3.Load<int>(nameof(recordPlayersThisQuota), saveFile);
             if (ES3.KeyExists(nameof(quotaInProgress), saveFile)) quotaInProgress = ES3.Load<bool>(nameof(quotaInProgress), saveFile);
