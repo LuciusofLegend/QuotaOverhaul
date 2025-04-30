@@ -2,8 +2,9 @@
 
 The goal of Quota Overhaul is to make the quota system as fun, rewarding, and configurable as possible.  I've taken inspiration from several existing mods, added some stuff of my own, and I'm always taking input from the community.
 
-## ATTENTION! THIS MOD IS BROKEN
-I found it quite difficult to test in multiplayer, which has led to several critical bugs.  I'll remove this message if I eventually get the issues fixed.  In the meantime, the code is under the permissive MIT license, so feel free to fork this, reupload it, anything you want.
+### THIS MOD IS IN ALPHA AND INACTIVE
+Bugs are expected, and development is currently paused.  This is due to difficulty in testing the mod.
+In the meantime, you are free to fork, fix, and reupload QuotaOverhaul.
 
 # Features
 
