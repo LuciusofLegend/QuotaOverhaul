@@ -6,20 +6,17 @@ using HarmonyLib;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace QuotaOverhaul
+namespace QuotaOverhaul.Patches
 {
     [HarmonyPatch(typeof(RoundManager), nameof(RoundManager.DespawnPropsAtEndOfRound))]
     public class DespawnPropsPatch
     {
-
-        [HarmonyPrefix]
-        public static bool SkipOriginalDespawnProps()
+        public static bool Prefix()
         {
             return false;
         }
-
-        [HarmonyPostfix]
-        public static void CustomDespawnProps(bool despawnAllItems = false)
+        
+        public static void Postfix(bool despawnAllItems = false)
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
 
@@ -47,9 +44,9 @@ namespace QuotaOverhaul
                 }
             }
 
-            System.Random RNG = new System.Random(StartOfRound.Instance.randomMapSeed + 369);
+            System.Random rng = new System.Random(StartOfRound.Instance.randomMapSeed + 369);
             List<GrabbableObject> items = UnityEngine.Object.FindObjectsOfType<GrabbableObject>().ToList();
-            List<GrabbableObject> itemsInside = new List<GrabbableObject>();
+            List<GrabbableObject> itemsInside = [];
 
             if (despawnAllItems)
             {
@@ -78,47 +75,46 @@ namespace QuotaOverhaul
 
             if (!StartOfRound.Instance.allPlayersDead) return;
 
-            ILookup<bool, GrabbableObject> itemIsScrapLookup = itemsInside.ToLookup((GrabbableObject item) => item.itemProperties.isScrap);
+            ILookup<bool, GrabbableObject> itemIsScrapLookup = itemsInside.ToLookup(item => item.itemProperties.isScrap);
             List<GrabbableObject> itemsScrap = itemIsScrapLookup[true].ToList();
             List<GrabbableObject> itemsEquipment = itemIsScrapLookup[false].ToList();
             List<string> lostItems = [];
 
-            bool itemsAreSafe = false;
-            if (RNG.NextDouble() < Config.itemsSafeChance.Value / 100) itemsAreSafe = true;
+            bool itemsAreSafe = rng.NextDouble() < Config.ItemsSafeChance.Value / 100;
 
-            if (!Config.scrapLossEnabled.Value)
+            if (!Config.ScrapLossEnabled.Value)
             {
                 Plugin.Log.LogInfo("Scrap loss is disabled");
             }
             else if (!itemsAreSafe)
             {
-                itemsScrap.RemoveAll((GrabbableObject item) => !item.IsSpawned);
-                int totalScrapValue = itemsScrap.Sum((GrabbableObject scrap) => scrap.scrapValue);
+                itemsScrap.RemoveAll(item => !item.IsSpawned);
+                int totalScrapValue = itemsScrap.Sum(scrap => scrap.scrapValue);
                 int scrapLost = 0;
                 int scrapValueLost = 0;
 
-                if (Config.valueLossEnabled.Value)
+                if (Config.ValueLossEnabled.Value)
                 {
-                    itemsScrap = itemsScrap.OrderByDescending((GrabbableObject scrap) => scrap.scrapValue).ToList();
-                    int valueToLose = (int)(totalScrapValue * Config.valueLossPercent.Value / 100);
+                    itemsScrap = itemsScrap.OrderByDescending(scrap => scrap.scrapValue).ToList();
+                    int valueToLose = (int)(totalScrapValue * Config.ValueLossPercent.Value / 100);
                     foreach (GrabbableObject scrap in itemsScrap)
                     {
-                        if (scrapValueLost >= valueToLose || scrapLost >= Config.maxLostScrapItems.Value) break;
+                        if (scrapValueLost >= valueToLose || scrapLost >= Config.MaxLostScrapItems.Value) break;
                         scrapValueLost += scrap.scrapValue;
                         scrapLost++;
                         lostItems.Add(scrap.itemProperties?.itemName ?? scrap.name);
                         DespawnItem(scrap);
                         Plugin.Log.LogInfo($"Lost {scrap.name} worth {scrap.scrapValue}");
                     }
-                    itemsScrap.RemoveAll((GrabbableObject item) => !item.IsSpawned);
+                    itemsScrap.RemoveAll(item => !item.IsSpawned);
                     Plugin.Log.LogInfo($"Value Loss: {scrapValueLost}$ of scrap lost");
                 }
 
                 foreach (GrabbableObject scrap in itemsScrap)
                 {
-                    if (RNG.NextDouble() < Config.loseEachScrapChance.Value / 100)
+                    if (rng.NextDouble() < Config.LoseEachScrapChance.Value / 100)
                     {
-                        if (scrapLost >= Config.maxLostScrapItems.Value) break;
+                        if (scrapLost >= Config.MaxLostScrapItems.Value) break;
                         scrapValueLost += scrap.scrapValue;
                         scrapLost++;
                         lostItems.Add(scrap.itemProperties?.itemName ?? scrap.name);
@@ -130,20 +126,20 @@ namespace QuotaOverhaul
                 Plugin.Log.LogInfo($"Lost {scrapLost} scrap items worth {scrapValueLost}");
             }
 
-            if (!Config.equipmentLossEnabled.Value)
+            if (!Config.EquipmentLossEnabled.Value)
             {
                 Plugin.Log.LogInfo("Equipment loss is disabled");
             }
             else if (!itemsAreSafe)
             {
-                itemsEquipment.RemoveAll((GrabbableObject item) => !item.IsSpawned);
+                itemsEquipment.RemoveAll(item => !item.IsSpawned);
                 int equipmentLost = 0;
                 foreach (GrabbableObject equipment in itemsEquipment)
                 {
-                    if (RNG.NextDouble() < Config.loseEachEquipmentChance.Value / 100)
+                    if (rng.NextDouble() < Config.LoseEachEquipmentChance.Value / 100)
                     {
                         equipmentLost++;
-                        if (equipmentLost > Config.maxLostEquipmentItems.Value) break;
+                        if (equipmentLost > Config.MaxLostEquipmentItems.Value) break;
                         lostItems.Add(equipment.itemProperties?.itemName ?? equipment.name);
                         DespawnItem(equipment);
                         Plugin.Log.LogInfo($"Lost {equipment.name}");
@@ -152,16 +148,15 @@ namespace QuotaOverhaul
                 Plugin.Log.LogInfo($"Lost {equipmentLost} equipment items");
             }
 
-            if (lostItems.Count() > 0)
+            if (lostItems.Any())
             {
                 string msg = $"Lost items ({lostItems.Count()}/{itemsInside.Count()}): ";
                 msg += string.Join("; ", lostItems.GroupBy(s => s).Select(s => new { name = s.Key, count = s.Count() }).Select(item => item.count > 1 ? $"{item.name} x{item.count}" : item.name));
                 HUDManager.Instance.StartCoroutine(DisplayAlert(bodyAlertText: "", messageText: msg));
             }
-;
         }
 
-        public static void DespawnVehicle(VehicleController vehicle)
+        private static void DespawnVehicle(VehicleController vehicle)
         {
             try
             {
@@ -184,7 +179,7 @@ namespace QuotaOverhaul
             }
         }
 
-        public static void DespawnItem(GrabbableObject item)
+        private static void DespawnItem(GrabbableObject item)
         {
             if (item.isHeld && item.playerHeldBy != null)
             {
@@ -207,7 +202,7 @@ namespace QuotaOverhaul
             }
         }
 
-        public static IEnumerator DisplayAlert(string headerAlertText = "Quota Overhaul", string bodyAlertText = "", string messageText = "")
+        private static IEnumerator DisplayAlert(string headerAlertText = "Quota Overhaul", string bodyAlertText = "", string messageText = "")
         {
             int index = 0;
             while (index < 20)

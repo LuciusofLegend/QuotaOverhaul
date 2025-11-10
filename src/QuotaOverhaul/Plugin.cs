@@ -1,30 +1,32 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
-using QuotaOverhaul;
 
+namespace QuotaOverhaul;
 
-[BepInPlugin(PLUGIN_GUID, PLUGIN_NAME, PLUGIN_VERSION)]
+[BepInPlugin(PluginGuid, PluginName, PluginVersion)]
 [BepInDependency("LethalNetworkAPI", "3.0.0")]
 [BepInDependency("com.sigurd.csync", "5.0.0")]
 public class Plugin : BaseUnityPlugin
 {
-    public const string PLUGIN_GUID = LCMPluginInfo.PLUGIN_GUID;
-    public const string PLUGIN_NAME = LCMPluginInfo.PLUGIN_NAME;
-    public const string PLUGIN_VERSION = LCMPluginInfo.PLUGIN_VERSION; 
+    public const string PluginGuid = LCMPluginInfo.PLUGIN_GUID;
+    public const string PluginName = LCMPluginInfo.PLUGIN_NAME;
+    public const string PluginVersion = LCMPluginInfo.PLUGIN_VERSION; 
 
-    public static Plugin instance;
-    public static Harmony harmony;
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+    public static Plugin Instance;
+    public static Harmony Harmony;
     public static ManualLogSource Log;
-    internal static new Config config;
+    internal static Config config;
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
     private void Awake()
     {
-        instance = this;
-        harmony = new Harmony(PLUGIN_GUID);
-        Log = BepInEx.Logging.Logger.CreateLogSource(PLUGIN_NAME);
+        Instance = this;
+        Harmony = new Harmony(PluginGuid);
+        Log = BepInEx.Logging.Logger.CreateLogSource(PluginName);
         config = new Config(Config);
-        harmony.PatchAll();
-        Log.LogInfo($"{PLUGIN_NAME} v{PLUGIN_VERSION} is loaded!");
+        Harmony.PatchAll();
+        Log.LogInfo($"{PluginName} v{PluginVersion} is loaded!");
     }
 }

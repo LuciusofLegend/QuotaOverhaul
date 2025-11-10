@@ -1,6 +1,6 @@
 using HarmonyLib;
 
-namespace QuotaOverhaul
+namespace QuotaOverhaul.Patches
 {
     [HarmonyPatch(typeof(StartOfRound), nameof(StartOfRound.ResetShip))]
     public class ResetShipPatch
@@ -12,23 +12,13 @@ namespace QuotaOverhaul
         }
     }
 
-    [HarmonyPatch(typeof(StartOfRound), nameof(StartOfRound.SetTimeAndPlanetToSavedSettings))]
-    public class LoadDataPatch
-    {
-        public static void Postfix()
-        {
-            if (!GameNetworkManager.Instance.isHostingGame) return;
-            QuotaOverhaul.LoadData();
-        }
-    }
-
     [HarmonyPatch(typeof(StartOfRound), nameof(StartOfRound.OnClientConnect))]
     public class OnPlayerConnectPatch
     {
         public static void Postfix()
         {
-            QuotaOverhaul.OnPlayerCountChanged();
             Plugin.Log.LogInfo("Player joined");
+            QuotaOverhaul.OnPlayerCountChanged();
         }
     }
 
@@ -37,8 +27,8 @@ namespace QuotaOverhaul
     {
         public static void Postfix()
         {
+            Plugin.Log.LogInfo("Player disconnected");
             QuotaOverhaul.OnPlayerCountChanged();
-            Plugin.Log.LogInfo("Player joined");
         }
     }
 
@@ -48,7 +38,7 @@ namespace QuotaOverhaul
         public static void Postfix()
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
-            QuotaOverhaul.quotaInProgress = true;
+            QuotaOverhaul.QuotaInProgress = true;
         }
     }
 }

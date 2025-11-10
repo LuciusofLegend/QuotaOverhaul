@@ -1,6 +1,6 @@
 using HarmonyLib;
 
-namespace QuotaOverhaul{
+namespace QuotaOverhaul.Patches{
     [HarmonyPatch(typeof(GameNetworkManager), nameof(GameNetworkManager.SaveGame))]
     public class SaveGamePatch
     {

@@ -1,6 +1,6 @@
 using HarmonyLib;
 
-namespace QuotaOverhaul
+namespace QuotaOverhaul.Patches
 {
 
     [HarmonyPatch(typeof(TimeOfDay), nameof(TimeOfDay.Awake))]
@@ -9,7 +9,7 @@ namespace QuotaOverhaul
         public static void Postfix()
         {
             QuotaOverhaul.OnNewSession();
-        }   
+        }
     }
 
     [HarmonyPatch(typeof(TimeOfDay), nameof(TimeOfDay.SetNewProfitQuota))]
@@ -20,7 +20,7 @@ namespace QuotaOverhaul
             if (!GameNetworkManager.Instance.isHostingGame) return false;
             if (!CanFinishQuota()) return false;
             Plugin.Log.LogInfo("Calculating New Profit Quota...");
-            TimeOfDay.Instance.profitQuota = QuotaOverhaul.baseProfitQuota;
+            TimeOfDay.Instance.profitQuota = QuotaOverhaul.BaseProfitQuota;
             return true;
         }
 
@@ -28,17 +28,17 @@ namespace QuotaOverhaul
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
             if (!CanFinishQuota()) return;
-            QuotaOverhaul.baseProfitQuota = TimeOfDay.Instance.profitQuota;
+            QuotaOverhaul.BaseProfitQuota = TimeOfDay.Instance.profitQuota;
             QuotaOverhaul.OnNewQuota();
         }
 
-        public static bool CanFinishQuota()
+        private static bool CanFinishQuota()
         {
             int daysSinceQuotaStart = TimeOfDay.Instance.quotaVariables.deadlineDaysAmount - TimeOfDay.Instance.daysUntilDeadline;
-            int quotaEarlyFinishLine = Config.quotaEarlyFinishLine;
+            int quotaEarlyFinishLine = Config.QuotaEarlyFinishLine;
             if (quotaEarlyFinishLine < 0) quotaEarlyFinishLine = TimeOfDay.Instance.quotaVariables.deadlineDaysAmount;
             if (daysSinceQuotaStart < quotaEarlyFinishLine) return false;
-            else return true;
+            return true;
         }
     }
 }

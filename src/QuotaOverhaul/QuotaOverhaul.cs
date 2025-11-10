@@ -5,14 +5,14 @@ namespace QuotaOverhaul
 {
     public class QuotaOverhaul
     {
-        public static int baseProfitQuota = 0;
-        public static double quotaPenaltyMultiplier = 1;
-        public static double quotaPlayerMultiplier = 1;
-        public static int recordPlayersThisQuota = 1;
-        public static int recordPlayersThisMoon = 1;
-        public static bool quotaInProgress = false;
+        public static int BaseProfitQuota;
+        public static double QuotaPenaltyMultiplier = 1;
+        public static double QuotaPlayerMultiplier = 1;
+        public static int RecordPlayersThisQuota = 1;
+        public static int RecordPlayersThisMoon = 1;
+        public static bool QuotaInProgress;
 
-        public static LNetworkVariable<int> profitQuota = LNetworkVariable<int>.Connect(nameof(profitQuota), onValueChanged: SyncProfitQuota);
+        public static readonly LNetworkVariable<int> ProfitQuota = LNetworkVariable<int>.Connect(nameof(ProfitQuota), onValueChanged: SyncProfitQuota);
 
         static void SyncProfitQuota(int oldValue, int newValue)
         {
@@ -22,88 +22,73 @@ namespace QuotaOverhaul
 
         public static int CalculateProfitQuota(bool usePlayerCountMultiplier = true, bool usePenaltyMultiplier = true)
         {
-            int result = baseProfitQuota;
-            if (Config.quotaEnablePlayerMultiplier && usePlayerCountMultiplier) result = (int)(result * quotaPlayerMultiplier);
-            if (Config.quotaPenaltiesEnabled && usePenaltyMultiplier) result = (int)(result * quotaPenaltyMultiplier);
+            int result = BaseProfitQuota;
+            if (Config.QuotaEnablePlayerMultiplier.Value && usePlayerCountMultiplier) result = (int)(result * QuotaPlayerMultiplier);
+            Plugin.Log.LogInfo($"QuotaPlayerMultiplier: ${QuotaPlayerMultiplier}");
+            if (Config.QuotaPenaltiesEnabled.Value && usePenaltyMultiplier) result = (int)(result * QuotaPenaltyMultiplier);
+            Plugin.Log.LogInfo($"QuotaPenaltyModifier: ${QuotaPenaltyMultiplier}");
             return result;
         }
 
-        public static void UpdatePlayerCountMultiplier()
+        private static void UpdatePlayerCountMultiplier()
         {
-            if (!Config.quotaEnablePlayerMultiplier.Value)
-            {
-                return;
-            }
-            quotaPlayerMultiplier = CalculatePlayerCountMultiplier();
-            profitQuota.Value = CalculateProfitQuota();
-
-            Plugin.Log.LogInfo($"Player Count Multiplier: {quotaPlayerMultiplier}");
+            if (!Config.QuotaEnablePlayerMultiplier.Value) return;
+            
+            QuotaPlayerMultiplier = CalculatePlayerCountMultiplier();
+            ProfitQuota.Value = CalculateProfitQuota();
         }
         
-        public static double CalculatePlayerCountMultiplier()
+        private static double CalculatePlayerCountMultiplier()
         {
-            int playersCounted = math.clamp(recordPlayersThisQuota, Config.quotaPlayerThreshold.Value, Config.quotaPlayerCap.Value);
-            playersCounted -= Config.quotaPlayerThreshold.Value;
-            return Config.quotaMultPerPlayer.Value * math.max(playersCounted, 0);
+            int playersCounted = math.clamp(RecordPlayersThisQuota, Config.QuotaPlayerThreshold.Value, Config.QuotaPlayerCap.Value);
+            playersCounted -= Config.QuotaPlayerThreshold.Value;
+            return 1 + Config.QuotaMultiplierPerPlayer.Value * math.max(playersCounted, 0);
         }
 
         public static void OnNewSession()
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
 
-            QuotaSettings quotaVariables = TimeOfDay.Instance.quotaVariables;
-
-            quotaVariables.startingQuota = Config.startingQuota.Value;
-            quotaVariables.baseIncrease = Config.quotaBaseIncrease.Value;
-            quotaVariables.increaseSteepness = Config.quotaIncreaseSteepness.Value;
-            quotaVariables.randomizerMultiplier = Config.quotaRandomizerMultiplier.Value;
-            quotaVariables.startingCredits = Config.startingCredits;
-            quotaVariables.deadlineDaysAmount = Config.quotaDeadline;
-
-            TimeOfDay.Instance.quotaVariables = quotaVariables;
-            Plugin.Log.LogInfo("Quota Variables Configured");
-
-            OnNewRun();
+            TimeOfDay.Instance.quotaVariables.startingQuota = Config.StartingQuota.Value;
+            TimeOfDay.Instance.quotaVariables.baseIncrease = Config.QuotaBaseIncrease.Value;
+            TimeOfDay.Instance.quotaVariables.increaseSteepness = Config.QuotaIncreaseSteepness.Value;
+            TimeOfDay.Instance.quotaVariables.randomizerMultiplier = Config.QuotaRandomizerMultiplier.Value;
+            TimeOfDay.Instance.quotaVariables.startingCredits = Config.StartingCredits.Value;
+            TimeOfDay.Instance.quotaVariables.deadlineDaysAmount = Config.QuotaDeadline.Value;
+            LoadData();
         }
 
         public static void OnNewRun()
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
-            baseProfitQuota = TimeOfDay.Instance.quotaVariables.startingQuota;
+            BaseProfitQuota = TimeOfDay.Instance.quotaVariables.startingQuota;
             OnNewQuota();
         }
 
         public static void OnNewQuota()
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
-            quotaInProgress = false;
-            quotaPenaltyMultiplier = 1;
-            recordPlayersThisQuota = StartOfRound.Instance.connectedPlayersAmount;
-            profitQuota.Value = CalculateProfitQuota();
+            QuotaInProgress = false;
+            QuotaPenaltyMultiplier = 1;
+            RecordPlayersThisQuota = StartOfRound.Instance.connectedPlayersAmount;
+            ProfitQuota.Value = CalculateProfitQuota();
         }
 
         public static void OnPlayerCountChanged()
         {
-            int playerCount = StartOfRound.Instance.connectedPlayersAmount + 1;
-            if (!StartOfRound.Instance.shipHasLanded)
+            if (!GameNetworkManager.Instance.isHostingGame) return;
+            
+            var playerCount = StartOfRound.Instance.connectedPlayersAmount + 1;
+            Plugin.Log.LogInfo("Player count: " + playerCount);
+            if (!StartOfRound.Instance.shipHasLanded || playerCount > RecordPlayersThisMoon)
             {
-                recordPlayersThisMoon = playerCount;
+                RecordPlayersThisMoon = playerCount;
             }
-            else if (playerCount > recordPlayersThisMoon)
+            if (!QuotaInProgress || playerCount > RecordPlayersThisQuota)
             {
-                recordPlayersThisMoon = playerCount;
-                Plugin.Log.LogInfo($"Record Players this Moon: {recordPlayersThisMoon}");
+                RecordPlayersThisQuota = playerCount;
             }
-            if (!quotaInProgress)
-            {
-                recordPlayersThisQuota = playerCount;
-            }
-            else if (playerCount > recordPlayersThisQuota)
-            {
-                recordPlayersThisQuota = playerCount;
-                UpdatePlayerCountMultiplier();
-                Plugin.Log.LogInfo($"Record Players this Quota: {recordPlayersThisQuota}");
-            }
+            UpdatePlayerCountMultiplier();
         }
 
         public static void LoadData()
@@ -111,10 +96,11 @@ namespace QuotaOverhaul
             if (!GameNetworkManager.Instance.isHostingGame) return;
 
             string saveFile = GameNetworkManager.Instance.currentSaveFileName;
-            if (ES3.KeyExists(nameof(baseProfitQuota), saveFile)) baseProfitQuota = ES3.Load<int>(nameof(baseProfitQuota), saveFile);
-            if (ES3.KeyExists(nameof(quotaPenaltyMultiplier), saveFile)) quotaPenaltyMultiplier = ES3.Load<double>(nameof(quotaPenaltyMultiplier), saveFile);
-            if (ES3.KeyExists(nameof(recordPlayersThisQuota), saveFile)) recordPlayersThisQuota =  ES3.Load<int>(nameof(recordPlayersThisQuota), saveFile);
-            if (ES3.KeyExists(nameof(quotaInProgress), saveFile)) quotaInProgress = ES3.Load<bool>(nameof(quotaInProgress), saveFile);
+            if (ES3.KeyExists(nameof(BaseProfitQuota), saveFile)) BaseProfitQuota = ES3.Load<int>(nameof(BaseProfitQuota), saveFile);
+            if (ES3.KeyExists(nameof(QuotaPenaltyMultiplier), saveFile)) QuotaPenaltyMultiplier = ES3.Load<double>(nameof(QuotaPenaltyMultiplier), saveFile);
+            if (ES3.KeyExists(nameof(RecordPlayersThisQuota), saveFile)) RecordPlayersThisQuota =  ES3.Load<int>(nameof(RecordPlayersThisQuota), saveFile);
+            if (ES3.KeyExists(nameof(QuotaInProgress), saveFile)) QuotaInProgress = ES3.Load<bool>(nameof(QuotaInProgress), saveFile);
+            if (TimeOfDay.Instance.timesFulfilledQuota == 0 && !QuotaInProgress) OnNewRun();
         }
 
         public static void SaveData()
@@ -122,10 +108,10 @@ namespace QuotaOverhaul
             if (!GameNetworkManager.Instance.isHostingGame) return;
             
             string saveFile = GameNetworkManager.Instance.currentSaveFileName;
-            ES3.Save<int>(nameof(baseProfitQuota), baseProfitQuota, saveFile);
-            ES3.Save<double>(nameof(quotaPenaltyMultiplier), quotaPenaltyMultiplier, saveFile);
-            ES3.Save<int>(nameof(recordPlayersThisQuota), recordPlayersThisQuota, saveFile);
-            ES3.Save<bool>(nameof(quotaInProgress), quotaInProgress, saveFile);
+            ES3.Save(nameof(BaseProfitQuota), BaseProfitQuota, saveFile);
+            ES3.Save(nameof(QuotaPenaltyMultiplier), QuotaPenaltyMultiplier, saveFile);
+            ES3.Save(nameof(RecordPlayersThisQuota), RecordPlayersThisQuota, saveFile);
+            ES3.Save(nameof(QuotaInProgress), QuotaInProgress, saveFile);
         }
     }
 }
