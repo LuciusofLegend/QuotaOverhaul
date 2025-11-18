@@ -47,7 +47,7 @@ namespace QuotaOverhaul.Patches
                 }
             }
             
-            string penaltyAdditionText = $"CASUALTIES: ${playersDead}\nBODIES RECOVERED: ${bodiesInsured} \n \nCREDITS: -{(int)(creditPenalty * 100)}% \n${oldCredits} -> ${terminal.groupCredits} \n \nQUOTA: +{(int)(quotaPenalty * 100)}% \n${oldQuota} -> ${TimeOfDay.Instance.profitQuota}";
+            string penaltyAdditionText = $"CASUALTIES: {playersDead}\nBODIES RECOVERED: {bodiesInsured} \n \nCREDITS: -{(int)(creditPenalty * 100)}% \n{oldCredits} -> {terminal.groupCredits} \n \nQUOTA: +{(int)(quotaPenalty * 100)}% \n{oldQuota} -> {TimeOfDay.Instance.profitQuota}";
             
             HUDManager.Instance.statsUIElements.penaltyAddition.text = penaltyAdditionText;
             HUDManager.Instance.statsUIElements.penaltyTotal.text = "";
@@ -102,7 +102,6 @@ namespace QuotaOverhaul.Patches
 
         private static double CalculateDynamicQuotaPenalty(int deadBodies, int recoveredBodies)
         {
-            Plugin.Log.LogInfo($"Calculating Dynamic Quota Penalty");
             double penaltyPerBody = 1d / QuotaOverhaul.RecordPlayersThisMoon * Config.QuotaPenaltyPercentCap.Value / 100d;
             double bonusPerRecoveredBody = penaltyPerBody * Config.QuotaPenaltyRecoveryBonus.Value / 100d;
             double penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;

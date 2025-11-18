@@ -1,4 +1,12 @@
-# QuotaOverhaul Changelog
+## 1.4.4
+
+- Did some more testing, fixed some minor oversights, but most things already worked as far as I can tell.
+- Added the Font Update mod as a dependency, to fix the weird looking + signs.
+
+## 1.4.3
+
+- Revisited the project after 6 months of inactivity (yay)
+- Got things to a point where they mostly work, but didn't thoroughly test for bugs.
 
 ## 1.4.0
 
@@ -26,12 +34,12 @@
 - Added an option to set the earliest day the quota is allowed to end
 - Added an icon by Endoxiom
 
-### 1.2.1
+## 1.2.1
 
 - Fixed the Quota Penalty always being zero when using Dynamic Mode
 - Added state saving
 
-### 1.2.0
+## 1.2.0
 
 - Fixed props not despawning when leaving a moon
 - Attempted a fix for quota penalty issues (untested)

@@ -24,9 +24,9 @@ namespace QuotaOverhaul
         {
             int result = BaseProfitQuota;
             if (Config.QuotaEnablePlayerMultiplier.Value && usePlayerCountMultiplier) result = (int)(result * QuotaPlayerMultiplier);
-            Plugin.Log.LogInfo($"QuotaPlayerMultiplier: ${QuotaPlayerMultiplier}");
+            Plugin.Log.LogInfo($"QuotaPlayerMultiplier: {QuotaPlayerMultiplier}");
             if (Config.QuotaPenaltiesEnabled.Value && usePenaltyMultiplier) result = (int)(result * QuotaPenaltyMultiplier);
-            Plugin.Log.LogInfo($"QuotaPenaltyModifier: ${QuotaPenaltyMultiplier}");
+            Plugin.Log.LogInfo($"QuotaPenaltyMultiplier: {QuotaPenaltyMultiplier}");
             return result;
         }
 
