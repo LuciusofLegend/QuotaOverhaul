@@ -1,16 +1,23 @@
-## Overview
-
-By default, Quota Overhaul is balanced for any player count
-
 ## Features
 
+You start with 300 credits instead of 60  
+The quota starts at 250  
+The second quota is 400  
+The quota will rack up slightly faster  
+There is no randomness applied to the quota  
+The quota scales sensibly for larger crews  
 
+You don't lose any credits for dead players  
+You don't lose any scrap on a team wipe  
+Instead the quota increases for each player that dies  
+Collecting bodies decreases the quota penalty
+
+**Everything in Quota Overhaul is configurable**  
+Install Lethal Config or use your mod manager and look through the configuration options  
+Each option has a description, so hopefully you can figure it out from that.  If not, feel free to DM me @LuciusofLegend on discord.
 
 ## Roadmap
 
-- Dynamic threat level based on player count
-- More loot at higher quota
-- Bigger dungeon to balance extra loot
 - Dynamic Scrap loss, similar to Credit and Quota Penalties
 
 ## Credits
