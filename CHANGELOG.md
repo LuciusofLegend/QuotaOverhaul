@@ -1,3 +1,8 @@
+## 1.4.5
+
+- Fixed a dependency issue that caused the mod to not launch at all
+- Updated the README and description
+
 ## 1.4.4
 
 - Did some more testing, fixed some minor oversights, but most things already worked as far as I can tell.
