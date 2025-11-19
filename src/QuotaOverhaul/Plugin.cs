@@ -7,7 +7,6 @@ namespace QuotaOverhaul;
 [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
 [BepInDependency("LethalNetworkAPI", "3.3.0")]
 [BepInDependency("com.sigurd.csync", "5.0.0")]
-[BepInDependency("FontUpdate", "0.8.0")]
 public class Plugin : BaseUnityPlugin
 {
     public const string PluginGuid = LCMPluginInfo.PLUGIN_GUID;
