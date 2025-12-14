@@ -148,7 +148,7 @@ namespace QuotaOverhaul.Patches
                 Plugin.Log.LogInfo($"Lost {equipmentLost} equipment items");
             }
 
-            if (lostItems.Any())
+            if (lostItems.Any() && Config.EnableLostItemsAlert.Value)
             {
                 string msg = $"Lost items ({lostItems.Count()}/{itemsInside.Count()}): ";
                 msg += string.Join("; ", lostItems.GroupBy(s => s).Select(s => new { name = s.Key, count = s.Count() }).Select(item => item.count > 1 ? $"{item.name} x{item.count}" : item.name));

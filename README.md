@@ -12,7 +12,7 @@ You don't lose any scrap on a team wipe
 Instead the quota increases for each player that dies  
 Collecting bodies decreases the quota penalty
 
-**Everything in Quota Overhaul is configurable**  
+### Everything in Quota Overhaul is configurable  
 Install Lethal Config or use your mod manager and look through the configuration options  
 Each option has a description, so hopefully you can figure it out from that.  If not, feel free to DM me @LuciusofLegend on discord.
 

@@ -47,6 +47,8 @@ public class Config : SyncedConfig2<Config>
     [SyncedEntryField] public static SyncedEntry<float> LoseEachEquipmentChance;
     [SyncedEntryField] public static SyncedEntry<int> MaxLostEquipmentItems;
 
+    [SyncedEntryField] public static SyncedEntry<bool> EnableLostItemsAlert;
+
     public Config(ConfigFile config) : base(Plugin.PluginGuid)
     {
         StartingCredits = config.BindSyncedEntry("Quota Settings", "Starting Credits", 300, "How much cash you want? \nVanilla: 60");
@@ -87,6 +89,8 @@ public class Config : SyncedConfig2<Config>
         EquipmentLossEnabled = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Enabled", false, "Allow equipment to be lost. \nVanilla: false.");
         LoseEachEquipmentChance = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Chance", 10f, "A chance of each equipment item being lost. \nApplied after SaveAllChance. \nValues between 0-100 \nVanilla: 0");
         MaxLostEquipmentItems = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Max", int.MaxValue, "The maximum amount of equipment that can be lost.\nApplied after EquipmentLossChance.");
+
+        EnableLostItemsAlert = config.BindSyncedEntry("Scrap Loss", "Lost Items Alert", false, "If enabled, sends a little alert listing the items that were lost.  For debugging or just if you like it.");
 
         ConfigManager.Register(this);
     }
