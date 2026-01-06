@@ -13,12 +13,13 @@ namespace QuotaOverhaul.Patches
     {
         public static bool Prefix()
         {
-            return false;
+            return !Config.VanillaScrapLoss;
         }
-        
+
         public static void Postfix(bool despawnAllItems = false)
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
+            if (Config.VanillaScrapLoss) return;
 
             VehicleController[] vehicles = UnityEngine.Object.FindObjectsOfType<VehicleController>();
             foreach (VehicleController vehicle in vehicles)
@@ -82,11 +83,7 @@ namespace QuotaOverhaul.Patches
 
             bool itemsAreSafe = rng.NextDouble() < Config.ItemsSafeChance.Value / 100;
 
-            if (!Config.ScrapLossEnabled.Value)
-            {
-                Plugin.Log.LogInfo("Scrap loss is disabled");
-            }
-            else if (!itemsAreSafe)
+            if (!itemsAreSafe)
             {
                 itemsScrap.RemoveAll(item => !item.IsSpawned);
                 int totalScrapValue = itemsScrap.Sum(scrap => scrap.scrapValue);
@@ -148,7 +145,7 @@ namespace QuotaOverhaul.Patches
                 Plugin.Log.LogInfo($"Lost {equipmentLost} equipment items");
             }
 
-            if (lostItems.Any())
+            if (lostItems.Any() && Config.EnableLostItemsAlert.Value)
             {
                 string msg = $"Lost items ({lostItems.Count()}/{itemsInside.Count()}): ";
                 msg += string.Join("; ", lostItems.GroupBy(s => s).Select(s => new { name = s.Key, count = s.Count() }).Select(item => item.count > 1 ? $"{item.name} x{item.count}" : item.name));

@@ -35,9 +35,8 @@ namespace QuotaOverhaul.Patches
         private static bool CanFinishQuota()
         {
             int daysSinceQuotaStart = TimeOfDay.Instance.quotaVariables.deadlineDaysAmount - TimeOfDay.Instance.daysUntilDeadline;
-            int quotaEarlyFinishLine = Config.QuotaEarlyFinishLine;
-            if (quotaEarlyFinishLine < 0) quotaEarlyFinishLine = TimeOfDay.Instance.quotaVariables.deadlineDaysAmount;
-            if (daysSinceQuotaStart < quotaEarlyFinishLine) return false;
+            if (Config.QuotaEarlyFinishLine < 0 && TimeOfDay.Instance.daysUntilDeadline > 0) return false;
+            if (daysSinceQuotaStart < Config.QuotaEarlyFinishLine) return false;
             return true;
         }
     }

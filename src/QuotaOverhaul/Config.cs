@@ -35,10 +35,11 @@ public class Config : SyncedConfig2<Config>
     [SyncedEntryField] public static SyncedEntry<float> QuotaPenaltyPercentThreshold;
     [SyncedEntryField] public static SyncedEntry<float> QuotaPenaltyRecoveryBonus;
 
-    [SyncedEntryField] public static SyncedEntry<bool> ScrapLossEnabled;
+    [SyncedEntryField] public static SyncedEntry<bool> VanillaScrapLoss;
     [SyncedEntryField] public static SyncedEntry<float> ItemsSafeChance;
     [SyncedEntryField] public static SyncedEntry<float> LoseEachScrapChance;
     [SyncedEntryField] public static SyncedEntry<int> MaxLostScrapItems;
+    [SyncedEntryField] public static SyncedEntry<bool> EnableLostItemsAlert;
 
     [SyncedEntryField] public static SyncedEntry<bool> ValueLossEnabled;
     [SyncedEntryField] public static SyncedEntry<float> ValueLossPercent;
@@ -54,7 +55,7 @@ public class Config : SyncedConfig2<Config>
         QuotaBaseIncrease = config.BindSyncedEntry("Quota Settings", "Quota Base Increase", 150, "The minimum quota increase. \nVanilla: 200");
         QuotaIncreaseSteepness = config.BindSyncedEntry("Quota Settings", "Quota Increase Steepness", 4f, "The quota increases exponentially, and this controls the steepness of the curve.  Bigger number means higher quotas. \nVanilla: 4");
         QuotaRandomizerMultiplier = config.BindSyncedEntry("Quota Settings", "Quota Randomness Multiplier", 0f, "There is a bit of random variation each time the quota increases.  This number controls how much. \nVanilla: 1");
-        QuotaDeadline = config.BindSyncedEntry("Quota Settings", "Quota Deadline", 3, "The number of days you are given to complete each quota.  \nVanilla: 3");
+        QuotaDeadline = config.BindSyncedEntry("Quota Settings", "Quota Deadline", 3, "The number of days you are given to complete each quota. \nVanilla: 3");
         QuotaEarlyFinishLine = config.BindSyncedEntry("Quota Settings", "Days Before Early Finish", 0, "The minimum number of days that need to pass before you are allowed to finish the quota.  Values lower than 0 mean that you're not allowed to finish early. \nVanilla: 0");
         QuotaEnablePlayerMultiplier = config.BindSyncedEntry("Quota Settings", "Enable Player Count Multiplier", true, "When enabled, the quota scales based on the number of players. \nVanilla: false");
         QuotaMultiplierPerPlayer = config.BindSyncedEntry("Quota Settings", "Multiplier Per Player", 0.25f, "The multiplier for each player.  Only applies to player counts above the threshold, and below the cap.  The formula is basically Quota * (1 + MultiplierPerPlayer * PlayerCount (adjusted based on the cap and threshold))");
@@ -77,16 +78,17 @@ public class Config : SyncedConfig2<Config>
         QuotaPenaltyPercentThreshold = config.BindSyncedEntry("Quota Penalties", "Penalty Percent Threshold", 25f, "If the penalty falls below this threshold, the penalty is set to 0. Increasing this value makes minor slip-ups more forgiving.  This applies to both the static and dynamic algorithms. \nValues between 0-100");
         QuotaPenaltyRecoveryBonus = config.BindSyncedEntry("Quota Penalties", "Body Recovery Bonus", 50f, "How much of the penalty to forgive for recovering bodies.  Applies to both normal and dynamic modes.  For example:  Assuming a fully default coniguration, except without Dynamic Penalties, if you die, the penalty for your body is 12%.  If your body is recovered, 50% of the penalty is forgiven, leaving a 6% penalty. \nValues between 0-100");
 
-        ScrapLossEnabled = config.BindSyncedEntry("Scrap Loss", "Scrap Loss Enabled", false, "If enabled, you will lose scrap when all players die.  (Dynamic scrap loss planned). \nVanilla: true");
+        VanillaScrapLoss = config.BindSyncedEntry("Scrap Loss", "Vanilla Scrap Loss", false, "If enabled, scrap loss will work just like vanilla, or it can be handled by another mod. \nVanilla: true");
         ItemsSafeChance = config.BindSyncedEntry("Scrap Loss", "Safe Chance", 25f, "A percent chance of all scrap and equipment being safe. When your items are 'safe', it overrides all other settings, and you keep everything. \nValues between 0-100 \nVanilla: 0");
-        ValueLossEnabled = config.BindSyncedEntry("Scrap Loss", "Value Loss Enabled", false, "Lose a percent of total scrap value. \nVanilla: false.");
+        ValueLossEnabled = config.BindSyncedEntry("Scrap Loss", "Value Loss Enabled", true, "If enabled, you lose a percentage of the total scrap value on board on a crew wipe. \nVanilla: false.");
         ValueLossPercent = config.BindSyncedEntry("Scrap Loss", "Value Loss Percent", 100f, "The percentage of total scrap value to lose. \nValues between 0-100");
         LoseEachScrapChance = config.BindSyncedEntry("Scrap Loss", "Lose Each Chance", 50f, "A percent chance of each item being lost. \nValues between 0-100 \nVanilla: 0");
         MaxLostScrapItems = config.BindSyncedEntry("Scrap Loss", "Scrap Loss Max", int.MaxValue, "The maximum number of scrap items that can be lost.");
+        EnableLostItemsAlert = config.BindSyncedEntry("Scrap Loss", "Lost Items Alert", false, "If enabled, sends a little alert listing the items that were lost.  For debugging or just if you like it.");
 
         EquipmentLossEnabled = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Enabled", false, "Allow equipment to be lost. \nVanilla: false.");
         LoseEachEquipmentChance = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Chance", 10f, "A chance of each equipment item being lost. \nApplied after SaveAllChance. \nValues between 0-100 \nVanilla: 0");
-        MaxLostEquipmentItems = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Max", int.MaxValue, "The maximum amount of equipment that can be lost.\nApplied after EquipmentLossChance.");
+        MaxLostEquipmentItems = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Max", int.MaxValue, "The maximum amount of equipment that can be lost. \nApplied after EquipmentLossChance.");
 
         ConfigManager.Register(this);
     }
