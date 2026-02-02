@@ -2,54 +2,23 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-
     <AssemblyName>luciusoflegend.lethalcompany.quotaoverhaul</AssemblyName>
     <Authors>LuciusofLegend</Authors>
-    <Description>Making the quota system more fun, rewarding, and configurable</Description>
+    <Description>New quota system that scales based on player count, and gives you control over the consequences of death.</Description>
     <Product>QuotaOverhaul</Product>
-    <Version>1.4.0</Version>
-
-    <!-- 
-      You shouldn't have to change these, but you could if you wanted to.
-    -->
+    <Version>1.4.6</Version>
     <ProjectDepsFileName>$(Product).deps.json</ProjectDepsFileName>
     <RootNamespace>$(Product)</RootNamespace>
     <TargetName>$(Product)</TargetName>
   </PropertyGroup>
 
-  <!--
-    Don't mess with anything below this line, it is required to build via 
-    github actions. If you are referencing other DLLs in your project than the
-    base game or unity DLLs they will need to be available via NUGET or copied
-    directly into your repo (which is pretty bad form) to build properly unless
-    they already exist on github in which case you can use submodules to track
-    the reference instead.
-  -->
-
   <ItemGroup>
-    <PackageReference
-      Include="BepInEx.Analyzers"
-      PrivateAssets="all"
-      Version="1.*"
-    />
-    <PackageReference
-      Include="BepInEx.Core"
-      Version="5.4.*"
-    />
-    <PackageReference
-        Include="LethalCompany.GameLibs.Steam"
-        Version="67.0.0-ngd.0"
-    />
-    <PackageReference
-        Include="Xilophor.LethalNetworkAPI"
-        Version="3.*"
-        PrivateAssets="all"
-    />
-    <PackageReference
-        Include="Sigurd.BepInEx.Csync"
-        Version="5.*"
-        PrivateAssets="all"
-    />
+    <PackageReference Include="BepInEx.Analyzers" PrivateAssets="all" Version="1.*"/>
+    <PackageReference Include="BepInEx.Core" Version="5.4.*"/>
+    <PackageReference Include="LethalCompany.GameLibs.Steam" Version="73.0.0-ngd.0"/>
+    <PackageReference Include="Xilophor.LethalNetworkAPI" Version="3.*" PrivateAssets="all"/>
+    <PackageReference Include="Sigurd.BepInEx.Csync" Version="5.*" PrivateAssets="all"/>
+    <PackageReference Include="TeamBMX.LobbyCompatibility" Version="1.*" PrivateAssets="all"/>
 
     <!--
       When adding additional references, ensure you use <Private>false</Private> to

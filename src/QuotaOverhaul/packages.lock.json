@@ -20,9 +20,9 @@
       },
       "LethalCompany.GameLibs.Steam": {
         "type": "Direct",
-        "requested": "[67.0.0-ngd.0, )",
-        "resolved": "67.0.0-ngd.0",
-        "contentHash": "aalLgTolq6NNlSmnYrgboma+/Y4tMBVIDibtKeV3R1XX1aM8yeayWjjx4lYRkmfpeamtBkwxYh6ck/il4FrtHQ==",
+        "requested": "[73.0.0-ngd.0, )",
+        "resolved": "73.0.0-ngd.0",
+        "contentHash": "iaHCHoJTFiTnAyAYIrEbjCJOOuhcJ42+KJnEbmCmf4UdkhjSwwio2bcdPCbchodB9kEp+3v3ATgkBwYn56/Gdw==",
         "dependencies": {
           "Newtonsoft.JSON": "13.0.3",
           "UnityEngine.Modules": "2022.3.9"
@@ -38,6 +38,12 @@
           "LethalCompany.GameLibs.Steam": "49.0.0-alpha.1",
           "UnityEngine.Modules": "2022.3.9"
         }
+      },
+      "TeamBMX.LobbyCompatibility": {
+        "type": "Direct",
+        "requested": "[1.*, )",
+        "resolved": "1.5.1",
+        "contentHash": "U1taVjagI6Ma1v7EXLX9dJpJJGHBt8R2UIdOgPu/k87ZFc9qER19a4C1FPigM7qBdE6/pzXo8ovwuPrRRFb51g=="
       },
       "Xilophor.LethalNetworkAPI": {
         "type": "Direct",

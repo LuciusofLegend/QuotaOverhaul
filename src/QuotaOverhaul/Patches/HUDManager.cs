@@ -13,14 +13,14 @@ namespace QuotaOverhaul.Patches
         public static void Postfix(int playersDead, int bodiesInsured)
         {
             Terminal terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
-            
+
             int oldCredits = terminal.groupCredits;
             bool doCreditPenalty = Config.CreditPenaltiesEnabled.Value && (Config.CreditPenaltiesOnGordion.Value || StartOfRound.Instance.currentLevel.PlanetName != "71 Gordion");
             double creditPenalty = 0d;
-            
+
             if (doCreditPenalty)
             {
-                creditPenalty = Config.CreditPenaltiesDynamic.Value ? CalculateDynamicCreditPenalty(playersDead, bodiesInsured) : CalculateCreditPenalty(playersDead, bodiesInsured);
+                creditPenalty += Config.CreditPenaltiesDynamic.Value ? CalculateDynamicCreditPenalty(playersDead, bodiesInsured) : CalculateCreditPenalty(playersDead, bodiesInsured);
 
                 if (GameNetworkManager.Instance.isHostingGame)
                 {
@@ -35,10 +35,10 @@ namespace QuotaOverhaul.Patches
             int oldQuota = TimeOfDay.Instance.profitQuota;
             bool doQuotaPenalty = Config.QuotaPenaltiesEnabled.Value && (Config.QuotaPenaltiesOnGordion.Value || StartOfRound.Instance.currentLevel.PlanetName != "71 Gordion");
             double quotaPenalty = 0d;
-            
+
             if (doQuotaPenalty)
             {
-                quotaPenalty = Config.QuotaPenaltiesDynamic.Value ? CalculateDynamicQuotaPenalty(playersDead, bodiesInsured) : CalculateQuotaPenalty(playersDead, bodiesInsured);
+                quotaPenalty += Config.QuotaPenaltiesDynamic.Value ? CalculateDynamicQuotaPenalty(playersDead, bodiesInsured) : CalculateQuotaPenalty(playersDead, bodiesInsured);
 
                 if (GameNetworkManager.Instance.isHostingGame)
                 {
@@ -46,13 +46,13 @@ namespace QuotaOverhaul.Patches
                     QuotaOverhaul.ProfitQuota.Value = QuotaOverhaul.CalculateProfitQuota();
                 }
             }
-            
+
             string penaltyAdditionText = $"CASUALTIES: {playersDead}\nBODIES RECOVERED: {bodiesInsured} \n \nCREDITS: -{(int)(creditPenalty * 100)}% \n{oldCredits} -> {terminal.groupCredits} \n \nQUOTA: +{(int)(quotaPenalty * 100)}% \n{oldQuota} -> {TimeOfDay.Instance.profitQuota}";
-            
+
             HUDManager.Instance.statsUIElements.penaltyAddition.text = penaltyAdditionText;
             HUDManager.Instance.statsUIElements.penaltyTotal.text = "";
 
-            
+
         }
 
         private static double CalculateCreditPenalty(int deadBodies, int recoveredBodies)
