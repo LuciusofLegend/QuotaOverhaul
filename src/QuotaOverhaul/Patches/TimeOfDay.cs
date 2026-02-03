@@ -20,7 +20,7 @@ namespace QuotaOverhaul.Patches
             if (!GameNetworkManager.Instance.isHostingGame) return false;
             if (!CanFinishQuota()) return false;
             Plugin.Log.LogInfo("Calculating New Profit Quota...");
-            TimeOfDay.Instance.profitQuota = QuotaOverhaul.BaseProfitQuota;
+            TimeOfDay.Instance.profitQuota = QuotaOverhaul.GetBaseProfitQuota();
             return true;
         }
 
@@ -28,7 +28,7 @@ namespace QuotaOverhaul.Patches
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
             if (!CanFinishQuota()) return;
-            QuotaOverhaul.BaseProfitQuota = TimeOfDay.Instance.profitQuota;
+            QuotaOverhaul.SetBaseProfitQuota(TimeOfDay.Instance.profitQuota);
             QuotaOverhaul.OnNewQuota();
         }
 

@@ -3,42 +3,85 @@ using Unity.Mathematics;
 
 namespace QuotaOverhaul
 {
-    public class QuotaOverhaul
+    public static class QuotaOverhaul
     {
-        public static int BaseProfitQuota;
-        public static double QuotaPenaltyMultiplier = 1;
-        public static double QuotaPlayerMultiplier = 1;
-        public static int RecordPlayersThisQuota = 1;
-        public static int RecordPlayersThisMoon = 1;
-        public static bool QuotaInProgress;
+        public static readonly LNetworkVariable<int> SyncedProfitQuota = LNetworkVariable<int>.Connect(nameof(SyncedProfitQuota), onValueChanged: SyncProfitQuota);
 
-        public static readonly LNetworkVariable<int> ProfitQuota = LNetworkVariable<int>.Connect(nameof(ProfitQuota), onValueChanged: SyncProfitQuota);
-
-        static void SyncProfitQuota(int oldValue, int newValue)
+        public static void SyncProfitQuota(int oldValue, int newValue)
         {
             TimeOfDay.Instance.profitQuota = newValue;
-            Plugin.Log.LogInfo($"Synced Profit Quota: {newValue}");
+        }
+
+        private static int BaseProfitQuota;
+        private static double QuotaPenaltyMultiplier = 1;
+        private static double QuotaPlayerMultiplier = 1;
+        private static int RecordPlayersThisQuota = 1;
+        private static int RecordPlayersThisMoon = 1;
+        public static bool QuotaInProgress;
+
+        public static int GetBaseProfitQuota() {
+            return BaseProfitQuota;
+        }
+
+        public static void SetBaseProfitQuota(int value) {
+            if (!GameNetworkManager.Instance.isHostingGame) return;
+            BaseProfitQuota = value;
+            SyncedProfitQuota.Value = CalculateProfitQuota();
+        }
+
+        public static double GetQuotaPenaltyMultiplier() {
+            return QuotaPenaltyMultiplier;
+        }
+
+        public static void SetQuotaPenaltyMultiplier(double value) {
+            if (!GameNetworkManager.Instance.isHostingGame) return;
+            QuotaPenaltyMultiplier = value;
+            SyncedProfitQuota.Value = CalculateProfitQuota();
+        }
+
+        public static void AddQuotaPenaltyMultiplier(double value) {
+            SetQuotaPenaltyMultiplier(GetQuotaPenaltyMultiplier() + value);
+        }
+
+        public static double GetQuotaPlayerMultiplier() {
+            return QuotaPlayerMultiplier;
+        }
+
+        public static void SetQuotaPlayerMultiplier(double value) {
+            if (!GameNetworkManager.Instance.isHostingGame) return;
+            QuotaPlayerMultiplier = value;
+            SyncedProfitQuota.Value = CalculateProfitQuota();
+        }
+
+        public static int GetRecordPlayersThisQuota() {
+            return RecordPlayersThisQuota;
+        }
+
+        public static void SetRecordPlayersThisQuota(int value) {
+            if (!GameNetworkManager.Instance.isHostingGame) return;
+            RecordPlayersThisQuota = value;
+            QuotaPlayerMultiplier = CalculatePlayerCountMultiplier();
+            SyncedProfitQuota.Value = CalculateProfitQuota();
+        }
+
+        public static int GetRecordPlayersThisMoon() {
+            return RecordPlayersThisMoon;
+        }
+
+        public static void SetRecordPlayersThisMoon(int value) {
+            if (!GameNetworkManager.Instance.isHostingGame) return;
+            RecordPlayersThisQuota = value;
         }
 
         public static int CalculateProfitQuota(bool usePlayerCountMultiplier = true, bool usePenaltyMultiplier = true)
         {
             int result = BaseProfitQuota;
-            if (Config.QuotaEnablePlayerMultiplier.Value && usePlayerCountMultiplier) result = (int)(result * QuotaPlayerMultiplier);
-            Plugin.Log.LogInfo($"QuotaPlayerMultiplier: {QuotaPlayerMultiplier}");
-            if (Config.QuotaPenaltiesEnabled.Value && usePenaltyMultiplier) result = (int)(result * QuotaPenaltyMultiplier);
-            Plugin.Log.LogInfo($"QuotaPenaltyMultiplier: {QuotaPenaltyMultiplier}");
+            if (usePlayerCountMultiplier) result = (int)(result * QuotaPlayerMultiplier);
+            if (usePenaltyMultiplier) result = (int)(result * QuotaPenaltyMultiplier);
             return result;
         }
 
-        private static void UpdatePlayerCountMultiplier()
-        {
-            if (!Config.QuotaEnablePlayerMultiplier.Value) return;
-
-            QuotaPlayerMultiplier = CalculatePlayerCountMultiplier();
-            ProfitQuota.Value = CalculateProfitQuota();
-        }
-
-        private static double CalculatePlayerCountMultiplier()
+        public static double CalculatePlayerCountMultiplier()
         {
             int playersCounted = math.clamp(RecordPlayersThisQuota, Config.QuotaPlayerThreshold.Value, Config.QuotaPlayerCap.Value);
             playersCounted -= Config.QuotaPlayerThreshold.Value;
@@ -61,7 +104,7 @@ namespace QuotaOverhaul
         public static void OnNewRun()
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
-            BaseProfitQuota = TimeOfDay.Instance.quotaVariables.startingQuota;
+            SetBaseProfitQuota(TimeOfDay.Instance.quotaVariables.startingQuota);
             OnNewQuota();
         }
 
@@ -71,7 +114,7 @@ namespace QuotaOverhaul
             QuotaInProgress = false;
             QuotaPenaltyMultiplier = 1;
             RecordPlayersThisQuota = StartOfRound.Instance.connectedPlayersAmount;
-            ProfitQuota.Value = CalculateProfitQuota();
+            SyncedProfitQuota.Value = CalculateProfitQuota();
         }
 
         public static void OnPlayerCountChanged()
@@ -79,19 +122,17 @@ namespace QuotaOverhaul
             if (!GameNetworkManager.Instance.isHostingGame) return;
 
             var playerCount = StartOfRound.Instance.connectedPlayersAmount + 1;
-            Plugin.Log.LogInfo("Player count: " + playerCount);
             if (!StartOfRound.Instance.shipHasLanded || playerCount > RecordPlayersThisMoon)
             {
-                RecordPlayersThisMoon = playerCount;
+                SetRecordPlayersThisMoon(playerCount);
             }
             if (!QuotaInProgress || playerCount > RecordPlayersThisQuota)
             {
-                RecordPlayersThisQuota = playerCount;
+                SetRecordPlayersThisQuota(playerCount);
             }
-            UpdatePlayerCountMultiplier();
         }
 
-        public static void LoadData()
+        private static void LoadData()
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
 

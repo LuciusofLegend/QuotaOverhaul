@@ -42,8 +42,7 @@ namespace QuotaOverhaul.Patches
 
                 if (GameNetworkManager.Instance.isHostingGame)
                 {
-                    QuotaOverhaul.QuotaPenaltyMultiplier += quotaPenalty;
-                    QuotaOverhaul.ProfitQuota.Value = QuotaOverhaul.CalculateProfitQuota();
+                    QuotaOverhaul.AddQuotaPenaltyMultiplier(quotaPenalty);
                 }
             }
 
@@ -72,7 +71,7 @@ namespace QuotaOverhaul.Patches
 
         private static double CalculateDynamicCreditPenalty(int deadBodies, int recoveredBodies)
         {
-            double penaltyPerBody = 1d / QuotaOverhaul.RecordPlayersThisMoon * Config.CreditPenaltyPercentCap.Value / 100d;
+            double penaltyPerBody = 1d / QuotaOverhaul.GetRecordPlayersThisMoon() * Config.CreditPenaltyPercentCap.Value / 100d;
             double bonusPerRecoveredBody = penaltyPerBody * Config.CreditPenaltyRecoveryBonus.Value / 100d;
             double penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
 
@@ -102,7 +101,7 @@ namespace QuotaOverhaul.Patches
 
         private static double CalculateDynamicQuotaPenalty(int deadBodies, int recoveredBodies)
         {
-            double penaltyPerBody = 1d / QuotaOverhaul.RecordPlayersThisMoon * Config.QuotaPenaltyPercentCap.Value / 100d;
+            double penaltyPerBody = 1d / QuotaOverhaul.GetRecordPlayersThisMoon() * Config.QuotaPenaltyPercentCap.Value / 100d;
             double bonusPerRecoveredBody = penaltyPerBody * Config.QuotaPenaltyRecoveryBonus.Value / 100d;
             double penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
 
