@@ -76,74 +76,7 @@ namespace QuotaOverhaul.Patches
 
             if (!StartOfRound.Instance.allPlayersDead) return;
 
-            ILookup<bool, GrabbableObject> itemIsScrapLookup = itemsInside.ToLookup(item => item.itemProperties.isScrap);
-            List<GrabbableObject> itemsScrap = [.. itemIsScrapLookup[true]];
-            List<GrabbableObject> itemsEquipment = [.. itemIsScrapLookup[false]];
-            List<string> lostItems = [];
-
-            bool itemsAreSafe = rng.NextDouble() < Config.ItemsSafeChance.Value / 100;
-
-            if (!itemsAreSafe)
-            {
-                itemsScrap.RemoveAll(item => !item.IsSpawned);
-                int totalScrapValue = itemsScrap.Sum(scrap => scrap.scrapValue);
-                int scrapLost = 0;
-                int scrapValueLost = 0;
-
-                if (Config.ValueLossEnabled.Value)
-                {
-                    itemsScrap = [.. itemsScrap.OrderByDescending(scrap => scrap.scrapValue)];
-                    int valueToLose = (int)(totalScrapValue * Config.ValueLossPercent.Value / 100);
-                    foreach (GrabbableObject scrap in itemsScrap)
-                    {
-                        if (scrapValueLost >= valueToLose || scrapLost >= Config.MaxLostScrapItems.Value) break;
-                        scrapValueLost += scrap.scrapValue;
-                        scrapLost++;
-                        lostItems.Add(scrap.itemProperties?.itemName ?? scrap.name);
-                        DespawnItem(scrap);
-                        Plugin.Log.LogInfo($"Lost {scrap.name} worth {scrap.scrapValue}");
-                    }
-                    itemsScrap.RemoveAll(item => !item.IsSpawned);
-                    Plugin.Log.LogInfo($"Value Loss: {scrapValueLost}$ of scrap lost");
-                }
-
-                foreach (GrabbableObject scrap in itemsScrap)
-                {
-                    if (rng.NextDouble() < Config.LoseEachScrapChance.Value / 100)
-                    {
-                        if (scrapLost >= Config.MaxLostScrapItems.Value) break;
-                        scrapValueLost += scrap.scrapValue;
-                        scrapLost++;
-                        lostItems.Add(scrap.itemProperties?.itemName ?? scrap.name);
-                        DespawnItem(scrap);
-                        Plugin.Log.LogInfo($"Lost {scrap.name} worth {scrap.scrapValue}");
-                    }
-                }
-
-                Plugin.Log.LogInfo($"Lost {scrapLost} scrap items worth {scrapValueLost}");
-            }
-
-            if (!Config.EquipmentLossEnabled.Value)
-            {
-                Plugin.Log.LogInfo("Equipment loss is disabled");
-            }
-            else if (!itemsAreSafe)
-            {
-                itemsEquipment.RemoveAll(item => !item.IsSpawned);
-                int equipmentLost = 0;
-                foreach (GrabbableObject equipment in itemsEquipment)
-                {
-                    if (rng.NextDouble() < Config.LoseEachEquipmentChance.Value / 100)
-                    {
-                        equipmentLost++;
-                        if (equipmentLost > Config.MaxLostEquipmentItems.Value) break;
-                        lostItems.Add(equipment.itemProperties?.itemName ?? equipment.name);
-                        DespawnItem(equipment);
-                        Plugin.Log.LogInfo($"Lost {equipment.name}");
-                    }
-                }
-                Plugin.Log.LogInfo($"Lost {equipmentLost} equipment items");
-            }
+            List<string> lostItems = DeathConsequences.DetermineLostItems(itemsInside);
 
             if (lostItems.Count != 0 && Config.EnableLostItemsAlert.Value)
             {
