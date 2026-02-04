@@ -13,13 +13,13 @@ namespace QuotaOverhaul.Patches
     {
         public static bool Prefix()
         {
-            return !Config.VanillaScrapLoss;
+            return !Config.VanillaScrapLoss.Value;
         }
 
         public static void Postfix(bool despawnAllItems = false)
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
-            if (Config.VanillaScrapLoss) return;
+            if (Config.VanillaScrapLoss.Value) return;
 
             VehicleController[] vehicles = UnityEngine.Object.FindObjectsOfType<VehicleController>();
             foreach (VehicleController vehicle in vehicles)
