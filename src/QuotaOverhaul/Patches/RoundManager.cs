@@ -45,7 +45,7 @@ namespace QuotaOverhaul.Patches
                 }
             }
 
-            System.Random rng = new System.Random(StartOfRound.Instance.randomMapSeed + 369);
+            System.Random rng = new(StartOfRound.Instance.randomMapSeed + 369);
             List<GrabbableObject> items = UnityEngine.Object.FindObjectsOfType<GrabbableObject>().ToList();
             List<GrabbableObject> itemsInside = [];
 
@@ -77,8 +77,8 @@ namespace QuotaOverhaul.Patches
             if (!StartOfRound.Instance.allPlayersDead) return;
 
             ILookup<bool, GrabbableObject> itemIsScrapLookup = itemsInside.ToLookup(item => item.itemProperties.isScrap);
-            List<GrabbableObject> itemsScrap = itemIsScrapLookup[true].ToList();
-            List<GrabbableObject> itemsEquipment = itemIsScrapLookup[false].ToList();
+            List<GrabbableObject> itemsScrap = [.. itemIsScrapLookup[true]];
+            List<GrabbableObject> itemsEquipment = [.. itemIsScrapLookup[false]];
             List<string> lostItems = [];
 
             bool itemsAreSafe = rng.NextDouble() < Config.ItemsSafeChance.Value / 100;
@@ -92,7 +92,7 @@ namespace QuotaOverhaul.Patches
 
                 if (Config.ValueLossEnabled.Value)
                 {
-                    itemsScrap = itemsScrap.OrderByDescending(scrap => scrap.scrapValue).ToList();
+                    itemsScrap = [.. itemsScrap.OrderByDescending(scrap => scrap.scrapValue)];
                     int valueToLose = (int)(totalScrapValue * Config.ValueLossPercent.Value / 100);
                     foreach (GrabbableObject scrap in itemsScrap)
                     {
@@ -145,9 +145,9 @@ namespace QuotaOverhaul.Patches
                 Plugin.Log.LogInfo($"Lost {equipmentLost} equipment items");
             }
 
-            if (lostItems.Any() && Config.EnableLostItemsAlert.Value)
+            if (lostItems.Count != 0 && Config.EnableLostItemsAlert.Value)
             {
-                string msg = $"Lost items ({lostItems.Count()}/{itemsInside.Count()}): ";
+                string msg = $"Lost items ({lostItems.Count}/{itemsInside.Count}): ";
                 msg += string.Join("; ", lostItems.GroupBy(s => s).Select(s => new { name = s.Key, count = s.Count() }).Select(item => item.count > 1 ? $"{item.name} x{item.count}" : item.name));
                 HUDManager.Instance.StartCoroutine(DisplayAlert(bodyAlertText: "", messageText: msg));
             }

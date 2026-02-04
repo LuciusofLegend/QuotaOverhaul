@@ -64,7 +64,7 @@ namespace QuotaOverhaul
         public static void SetRecordPlayersThisMoon(int value)
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
-            RecordPlayersThisQuota = value;
+            RecordPlayersThisMoon = value;
         }
 
         public static void OnNewSession()
