@@ -1,9 +1,9 @@
 profiles_folder="~/.local/share/gale/lethal-company/profiles"
 mod_profile="MultiInstanceTest"
 
-lethal_exe="/home/lucius/.steam/steam/steamapps/common/Lethal Company/Lethal Company.exe"
-proton_path="/home/lucius/.local/share/Steam/compatibilitytools.d/GE-Proton9-27"
-lethal_wineprefix="/home/lucius/.local/share/Steam/steamapps/compatdata/1966720"
+lethal_exe="~/.steam/steam/steamapps/common/Lethal Company/Lethal Company.exe"
+proton_path="~/.local/share/Steam/compatibilitytools.d/GE-Proton9-27"
+lethal_wineprefix="~/.local/share/Steam/steamapps/compatdata/1966720"
 
 cd "$profiles_folder/$mod_profile"
 
