@@ -15,20 +15,14 @@ namespace QuotaOverhaul.Patches
             Terminal terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
 
             int oldCredits = terminal.groupCredits;
-            bool doCreditPenalty = Config.CreditPenaltiesEnabled.Value && (Config.CreditPenaltiesOnGordion.Value || StartOfRound.Instance.currentLevel.PlanetName != "71 Gordion");
-            double creditPenalty = 0d;
+            double creditPenalty = DeathConsequences.CalculateCreditPenalty(playersDead, bodiesInsured);
 
-            if (doCreditPenalty)
+            if (GameNetworkManager.Instance.isHostingGame)
             {
-                creditPenalty += Config.CreditPenaltiesDynamic.Value ? CalculateDynamicCreditPenalty(playersDead, bodiesInsured) : CalculateCreditPenalty(playersDead, bodiesInsured);
-
-                if (GameNetworkManager.Instance.isHostingGame)
+                terminal.groupCredits -= (int)(oldCredits * creditPenalty);
+                if (terminal.groupCredits < 0)
                 {
-                    terminal.groupCredits -= (int)(oldCredits * creditPenalty);
-                    if (terminal.groupCredits < 0)
-                    {
-                        terminal.groupCredits = 0;
-                    }
+                    terminal.groupCredits = 0;
                 }
             }
 
@@ -42,7 +36,7 @@ namespace QuotaOverhaul.Patches
 
                 if (GameNetworkManager.Instance.isHostingGame)
                 {
-                    QuotaOverhaul.AddQuotaPenaltyMultiplier(quotaPenalty);
+                    QuotaOverhaul.QuotaPenaltyMultiplier.Increase(quotaPenalty);
                 }
             }
 
@@ -52,36 +46,6 @@ namespace QuotaOverhaul.Patches
             HUDManager.Instance.statsUIElements.penaltyTotal.text = "";
 
 
-        }
-
-        private static double CalculateCreditPenalty(int deadBodies, int recoveredBodies)
-        {
-            double penaltyPerBody = Config.CreditPenaltyPercentPerPlayer.Value / 100d;
-            double bonusPerRecoveredBody = penaltyPerBody * Config.QuotaPenaltyRecoveryBonus.Value / 100d;
-            double penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
-
-            if (penalty < 0 || penalty < Config.CreditPenaltyPercentThreshold.Value / 100d)
-            {
-                penalty = 0;
-            }
-
-            Plugin.Log.LogInfo($"Calculated Credit Penalty of {penalty}");
-            return penalty;
-        }
-
-        private static double CalculateDynamicCreditPenalty(int deadBodies, int recoveredBodies)
-        {
-            double penaltyPerBody = 1d / QuotaOverhaul.GetRecordPlayersThisMoon() * Config.CreditPenaltyPercentCap.Value / 100d;
-            double bonusPerRecoveredBody = penaltyPerBody * Config.CreditPenaltyRecoveryBonus.Value / 100d;
-            double penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
-
-            if (penalty < 0 || penalty < Config.CreditPenaltyPercentThreshold.Value / 100d)
-            {
-                penalty = 0;
-            }
-
-            Plugin.Log.LogInfo($"Calculated Dynamic Credit Penalty of {penalty}");
-            return penalty;
         }
 
         private static double CalculateQuotaPenalty(int deadBodies, int recoveredBodies)
