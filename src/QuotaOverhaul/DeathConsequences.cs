@@ -87,13 +87,14 @@ namespace QuotaOverhaul
             double penaltyPerBody = Config.QuotaPenaltyPercentPerPlayer.Value / 100d;
             double bonusPerRecoveredBody = penaltyPerBody * Config.QuotaPenaltyRecoveryBonus.Value / 100d;
             double penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
+            Plugin.Log.LogInfo($"Calculated Quota Penalty of {penalty}");
 
             if (penalty < 0 || penalty < Config.QuotaPenaltyPercentThreshold.Value / 100d)
+                Plugin.Log.LogInfo($"Penalty fell below threshold of {Config.QuotaPenaltyPercentThreshold.Value / 100d}");
             {
                 penalty = 0;
             }
 
-            Plugin.Log.LogInfo($"Calculated Quota Penalty of {penalty}");
             return penalty;
         }
 
@@ -102,6 +103,7 @@ namespace QuotaOverhaul
             double penaltyPerBody = 1d / QuotaOverhaul.GetRecordPlayersThisMoon() * Config.QuotaPenaltyPercentCap.Value / 100d;
             double bonusPerRecoveredBody = penaltyPerBody * Config.QuotaPenaltyRecoveryBonus.Value / 100d;
             double penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
+            Plugin.Log.LogInfo($"Calculated Dynamic Quota Penalty of {penalty}");
 
             if (penalty < 0 || penalty < Config.QuotaPenaltyPercentThreshold.Value / 100d)
             {
@@ -109,7 +111,6 @@ namespace QuotaOverhaul
                 Plugin.Log.LogInfo($"Penalty fell below threshold of {Config.QuotaPenaltyPercentThreshold.Value / 100d}");
             }
 
-            Plugin.Log.LogInfo($"Calculated Dynamic Quota Penalty of {penalty}");
             return penalty;
         }
 
@@ -140,7 +141,6 @@ namespace QuotaOverhaul
                         scrapLost++;
                         lostItems.Add(scrap.itemProperties?.itemName ?? scrap.name);
                         DespawnItem(scrap);
-                        Plugin.Log.LogInfo($"Lost {scrap.name} worth {scrap.scrapValue}");
                     }
                     itemsScrap.RemoveAll(item => !item.IsSpawned);
                     Plugin.Log.LogInfo($"Value Loss: {scrapValueLost}$ of scrap lost");
@@ -155,7 +155,6 @@ namespace QuotaOverhaul
                         scrapLost++;
                         lostItems.Add(scrap.itemProperties?.itemName ?? scrap.name);
                         DespawnItem(scrap);
-                        Plugin.Log.LogInfo($"Lost {scrap.name} worth {scrap.scrapValue}");
                     }
                 }
 
@@ -178,7 +177,6 @@ namespace QuotaOverhaul
                         if (equipmentLost > Config.MaxLostEquipmentItems.Value) break;
                         lostItems.Add(equipment.itemProperties?.itemName ?? equipment.name);
                         DespawnItem(equipment);
-                        Plugin.Log.LogInfo($"Lost {equipment.name}");
                     }
                 }
                 Plugin.Log.LogInfo($"Lost {equipmentLost} equipment items");
