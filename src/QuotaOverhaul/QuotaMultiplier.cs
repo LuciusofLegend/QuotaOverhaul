@@ -84,7 +84,7 @@ namespace QuotaOverhaul
 
         public static int GetQuotaWithMultipliers(int? baseQuota = null, List<QuotaMultiplier>? blacklist = null)
         {
-            int result = baseQuota is null ? QuotaOverhaul.GetBaseProfitQuota() : (int)baseQuota;
+            double result = baseQuota is null ? QuotaOverhaul.GetBaseProfitQuota() : (int)baseQuota;
             List<QuotaMultiplier> list = multipliers;
             if (blacklist is not null)
             {
@@ -96,9 +96,9 @@ namespace QuotaOverhaul
 
             foreach (QuotaMultiplier multiplier in list)
             {
-                result = (int)(result * multiplier.Get());
+                result *= multiplier.Get();
             }
-            return result;
+            return (int)result;
         }
     }
 }
