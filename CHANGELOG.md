@@ -1,3 +1,11 @@
+## 2.0.0
+
+- Variables that are set to their vanilla values no longer force those values.  This should increase compatibility with other mods.  For example if you want another mod to handle the Deadline setting, you can set it to it's vanilla value of 3.
+
+## 1.4.6
+
+- Made the lost items alert optional and disabled by default
+
 ## 1.4.5
 
 - Fixed a dependency issue that caused the mod to not launch at all
