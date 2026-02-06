@@ -6,49 +6,49 @@ namespace QuotaOverhaul;
 
 public class Config : SyncedConfig2<Config>
 {
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-    [SyncedEntryField] public static SyncedEntry<int> StartingCredits;
-    [SyncedEntryField] public static SyncedEntry<int> StartingQuota;
-    [SyncedEntryField] public static SyncedEntry<int> QuotaBaseIncrease;
-    [SyncedEntryField] public static SyncedEntry<float> QuotaIncreaseSteepness;
-    [SyncedEntryField] public static SyncedEntry<float> QuotaRandomizerMultiplier;
-    [SyncedEntryField] public static SyncedEntry<int> QuotaDeadline;
-    [SyncedEntryField] public static SyncedEntry<int> QuotaEarlyFinishLine;
-    [SyncedEntryField] public static SyncedEntry<bool> QuotaEnablePlayerMultiplier;
-    [SyncedEntryField] public static SyncedEntry<int> QuotaPlayerThreshold;
-    [SyncedEntryField] public static SyncedEntry<int> QuotaPlayerCap;
-    [SyncedEntryField] public static SyncedEntry<float> QuotaMultiplierPerPlayer;
 
-    [SyncedEntryField] public static SyncedEntry<bool> CreditPenaltiesEnabled;
-    [SyncedEntryField] public static SyncedEntry<bool> CreditPenaltiesOnGordion;
-    [SyncedEntryField] public static SyncedEntry<float> CreditPenaltyPercentPerPlayer;
-    [SyncedEntryField] public static SyncedEntry<bool> CreditPenaltiesDynamic;
-    [SyncedEntryField] public static SyncedEntry<float> CreditPenaltyPercentCap;
-    [SyncedEntryField] public static SyncedEntry<float> CreditPenaltyPercentThreshold;
-    [SyncedEntryField] public static SyncedEntry<float> CreditPenaltyRecoveryBonus;
+    [SyncedEntryField] public static readonly SyncedEntry<int> StartingCredits;
+    [SyncedEntryField] public static readonly SyncedEntry<int> StartingQuota;
+    [SyncedEntryField] public static readonly SyncedEntry<int> QuotaBaseIncrease;
+    [SyncedEntryField] public static readonly SyncedEntry<float> QuotaIncreaseSteepness;
+    [SyncedEntryField] public static readonly SyncedEntry<float> QuotaRandomizerMultiplier;
+    [SyncedEntryField] public static readonly SyncedEntry<int> QuotaDeadline;
+    [SyncedEntryField] public static readonly SyncedEntry<int> QuotaEarlyFinishLine;
+    [SyncedEntryField] public static readonly SyncedEntry<bool> QuotaEnablePlayerMultiplier;
+    [SyncedEntryField] public static readonly SyncedEntry<int> QuotaPlayerThreshold;
+    [SyncedEntryField] public static readonly SyncedEntry<int> QuotaPlayerCap;
+    [SyncedEntryField] public static readonly SyncedEntry<float> QuotaMultiplierPerPlayer;
 
-    [SyncedEntryField] public static SyncedEntry<bool> QuotaPenaltiesEnabled;
-    [SyncedEntryField] public static SyncedEntry<bool> QuotaPenaltiesOnGordion;
-    [SyncedEntryField] public static SyncedEntry<float> QuotaPenaltyPercentPerPlayer;
-    [SyncedEntryField] public static SyncedEntry<bool> QuotaPenaltiesDynamic;
-    [SyncedEntryField] public static SyncedEntry<float> QuotaPenaltyPercentCap;
-    [SyncedEntryField] public static SyncedEntry<float> QuotaPenaltyPercentThreshold;
-    [SyncedEntryField] public static SyncedEntry<float> QuotaPenaltyRecoveryBonus;
-    [SyncedEntryField] public static SyncedEntry<bool> ChargeCreditsInsteadOfQuota;
-    [SyncedEntryField] public static SyncedEntry<float> CreditsPerQuota;
+    [SyncedEntryField] public static readonly SyncedEntry<bool> CreditPenaltiesEnabled;
+    [SyncedEntryField] public static readonly SyncedEntry<bool> CreditPenaltiesOnGordion;
+    [SyncedEntryField] public static readonly SyncedEntry<float> CreditPenaltyPercentPerPlayer;
+    [SyncedEntryField] public static readonly SyncedEntry<bool> CreditPenaltiesDynamic;
+    [SyncedEntryField] public static readonly SyncedEntry<float> CreditPenaltyPercentCap;
+    [SyncedEntryField] public static readonly SyncedEntry<float> CreditPenaltyPercentThreshold;
+    [SyncedEntryField] public static readonly SyncedEntry<float> CreditPenaltyRecoveryBonus;
 
-    [SyncedEntryField] public static SyncedEntry<bool> VanillaScrapLoss;
-    [SyncedEntryField] public static SyncedEntry<float> ItemsSafeChance;
-    [SyncedEntryField] public static SyncedEntry<float> LoseEachScrapChance;
-    [SyncedEntryField] public static SyncedEntry<int> MaxLostScrapItems;
-    [SyncedEntryField] public static SyncedEntry<bool> EnableLostItemsAlert;
+    [SyncedEntryField] public static readonly SyncedEntry<bool> QuotaPenaltiesEnabled;
+    [SyncedEntryField] public static readonly SyncedEntry<bool> QuotaPenaltiesOnGordion;
+    [SyncedEntryField] public static readonly SyncedEntry<float> QuotaPenaltyPercentPerPlayer;
+    [SyncedEntryField] public static readonly SyncedEntry<bool> QuotaPenaltiesDynamic;
+    [SyncedEntryField] public static readonly SyncedEntry<float> QuotaPenaltyPercentCap;
+    [SyncedEntryField] public static readonly SyncedEntry<float> QuotaPenaltyPercentThreshold;
+    [SyncedEntryField] public static readonly SyncedEntry<float> QuotaPenaltyRecoveryBonus;
+    [SyncedEntryField] public static readonly SyncedEntry<bool> ChargeCreditsInsteadOfQuota;
+    [SyncedEntryField] public static readonly SyncedEntry<float> CreditsPerQuota;
 
-    [SyncedEntryField] public static SyncedEntry<bool> ValueLossEnabled;
-    [SyncedEntryField] public static SyncedEntry<float> ValueLossPercent;
+    [SyncedEntryField] public static readonly SyncedEntry<bool> VanillaScrapLoss;
+    [SyncedEntryField] public static readonly SyncedEntry<float> ItemsSafeChance;
+    [SyncedEntryField] public static readonly SyncedEntry<float> LoseEachScrapChance;
+    [SyncedEntryField] public static readonly SyncedEntry<int> MaxLostScrapItems;
+    [SyncedEntryField] public static readonly SyncedEntry<bool> EnableLostItemsAlert;
 
-    [SyncedEntryField] public static SyncedEntry<bool> EquipmentLossEnabled;
-    [SyncedEntryField] public static SyncedEntry<float> LoseEachEquipmentChance;
-    [SyncedEntryField] public static SyncedEntry<int> MaxLostEquipmentItems;
+    [SyncedEntryField] public static readonly SyncedEntry<bool> ValueLossEnabled;
+    [SyncedEntryField] public static readonly SyncedEntry<float> ValueLossPercent;
+
+    [SyncedEntryField] public static readonly SyncedEntry<bool> EquipmentLossEnabled;
+    [SyncedEntryField] public static readonly SyncedEntry<float> LoseEachEquipmentChance;
+    [SyncedEntryField] public static readonly SyncedEntry<int> MaxLostEquipmentItems;
 
     public Config(ConfigFile config) : base(Plugin.PluginGuid)
     {
