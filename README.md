@@ -19,6 +19,8 @@ Each option has a description, so hopefully you can figure it out from that.  If
 ## Roadmap
 
 - Dynamic Scrap loss, similar to Credit and Quota Penalties
+- More options of quota algorithm, for example to have it cap out at a certain point or severely limit exponential growth
+- Daily Quota compatibility
 
 # Known Issues
 
