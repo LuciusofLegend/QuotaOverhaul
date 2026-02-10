@@ -24,11 +24,12 @@ Each option has a description, so hopefully you can figure it out from that.  If
 
 I've taken inspiration and/or code from the following mods. Many thanks to all of these creators for their work!
 
-- Quota Tweaks by mrov
-- Save Our Loot by MrHydralisk
-- Custom Death Penalty by ImpulsiveLass
+# Acknowledgements
 
-Shoutout @Endoxicom on the LC Modding Discord for making the icon!
+- Thank you to mrov for making Quota Tweaks, which I stole code from
+- Thank you to MrHydralisk for making SaveOurLoot, which I also stole code from
+- Thank you to ImpulsiveLass for making CustomDeathPenalty, which inspired the Quota Penalties feature
+- Thank you to Endoxicom for making the icon
 
 ## Licensing:
 
