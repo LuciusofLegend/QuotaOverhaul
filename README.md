@@ -20,9 +20,9 @@ Each option has a description, so hopefully you can figure it out from that.  If
 
 - Dynamic Scrap loss, similar to Credit and Quota Penalties
 
-## Credits
+# Known Issues
 
-I've taken inspiration and/or code from the following mods. Many thanks to all of these creators for their work!
+Probably incompatible with any mod that changes the quota.  With certain configurations it might work, but generally Quota Overhaul will overwrite any changes.
 
 # Acknowledgements
 
