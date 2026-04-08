@@ -107,7 +107,7 @@ namespace QuotaOverhaul.Patches
         {
             if (item.isHeld && item.playerHeldBy != null)
             {
-                item.playerHeldBy.DropAllHeldItemsAndSync();
+                item.playerHeldBy.DropAllHeldItemsAndSyncNonexact();
             }
             NetworkObject networkComponent = item.gameObject.GetComponent<NetworkObject>();
             if (networkComponent != null && networkComponent.IsSpawned)
