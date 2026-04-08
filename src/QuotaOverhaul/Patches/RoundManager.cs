@@ -76,14 +76,8 @@ namespace QuotaOverhaul.Patches
 
             if (!StartOfRound.Instance.allPlayersDead) return;
 
-            List<string> lostItems = DeathConsequences.DetermineLostItems(itemsInside);
-
-            if (lostItems.Count != 0 && Config.EnableLostItemsAlert.Value)
-            {
-                string msg = $"Lost items ({lostItems.Count}/{itemsInside.Count}): ";
-                msg += string.Join("; ", lostItems.GroupBy(s => s).Select(s => new { name = s.Key, count = s.Count() }).Select(item => item.count > 1 ? $"{item.name} x{item.count}" : item.name));
-                HUDManager.Instance.StartCoroutine(DisplayAlert(bodyAlertText: "", messageText: msg));
-            }
+            List<GrabbableObject> lostItems = DeathConsequences.DetermineLostItems(itemsInside);
+            foreach (GrabbableObject item in lostItems) DespawnItem(item);
         }
 
         private static void DespawnVehicle(VehicleController vehicle)
