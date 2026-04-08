@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace QuotaOverhaul
 {
@@ -114,12 +116,14 @@ namespace QuotaOverhaul
             return penalty;
         }
 
-        private static List<GrabbableObject> DetermineLostItems(List<GrabbableObject> items)
+        public static List<GrabbableObject> DetermineLostItems(List<GrabbableObject> items)
         {
             ILookup<bool, GrabbableObject> itemIsScrapLookup = items.ToLookup(item => item.itemProperties.isScrap);
             List<GrabbableObject> itemsScrap = [.. itemIsScrapLookup[true]];
             List<GrabbableObject> itemsEquipment = [.. itemIsScrapLookup[false]];
             List<GrabbableObject> lostItems = [];
+
+            System.Random rng = new(StartOfRound.Instance.randomMapSeed + 197);
 
             bool itemsAreSafe = rng.NextDouble() < Config.ItemsSafeChance.Value / 100;
 
@@ -139,8 +143,7 @@ namespace QuotaOverhaul
                         if (scrapValueLost >= valueToLose || scrapLost >= Config.MaxLostScrapItems.Value) break;
                         scrapValueLost += scrap.scrapValue;
                         scrapLost++;
-                        lostItems.Add(scrap.itemProperties?.itemName ?? scrap.name);
-                        DespawnItem(scrap);
+                        lostItems.Add(scrap);
                     }
                     itemsScrap.RemoveAll(item => !item.IsSpawned);
                     Plugin.Log.LogInfo($"Value Loss: {scrapValueLost}$ of scrap lost");
@@ -153,8 +156,7 @@ namespace QuotaOverhaul
                         if (scrapLost >= Config.MaxLostScrapItems.Value) break;
                         scrapValueLost += scrap.scrapValue;
                         scrapLost++;
-                        lostItems.Add(scrap.itemProperties?.itemName ?? scrap.name);
-                        DespawnItem(scrap);
+                        lostItems.Add(scrap);
                     }
                 }
 
@@ -175,8 +177,7 @@ namespace QuotaOverhaul
                     {
                         equipmentLost++;
                         if (equipmentLost > Config.MaxLostEquipmentItems.Value) break;
-                        lostItems.Add(equipment.itemProperties?.itemName ?? equipment.name);
-                        DespawnItem(equipment);
+                        lostItems.Add(equipment);
                     }
                 }
                 Plugin.Log.LogInfo($"Lost {equipmentLost} equipment items");
