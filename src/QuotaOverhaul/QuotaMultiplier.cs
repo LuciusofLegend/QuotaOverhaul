@@ -17,14 +17,14 @@ namespace QuotaOverhaul
         {
             this.name = name;
             this.defaultMultiplier = defaultMultiplier;
-            multiplier = LNetworkVariable<double>.Connect(this.name, onValueChanged: SyncToClients);
+            multiplier = LNetworkVariable<double>.Connect(this.name, onValueChanged: SyncMultiplierToClients);
             multiplier.Value = defaultMultiplier;
             this.persistent = persistent;
 
             multipliers.Add(this);
         }
 
-        private void SyncToClients(double oldValue, double newValue)
+        private void SyncMultiplierToClients(double oldValue, double newValue)
         {
             multiplier.Value = newValue;
         }
@@ -99,7 +99,7 @@ namespace QuotaOverhaul
             {
                 double beforeMultiplier = result;
                 result *= multiplier.Get();
-                Plugin.Log.LogDebug($"Applying quota multiplier: {multiplier.name} \n {beforeMultiplier} + {multiplier.Get()} = {result}");
+                Plugin.Log.LogDebug($"Applying quota multiplier: {multiplier.name} \n {beforeMultiplier} * {multiplier.Get()} = {result}");
             }
             return (int)result;
         }

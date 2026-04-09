@@ -24,11 +24,7 @@ namespace QuotaOverhaul
             double quotaPenalty = 0d;
 
             quotaPenalty = CalculateQuotaPenalty(deadBodies, recoveredBodies);
-
-            if (GameNetworkManager.Instance.isHostingGame)
-            {
-                QuotaOverhaul.QuotaPenaltyMultiplier.Increase(quotaPenalty);
-            }
+            QuotaOverhaul.QuotaPenaltyMultiplier.Increase(quotaPenalty);
 
             string penaltyAdditionText = $"CASUALTIES: {deadBodies}\nBODIES RECOVERED: {recoveredBodies} \n \nCREDITS: -{(int)(creditPenalty * 100)}% \n{oldCredits} -> {terminal.groupCredits} \n \nQUOTA: +{(int)(quotaPenalty * 100)}% \n{oldQuota} -> {TimeOfDay.Instance.profitQuota}";
 

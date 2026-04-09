@@ -5,14 +5,9 @@ namespace QuotaOverhaul
 {
     public static class QuotaOverhaul
     {
-        private static readonly LNetworkVariable<int> SyncedProfitQuota = LNetworkVariable<int>.Connect(nameof(SyncedProfitQuota), onValueChanged: SyncQuotaToClients);
-
-        private static void SyncQuotaToClients(int oldValue, int newValue)
-        {
-            TimeOfDay.Instance.profitQuota = newValue;
-        }
-
         private static int BaseProfitQuota;
+        private static readonly LNetworkVariable<int> SyncedProfitQuota = LNetworkVariable<int>.Connect(nameof(SyncedProfitQuota), onValueChanged: SyncQuotaToClients);
+        private static void SyncQuotaToClients(int oldValue, int newValue) { TimeOfDay.Instance.profitQuota = newValue; }
         public static readonly QuotaMultiplier QuotaPenaltyMultiplier = new QuotaMultiplier(nameof(QuotaPenaltyMultiplier), 1d);
         public static readonly QuotaMultiplier QuotaPlayerMultiplier = new QuotaMultiplier(nameof(QuotaPlayerMultiplier), 1d, false);
         private static int RecordPlayersThisQuota = 1;
