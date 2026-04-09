@@ -101,12 +101,12 @@ namespace QuotaOverhaul
             double penaltyPerBody = 1d / QuotaOverhaul.GetRecordPlayersThisMoon() * Plugin.Config.QuotaPenaltyPercentCap.Value / 100d;
             double bonusPerRecoveredBody = penaltyPerBody * Plugin.Config.QuotaPenaltyRecoveryBonus.Value / 100d;
             double penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
-            Plugin.Log.LogInfo($"Calculated Dynamic Quota Penalty of {penalty}");
+            Plugin.Log.LogDebug($"Calculated Dynamic Quota Penalty of {penalty}");
 
             if (penalty < 0 || penalty < Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d)
             {
                 penalty = 0;
-                Plugin.Log.LogInfo($"Penalty fell below threshold of {Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d}");
+                Plugin.Log.LogDebug($"Penalty fell below threshold of {Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d}.  No penalty will be applied.");
             }
 
             return penalty;
@@ -125,7 +125,8 @@ namespace QuotaOverhaul
             int maxLostScrap = System.Math.Min(Plugin.Config.MaxLostScrapItems.Value, (int)((float)itemsScrap.Count * Plugin.Config.MaxPercentLostScrapItems.Value / 100f));
             int maxLostEquipment = System.Math.Min(Plugin.Config.MaxLostEquipmentItems.Value, (int)((float)itemsEquipment.Count * Plugin.Config.MaxPercentLostEquipmentItems.Value / 100f));
 
-            if (!itemsAreSafe)
+            if (itemsAreSafe) { Plugin.Log.LogDebug("All items are safe!"); }
+            else
             {
                 itemsScrap.RemoveAll(item => !item.IsSpawned);
                 int totalScrapValue = itemsScrap.Sum(scrap => scrap.scrapValue);
@@ -142,9 +143,10 @@ namespace QuotaOverhaul
                         scrapValueLost += scrap.scrapValue;
                         scrapLost++;
                         lostItems.Add(scrap);
+                        Plugin.Log.LogDebug($"Lost a {scrap.name} due to Value Loss");
                     }
                     itemsScrap.RemoveAll(item => !item.IsSpawned);
-                    Plugin.Log.LogInfo($"Value Loss: {scrapValueLost}$ of scrap lost");
+                    Plugin.Log.LogDebug($"Value Loss: {scrapValueLost}$ of scrap lost");
                 }
 
                 foreach (GrabbableObject scrap in itemsScrap)
@@ -155,30 +157,28 @@ namespace QuotaOverhaul
                         scrapValueLost += scrap.scrapValue;
                         scrapLost++;
                         lostItems.Add(scrap);
+                        Plugin.Log.LogDebug($"Lost a {scrap.name} due to random chance");
                     }
                 }
 
                 Plugin.Log.LogInfo($"Lost {scrapLost} scrap items worth {scrapValueLost}");
-            }
 
-            if (!Plugin.Config.EquipmentLossEnabled.Value)
-            {
-                Plugin.Log.LogInfo("Equipment loss is disabled");
-            }
-            else if (!itemsAreSafe)
-            {
-                itemsEquipment.RemoveAll(item => !item.IsSpawned);
-                int equipmentLost = 0;
-                foreach (GrabbableObject equipment in itemsEquipment)
+                if (Plugin.Config.EquipmentLossEnabled.Value)
                 {
-                    if (rng.NextDouble() < Plugin.Config.LoseEachEquipmentChance.Value / 100)
+                    itemsEquipment.RemoveAll(item => !item.IsSpawned);
+                    int equipmentLost = 0;
+                    foreach (GrabbableObject equipment in itemsEquipment)
                     {
-                        equipmentLost++;
-                        if (equipmentLost > maxLostEquipment) break;
-                        lostItems.Add(equipment);
+                        if (rng.NextDouble() < Plugin.Config.LoseEachEquipmentChance.Value / 100)
+                        {
+                            equipmentLost++;
+                            if (equipmentLost > maxLostEquipment) break;
+                            lostItems.Add(equipment);
+                            Plugin.Log.LogDebug($"Lost a {equipment.name} to random chance");
+                        }
                     }
+                    Plugin.Log.LogDebug($"Lost {equipmentLost} equipment items");
                 }
-                Plugin.Log.LogInfo($"Lost {equipmentLost} equipment items");
             }
 
             return lostItems;
