@@ -122,6 +122,8 @@ namespace QuotaOverhaul
             System.Random rng = new(StartOfRound.Instance.randomMapSeed + 197);
 
             bool itemsAreSafe = rng.NextDouble() < Plugin.Config.ItemsSafeChance.Value / 100;
+            int maxLostScrap = System.Math.Min(Plugin.Config.MaxLostScrapItems.Value, (int)((float)itemsScrap.Count * Plugin.Config.MaxPercentLostScrapItems.Value / 100f));
+            int maxLostEquipment = System.Math.Min(Plugin.Config.MaxLostEquipmentItems.Value, (int)((float)itemsEquipment.Count * Plugin.Config.MaxPercentLostEquipmentItems.Value / 100f));
 
             if (!itemsAreSafe)
             {
@@ -136,7 +138,7 @@ namespace QuotaOverhaul
                     int valueToLose = (int)(totalScrapValue * Plugin.Config.ValueLossPercent.Value / 100);
                     foreach (GrabbableObject scrap in itemsScrap)
                     {
-                        if (scrapValueLost >= valueToLose || scrapLost >= Plugin.Config.MaxLostScrapItems.Value) break;
+                        if (scrapValueLost >= valueToLose || scrapLost >= maxLostScrap) break;
                         scrapValueLost += scrap.scrapValue;
                         scrapLost++;
                         lostItems.Add(scrap);
@@ -172,7 +174,7 @@ namespace QuotaOverhaul
                     if (rng.NextDouble() < Plugin.Config.LoseEachEquipmentChance.Value / 100)
                     {
                         equipmentLost++;
-                        if (equipmentLost > Plugin.Config.MaxLostEquipmentItems.Value) break;
+                        if (equipmentLost > maxLostEquipment) break;
                         lostItems.Add(equipment);
                     }
                 }

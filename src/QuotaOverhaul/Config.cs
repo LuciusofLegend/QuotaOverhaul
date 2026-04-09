@@ -42,6 +42,7 @@ public class Config : SyncedConfig2<Config>
     [SyncedEntryField] public SyncedEntry<float> ItemsSafeChance;
     [SyncedEntryField] public SyncedEntry<float> LoseEachScrapChance;
     [SyncedEntryField] public SyncedEntry<int> MaxLostScrapItems;
+    [SyncedEntryField] public SyncedEntry<float> MaxPercentLostScrapItems;
 
     [SyncedEntryField] public SyncedEntry<bool> ValueLossEnabled;
     [SyncedEntryField] public SyncedEntry<float> ValueLossPercent;
@@ -49,6 +50,7 @@ public class Config : SyncedConfig2<Config>
     [SyncedEntryField] public SyncedEntry<bool> EquipmentLossEnabled;
     [SyncedEntryField] public SyncedEntry<float> LoseEachEquipmentChance;
     [SyncedEntryField] public SyncedEntry<int> MaxLostEquipmentItems;
+    [SyncedEntryField] public SyncedEntry<float> MaxPercentLostEquipmentItems;
 
     public Config(ConfigFile config) : base(Plugin.PluginGuid)
     {
@@ -88,11 +90,13 @@ public class Config : SyncedConfig2<Config>
         ValueLossEnabled = config.BindSyncedEntry("Scrap Loss", "Value Loss Enabled", true, "If enabled, you lose a percentage of the total scrap value on board on a crew wipe. \nVanilla: false.");
         ValueLossPercent = config.BindSyncedEntry("Scrap Loss", "Value Loss Percent", 100f, "The percentage of total scrap value to lose. \nValues between 0-100");
         LoseEachScrapChance = config.BindSyncedEntry("Scrap Loss", "Lose Each Chance", 50f, "A percent chance of each item being lost. \nValues between 0-100 \nVanilla: 0");
-        MaxLostScrapItems = config.BindSyncedEntry("Scrap Loss", "Scrap Loss Max", int.MaxValue, "The maximum number of scrap items that can be lost.");
+        MaxLostScrapItems = config.BindSyncedEntry("Scrap Loss", "Lost Scrap Max", int.MaxValue, "The maximum number of scrap items that can be lost.");
+        MaxPercentLostScrapItems = config.BindSyncedEntry("Scrap Loss", "Lost Scrap Max Percent", 100f, "The maximum percentage of scrap items that can be lost.  For example, if this is set to 50%, and you have 8 scrap on the ship, you cannot lose more than 4 scrap.");
 
         EquipmentLossEnabled = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Enabled", false, "Allow equipment to be lost. \nVanilla: false.");
         LoseEachEquipmentChance = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Chance", 10f, "A chance of each equipment item being lost. \nApplied after SaveAllChance. \nValues between 0-100 \nVanilla: 0");
-        MaxLostEquipmentItems = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Max", int.MaxValue, "The maximum amount of equipment that can be lost. \nApplied after EquipmentLossChance.");
+        MaxLostEquipmentItems = config.BindSyncedEntry("Equipment Loss", "Lost Equipment Max", int.MaxValue, "The maximum amount of equipment that can be lost. \nApplied after EquipmentLossChance.");
+        MaxPercentLostEquipmentItems = config.BindSyncedEntry("Equipment Loss", "Lost Equipment Max Percent", 100f, "The maximum percentage of equipment items that can be lost.  For example, if this is set to 50%, and you have 6 equipment items on the ship, you cannot lose more than 3 equipment items.");
 
         ConfigManager.Register(this);
     }
