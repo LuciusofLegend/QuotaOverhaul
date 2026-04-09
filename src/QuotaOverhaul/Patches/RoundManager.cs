@@ -125,28 +125,5 @@ namespace QuotaOverhaul.Patches
                 RoundManager.Instance.spawnedSyncedObjects.Remove(item.gameObject);
             }
         }
-
-        private static IEnumerator DisplayAlert(string headerAlertText = "Quota Overhaul", string bodyAlertText = "", string messageText = "")
-        {
-            int index = 0;
-            while (index < 20)
-            {
-                if (StartOfRound.Instance.inShipPhase)
-                {
-                    break;
-                }
-                index++;
-                yield return new WaitForSeconds(5f);
-            }
-            yield return new WaitForSeconds(2f);
-            if (!(string.IsNullOrEmpty(headerAlertText) && string.IsNullOrEmpty(bodyAlertText)))
-            {
-                HUDManager.Instance.DisplayTip(headerAlertText, bodyAlertText);
-            }
-            if (!string.IsNullOrEmpty(messageText))
-            {
-                HUDManager.Instance.AddTextToChatOnServer(messageText);
-            }
-        }
     }
 }
