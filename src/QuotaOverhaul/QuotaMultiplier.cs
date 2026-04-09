@@ -63,7 +63,7 @@ namespace QuotaOverhaul
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
             if (!persistent) return;
-            ES3.Save(name, multiplier, saveFile);
+            ES3.Save(name, Get(), saveFile);
         }
 
         public static void LoadAll(string saveFile)
