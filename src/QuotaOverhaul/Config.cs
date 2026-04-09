@@ -38,6 +38,7 @@ public class Config : SyncedConfig2<Config>
     [SyncedEntryField] public SyncedEntry<float> CreditsPerQuota;
 
     [SyncedEntryField] public SyncedEntry<bool> VanillaScrapLoss;
+    [SyncedEntryField] public SyncedEntry<bool> ScrapLossOnGordion;
     [SyncedEntryField] public SyncedEntry<float> ItemsSafeChance;
     [SyncedEntryField] public SyncedEntry<float> LoseEachScrapChance;
     [SyncedEntryField] public SyncedEntry<int> MaxLostScrapItems;
@@ -81,7 +82,8 @@ public class Config : SyncedConfig2<Config>
         ChargeCreditsInsteadOfQuota = config.BindSyncedEntry("Quota Penalties", "Charge Credits Instead", false, "Charges credits instead of increasing the quota.  You can set the conversion rate below.  Quota will only increase when you've run out of credits.  Creates an effect similar to Quota Rollover.  I encourage you to try this!");
         CreditsPerQuota = config.BindSyncedEntry("Quota Penalties", "Credits Per Quota", 1f, "The conversion rate from Quota Penalties to Credits.  Increasing this makes you lose more credits.  This can also be set below 1, to make credits less sensitive. \nValues: > 0");
 
-        VanillaScrapLoss = config.BindSyncedEntry("Scrap Loss", "Vanilla Scrap Loss", false, "If enabled, scrap loss will work just like vanilla, or it can be handled by another mod. \nVanilla: true");
+        VanillaScrapLoss = config.BindSyncedEntry("Scrap Loss", "Vanilla Scrap Loss", false, "If enabled, scrap loss will work just like vanilla, or it can be handled by another mod.  The next option, Scrap Loss On Gordion, can override this.  So for truly vanilla behavior, set that to true as well. \nVanilla: true");
+        ScrapLossOnGordion = config.BindSyncedEntry("Scrap Loss", "Lose Scrap on Gordion", false, "Toggles scrap loss at the company building.  If this is false, you won't lose scrap at the Company even if Vanilla Scrap Loss is true. \n Vanilla: true");
         ItemsSafeChance = config.BindSyncedEntry("Scrap Loss", "Safe Chance", 25f, "A percent chance of all scrap and equipment being safe. When your items are 'safe', it overrides all other settings, and you keep everything. \nValues between 0-100 \nVanilla: 0");
         ValueLossEnabled = config.BindSyncedEntry("Scrap Loss", "Value Loss Enabled", true, "If enabled, you lose a percentage of the total scrap value on board on a crew wipe. \nVanilla: false.");
         ValueLossPercent = config.BindSyncedEntry("Scrap Loss", "Value Loss Percent", 100f, "The percentage of total scrap value to lose. \nValues between 0-100");

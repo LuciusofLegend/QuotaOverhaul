@@ -13,13 +13,15 @@ namespace QuotaOverhaul.Patches
     {
         public static bool Prefix()
         {
-            return !Plugin.Config.VanillaScrapLoss.Value;
+            if (!Plugin.Config.ScrapLossOnGordion && StartOfRound.Instance.currentLevel.PlanetName != "71 Gordion") return false;
+            return Plugin.Config.VanillaScrapLoss.Value;
         }
 
         public static void Postfix(bool despawnAllItems = false)
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
             if (Plugin.Config.VanillaScrapLoss.Value) return;
+            if (!Plugin.Config.ScrapLossOnGordion && StartOfRound.Instance.currentLevel.PlanetName != "71 Gordion") return;
 
             VehicleController[] vehicles = UnityEngine.Object.FindObjectsOfType<VehicleController>();
             foreach (VehicleController vehicle in vehicles)
