@@ -20,12 +20,12 @@
       },
       "LethalCompany.GameLibs.Steam": {
         "type": "Direct",
-        "requested": "[73.0.0-ngd.0, )",
-        "resolved": "73.0.0-ngd.0",
-        "contentHash": "iaHCHoJTFiTnAyAYIrEbjCJOOuhcJ42+KJnEbmCmf4UdkhjSwwio2bcdPCbchodB9kEp+3v3ATgkBwYn56/Gdw==",
+        "requested": "[81.0.0-ngd.0, )",
+        "resolved": "81.0.0-ngd.0",
+        "contentHash": "Wq4UBgTco96fJSrIOLbgqeIC3/D1MEdvngv43aVVR51UOuAmHPE0Pid6AYtV4cXlE74RdCtmAJGFT3uK+tDZgg==",
         "dependencies": {
           "Newtonsoft.JSON": "13.0.3",
-          "UnityEngine.Modules": "2022.3.9"
+          "UnityEngine.Modules": "2022.3.62"
         }
       },
       "Sigurd.BepInEx.CSync": {
@@ -48,8 +48,8 @@
       "Xilophor.LethalNetworkAPI": {
         "type": "Direct",
         "requested": "[3.*, )",
-        "resolved": "3.3.2",
-        "contentHash": "toOnyUSfGF7/AXd1SbVrPoo51yAMkzb32IwQ1UEOw4hmbKieEhu34Z2PriUfLgwGVmyRf+znWNdB1DNyOrwwsA=="
+        "resolved": "3.3.3",
+        "contentHash": "1xpbTZQZAlnVTor+4KHLKnsS97AvjtvkawuTOPuayyTTP8FBHHFrPqZTqik5iI/OsTlKZHQapJJDH1caFHG+Xw=="
       },
       "BepInEx.BaseLib": {
         "type": "Transitive",
@@ -394,8 +394,8 @@
       },
       "UnityEngine.Modules": {
         "type": "Transitive",
-        "resolved": "2022.3.9",
-        "contentHash": "sSxqZjd05U0NWlX+eappdlsEuXFvDRHkUaClDVTocGRzCmIwNvgGJIPh22lGklIpNZ3cJZneYJkIUnEIazR8VA=="
+        "resolved": "2022.3.62",
+        "contentHash": "zpu5dELUCFt7Rvvzp50iTrfVusJg+2gmlcaytGEoHYuIP+AOv57X272czjp+sA8N1onPo/IiHFnOEFtT9rLJBA=="
       }
     }
   }
