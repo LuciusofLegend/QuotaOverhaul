@@ -6,7 +6,7 @@ namespace QuotaOverhaul;
 
 public class Config : SyncedConfig2<Config>
 {
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+
     [SyncedEntryField] public static SyncedEntry<int> StartingCredits;
     [SyncedEntryField] public static SyncedEntry<int> StartingQuota;
     [SyncedEntryField] public static SyncedEntry<int> QuotaBaseIncrease;
@@ -88,7 +88,6 @@ public class Config : SyncedConfig2<Config>
         ValueLossPercent = config.BindSyncedEntry("Scrap Loss", "Value Loss Percent", 100f, "The percentage of total scrap value to lose. \nValues between 0-100");
         LoseEachScrapChance = config.BindSyncedEntry("Scrap Loss", "Lose Each Chance", 50f, "A percent chance of each item being lost. \nValues between 0-100 \nVanilla: 0");
         MaxLostScrapItems = config.BindSyncedEntry("Scrap Loss", "Scrap Loss Max", int.MaxValue, "The maximum number of scrap items that can be lost.");
-        EnableLostItemsAlert = config.BindSyncedEntry("Scrap Loss", "Lost Items Alert", false, "If enabled, sends a little alert listing the items that were lost.  For debugging or just if you like it.");
 
         EquipmentLossEnabled = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Enabled", false, "Allow equipment to be lost. \nVanilla: false.");
         LoseEachEquipmentChance = config.BindSyncedEntry("Equipment Loss", "Equipment Loss Chance", 10f, "A chance of each equipment item being lost. \nApplied after SaveAllChance. \nValues between 0-100 \nVanilla: 0");

@@ -15,7 +15,7 @@
   <ItemGroup>
     <PackageReference Include="BepInEx.Analyzers" PrivateAssets="all" Version="1.*"/>
     <PackageReference Include="BepInEx.Core" Version="5.4.*"/>
-    <PackageReference Include="LethalCompany.GameLibs.Steam" Version="73.0.0-ngd.0"/>
+    <PackageReference Include="LethalCompany.GameLibs.Steam" Version="81.0.0-ngd.0"/>
     <PackageReference Include="Xilophor.LethalNetworkAPI" Version="3.*" PrivateAssets="all"/>
     <PackageReference Include="Sigurd.BepInEx.Csync" Version="5.*" PrivateAssets="all"/>
     <PackageReference Include="TeamBMX.LobbyCompatibility" Version="1.*" PrivateAssets="all"/>

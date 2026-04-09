@@ -1,4 +1,8 @@
-## Features
+# Features
+
+
+
+# Defaults
 
 You start with 300 credits instead of 60  
 The quota starts at 250  
@@ -12,25 +16,24 @@ You don't lose any scrap on a team wipe
 Instead the quota increases for each player that dies  
 Collecting bodies decreases the quota penalty
 
-### Everything in Quota Overhaul is configurable
-Install Lethal Config or use your mod manager and look through the configuration options  
-Each option has a description, so hopefully you can figure it out from that.  If not, feel free to DM me @LuciusofLegend on discord.
-
-## Roadmap
+# Roadmap
 
 - Dynamic Scrap loss, similar to Credit and Quota Penalties
+- More options of quota algorithm, for example to have it cap out at a certain point or severely limit exponential growth
+- Daily Quota compatibility
 
-## Credits
+# Known Issues
 
-I've taken inspiration and/or code from the following mods. Many thanks to all of these creators for their work!
+Probably incompatible with any mod that changes the quota.  With certain configurations it might work, but generally Quota Overhaul will overwrite any changes.
 
-- Quota Tweaks by mrov
-- Save Our Loot by MrHydralisk
-- Custom Death Penalty by ImpulsiveLass
+# Acknowledgements
 
-Shoutout @Endoxicom on the LC Modding Discord for making the icon!
+- Thank you to mrov for making Quota Tweaks, which I stole code from
+- Thank you to MrHydralisk for making SaveOurLoot, which I also stole code from
+- Thank you to ImpulsiveLass for making CustomDeathPenalty, which inspired the Quota Penalties feature
+- Thank you to Endoxicom for making the icon
 
-## Licensing:
+# Licensing:
 
 Quota Overhaul is released under the GPLv3 license.
 This means you are free to distribute your own version, provided you release it under the same license.
