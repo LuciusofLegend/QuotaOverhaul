@@ -51,9 +51,9 @@ namespace QuotaOverhaul
 
         public static double CalculatePlayerCountMultiplier()
         {
-            int playersCounted = math.clamp(RecordPlayersThisQuota, Config.QuotaPlayerThreshold.Value, Config.QuotaPlayerCap.Value);
-            playersCounted -= Config.QuotaPlayerThreshold.Value;
-            double result = 1 + Config.QuotaMultiplierPerPlayer.Value * math.max(playersCounted, 0);
+            int playersCounted = math.clamp(RecordPlayersThisQuota, Plugin.Config.QuotaPlayerThreshold.Value, Plugin.Config.QuotaPlayerCap.Value);
+            playersCounted -= Plugin.Config.QuotaPlayerThreshold.Value;
+            double result = 1 + Plugin.Config.QuotaMultiplierPerPlayer.Value * math.max(playersCounted, 0);
             Plugin.Log.LogDebug("Calculated player count multiplier of " + result);
             return result;
         }
@@ -73,12 +73,12 @@ namespace QuotaOverhaul
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
 
-            if (Config.StartingQuota != 130) TimeOfDay.Instance.quotaVariables.startingQuota = Config.StartingQuota.Value;
-            if (Config.QuotaBaseIncrease != 200) TimeOfDay.Instance.quotaVariables.baseIncrease = Config.QuotaBaseIncrease.Value;
-            if (Config.QuotaIncreaseSteepness != 4f) TimeOfDay.Instance.quotaVariables.increaseSteepness = Config.QuotaIncreaseSteepness.Value;
-            if (Config.QuotaRandomizerMultiplier != 1f) TimeOfDay.Instance.quotaVariables.randomizerMultiplier = Config.QuotaRandomizerMultiplier.Value;
-            if (Config.StartingCredits != 60) TimeOfDay.Instance.quotaVariables.startingCredits = Config.StartingCredits.Value;
-            if (Config.QuotaDeadline != 3) TimeOfDay.Instance.quotaVariables.deadlineDaysAmount = Config.QuotaDeadline.Value;
+            if (Plugin.Config.StartingQuota.Value != 130) TimeOfDay.Instance.quotaVariables.startingQuota = Plugin.Config.StartingQuota.Value;
+            if (Plugin.Config.QuotaBaseIncrease.Value != 200) TimeOfDay.Instance.quotaVariables.baseIncrease = Plugin.Config.QuotaBaseIncrease.Value;
+            if (Plugin.Config.QuotaIncreaseSteepness.Value != 4f) TimeOfDay.Instance.quotaVariables.increaseSteepness = Plugin.Config.QuotaIncreaseSteepness.Value;
+            if (Plugin.Config.QuotaRandomizerMultiplier.Value != 1f) TimeOfDay.Instance.quotaVariables.randomizerMultiplier = Plugin.Config.QuotaRandomizerMultiplier.Value;
+            if (Plugin.Config.StartingCredits.Value != 60) TimeOfDay.Instance.quotaVariables.startingCredits = Plugin.Config.StartingCredits.Value;
+            if (Plugin.Config.QuotaDeadline.Value != 3) TimeOfDay.Instance.quotaVariables.deadlineDaysAmount = Plugin.Config.QuotaDeadline.Value;
 
             LoadData();
 

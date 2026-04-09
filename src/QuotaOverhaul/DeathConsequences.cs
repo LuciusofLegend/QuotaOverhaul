@@ -38,20 +38,20 @@ namespace QuotaOverhaul
 
         public static double CalculateCreditPenalty(int deadBodies, int recoveredBodies)
         {
-            if (!Config.CreditPenaltiesEnabled.Value ||
-                !(Config.CreditPenaltiesOnGordion.Value || StartOfRound.Instance.currentLevel.PlanetName != "71 Gordion")) return 0;
+            if (!Plugin.Config.CreditPenaltiesEnabled.Value ||
+                !(Plugin.Config.CreditPenaltiesOnGordion.Value || StartOfRound.Instance.currentLevel.PlanetName != "71 Gordion")) return 0;
 
-            if (Config.CreditPenaltiesDynamic.Value) return CalculateDynamicCreditPenalty(deadBodies, recoveredBodies);
+            if (Plugin.Config.CreditPenaltiesDynamic.Value) return CalculateDynamicCreditPenalty(deadBodies, recoveredBodies);
             else return CalculateStaticCreditPenalty(deadBodies, recoveredBodies);
         }
 
         private static double CalculateStaticCreditPenalty(int deadBodies, int recoveredBodies)
         {
-            double penaltyPerBody = Config.CreditPenaltyPercentPerPlayer.Value / 100d;
-            double bonusPerRecoveredBody = penaltyPerBody * Config.QuotaPenaltyRecoveryBonus.Value / 100d;
+            double penaltyPerBody = Plugin.Config.CreditPenaltyPercentPerPlayer.Value / 100d;
+            double bonusPerRecoveredBody = penaltyPerBody * Plugin.Config.QuotaPenaltyRecoveryBonus.Value / 100d;
             double penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
 
-            if (penalty < 0 || penalty < Config.CreditPenaltyPercentThreshold.Value / 100d)
+            if (penalty < 0 || penalty < Plugin.Config.CreditPenaltyPercentThreshold.Value / 100d)
             {
                 penalty = 0;
             }
@@ -62,11 +62,11 @@ namespace QuotaOverhaul
 
         private static double CalculateDynamicCreditPenalty(int deadBodies, int recoveredBodies)
         {
-            double penaltyPerBody = 1d / QuotaOverhaul.GetRecordPlayersThisMoon() * Config.CreditPenaltyPercentCap.Value / 100d;
-            double bonusPerRecoveredBody = penaltyPerBody * Config.CreditPenaltyRecoveryBonus.Value / 100d;
+            double penaltyPerBody = 1d / QuotaOverhaul.GetRecordPlayersThisMoon() * Plugin.Config.CreditPenaltyPercentCap.Value / 100d;
+            double bonusPerRecoveredBody = penaltyPerBody * Plugin.Config.CreditPenaltyRecoveryBonus.Value / 100d;
             double penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
 
-            if (penalty < 0 || penalty < Config.CreditPenaltyPercentThreshold.Value / 100d)
+            if (penalty < 0 || penalty < Plugin.Config.CreditPenaltyPercentThreshold.Value / 100d)
             {
                 penalty = 0;
             }
@@ -77,22 +77,22 @@ namespace QuotaOverhaul
 
         public static double CalculateQuotaPenalty(int deadBodies, int recoveredBodies)
         {
-            if (!Config.QuotaPenaltiesEnabled.Value ||
-                !(Config.QuotaPenaltiesOnGordion.Value || StartOfRound.Instance.currentLevel.PlanetName != "71 Gordion")) return 0;
+            if (!Plugin.Config.QuotaPenaltiesEnabled.Value ||
+                !(Plugin.Config.QuotaPenaltiesOnGordion.Value || StartOfRound.Instance.currentLevel.PlanetName != "71 Gordion")) return 0;
 
-            if (Config.QuotaPenaltiesDynamic.Value) return CalculateDynamicQuotaPenalty(deadBodies, recoveredBodies);
+            if (Plugin.Config.QuotaPenaltiesDynamic.Value) return CalculateDynamicQuotaPenalty(deadBodies, recoveredBodies);
             else return CalculateStaticQuotaPenalty(deadBodies, recoveredBodies);
         }
 
         private static double CalculateStaticQuotaPenalty(int deadBodies, int recoveredBodies)
         {
-            double penaltyPerBody = Config.QuotaPenaltyPercentPerPlayer.Value / 100d;
-            double bonusPerRecoveredBody = penaltyPerBody * Config.QuotaPenaltyRecoveryBonus.Value / 100d;
+            double penaltyPerBody = Plugin.Config.QuotaPenaltyPercentPerPlayer.Value / 100d;
+            double bonusPerRecoveredBody = penaltyPerBody * Plugin.Config.QuotaPenaltyRecoveryBonus.Value / 100d;
             double penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
             Plugin.Log.LogInfo($"Calculated Quota Penalty of {penalty}");
 
-            if (penalty < 0 || penalty < Config.QuotaPenaltyPercentThreshold.Value / 100d)
-                Plugin.Log.LogInfo($"Penalty fell below threshold of {Config.QuotaPenaltyPercentThreshold.Value / 100d}");
+            if (penalty < 0 || penalty < Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d)
+                Plugin.Log.LogInfo($"Penalty fell below threshold of {Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d}");
             {
                 penalty = 0;
             }
@@ -102,15 +102,15 @@ namespace QuotaOverhaul
 
         private static double CalculateDynamicQuotaPenalty(int deadBodies, int recoveredBodies)
         {
-            double penaltyPerBody = 1d / QuotaOverhaul.GetRecordPlayersThisMoon() * Config.QuotaPenaltyPercentCap.Value / 100d;
-            double bonusPerRecoveredBody = penaltyPerBody * Config.QuotaPenaltyRecoveryBonus.Value / 100d;
+            double penaltyPerBody = 1d / QuotaOverhaul.GetRecordPlayersThisMoon() * Plugin.Config.QuotaPenaltyPercentCap.Value / 100d;
+            double bonusPerRecoveredBody = penaltyPerBody * Plugin.Config.QuotaPenaltyRecoveryBonus.Value / 100d;
             double penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
             Plugin.Log.LogInfo($"Calculated Dynamic Quota Penalty of {penalty}");
 
-            if (penalty < 0 || penalty < Config.QuotaPenaltyPercentThreshold.Value / 100d)
+            if (penalty < 0 || penalty < Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d)
             {
                 penalty = 0;
-                Plugin.Log.LogInfo($"Penalty fell below threshold of {Config.QuotaPenaltyPercentThreshold.Value / 100d}");
+                Plugin.Log.LogInfo($"Penalty fell below threshold of {Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d}");
             }
 
             return penalty;
@@ -125,7 +125,7 @@ namespace QuotaOverhaul
 
             System.Random rng = new(StartOfRound.Instance.randomMapSeed + 197);
 
-            bool itemsAreSafe = rng.NextDouble() < Config.ItemsSafeChance.Value / 100;
+            bool itemsAreSafe = rng.NextDouble() < Plugin.Config.ItemsSafeChance.Value / 100;
 
             if (!itemsAreSafe)
             {
@@ -134,13 +134,13 @@ namespace QuotaOverhaul
                 int scrapLost = 0;
                 int scrapValueLost = 0;
 
-                if (Config.ValueLossEnabled.Value)
+                if (Plugin.Config.ValueLossEnabled.Value)
                 {
                     itemsScrap = [.. itemsScrap.OrderByDescending(scrap => scrap.scrapValue)];
-                    int valueToLose = (int)(totalScrapValue * Config.ValueLossPercent.Value / 100);
+                    int valueToLose = (int)(totalScrapValue * Plugin.Config.ValueLossPercent.Value / 100);
                     foreach (GrabbableObject scrap in itemsScrap)
                     {
-                        if (scrapValueLost >= valueToLose || scrapLost >= Config.MaxLostScrapItems.Value) break;
+                        if (scrapValueLost >= valueToLose || scrapLost >= Plugin.Config.MaxLostScrapItems.Value) break;
                         scrapValueLost += scrap.scrapValue;
                         scrapLost++;
                         lostItems.Add(scrap);
@@ -151,9 +151,9 @@ namespace QuotaOverhaul
 
                 foreach (GrabbableObject scrap in itemsScrap)
                 {
-                    if (rng.NextDouble() < Config.LoseEachScrapChance.Value / 100)
+                    if (rng.NextDouble() < Plugin.Config.LoseEachScrapChance.Value / 100)
                     {
-                        if (scrapLost >= Config.MaxLostScrapItems.Value) break;
+                        if (scrapLost >= Plugin.Config.MaxLostScrapItems.Value) break;
                         scrapValueLost += scrap.scrapValue;
                         scrapLost++;
                         lostItems.Add(scrap);
@@ -163,7 +163,7 @@ namespace QuotaOverhaul
                 Plugin.Log.LogInfo($"Lost {scrapLost} scrap items worth {scrapValueLost}");
             }
 
-            if (!Config.EquipmentLossEnabled.Value)
+            if (!Plugin.Config.EquipmentLossEnabled.Value)
             {
                 Plugin.Log.LogInfo("Equipment loss is disabled");
             }
@@ -173,10 +173,10 @@ namespace QuotaOverhaul
                 int equipmentLost = 0;
                 foreach (GrabbableObject equipment in itemsEquipment)
                 {
-                    if (rng.NextDouble() < Config.LoseEachEquipmentChance.Value / 100)
+                    if (rng.NextDouble() < Plugin.Config.LoseEachEquipmentChance.Value / 100)
                     {
                         equipmentLost++;
-                        if (equipmentLost > Config.MaxLostEquipmentItems.Value) break;
+                        if (equipmentLost > Plugin.Config.MaxLostEquipmentItems.Value) break;
                         lostItems.Add(equipment);
                     }
                 }
