@@ -70,7 +70,7 @@ namespace QuotaOverhaul
 
             if (Plugin.Config.StartingQuota.Value != 130) TimeOfDay.Instance.quotaVariables.startingQuota = Plugin.Config.StartingQuota.Value;
             if (Plugin.Config.QuotaBaseIncrease.Value != 200) TimeOfDay.Instance.quotaVariables.baseIncrease = Plugin.Config.QuotaBaseIncrease.Value;
-            if (Plugin.Config.QuotaIncreaseSteepness.Value != 4f) TimeOfDay.Instance.quotaVariables.increaseSteepness = Plugin.Config.QuotaIncreaseSteepness.Value;
+            if (Plugin.Config.QuotaIncreaseSteepness.Value != 16f) TimeOfDay.Instance.quotaVariables.increaseSteepness = Plugin.Config.QuotaIncreaseSteepness.Value;
             if (Plugin.Config.QuotaRandomizerMultiplier.Value != 1f) TimeOfDay.Instance.quotaVariables.randomizerMultiplier = Plugin.Config.QuotaRandomizerMultiplier.Value;
             if (Plugin.Config.StartingCredits.Value != 60) TimeOfDay.Instance.quotaVariables.startingCredits = Plugin.Config.StartingCredits.Value;
             if (Plugin.Config.QuotaDeadline.Value != 3) TimeOfDay.Instance.quotaVariables.deadlineDaysAmount = Plugin.Config.QuotaDeadline.Value;
