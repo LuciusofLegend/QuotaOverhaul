@@ -153,7 +153,11 @@ namespace QuotaOverhaul
                 {
                     if (rng.NextDouble() < Plugin.Config.LoseEachScrapChance.Value / 100)
                     {
-                        if (scrapLost >= Plugin.Config.MaxLostScrapItems.Value) break;
+                        if (scrapLost >= maxLostScrap)
+                        {
+                            Plugin.Log.LogDebug($"Reached the maximum for lost scrap items: {maxLostScrap}");
+                            break;
+                        }
                         scrapValueLost += scrap.scrapValue;
                         scrapLost++;
                         lostItems.Add(scrap);
@@ -172,7 +176,11 @@ namespace QuotaOverhaul
                         if (rng.NextDouble() < Plugin.Config.LoseEachEquipmentChance.Value / 100)
                         {
                             equipmentLost++;
-                            if (equipmentLost > maxLostEquipment) break;
+                            if (equipmentLost > maxLostEquipment)
+                            {
+                                Plugin.Log.LogDebug($"Reached the maximum for lost equipment items: {maxLostEquipment}");
+                                break;
+                            }
                             lostItems.Add(equipment);
                             Plugin.Log.LogDebug($"Lost a {equipment.name} to random chance");
                         }

@@ -20,8 +20,11 @@ namespace QuotaOverhaul.Patches
         public static void Postfix(bool despawnAllItems = false)
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
-            if (Plugin.Config.VanillaScrapLoss.Value) return;
-            if (!Plugin.Config.ScrapLossOnGordion && StartOfRound.Instance.currentLevel.PlanetName != "71 Gordion") return;
+            if (Plugin.Config.VanillaScrapLoss.Value)
+            {
+                Plugin.Log.LogDebug("Vanilla Scrap Loss is on.  Skipping custom DespawnProps method.");
+                return;
+            }
 
             VehicleController[] vehicles = UnityEngine.Object.FindObjectsOfType<VehicleController>();
             foreach (VehicleController vehicle in vehicles)
@@ -77,6 +80,11 @@ namespace QuotaOverhaul.Patches
             }
 
             if (!StartOfRound.Instance.allPlayersDead) return;
+            if (!Plugin.Config.ScrapLossOnGordion && StartOfRound.Instance.currentLevel.PlanetName != "71 Gordion")
+            {
+                Plugin.Log.LogDebug("Scrap loss disabled at the Company.  Skipping Scrap Loss.");
+                return;
+            }
 
             List<GrabbableObject> lostItems = DeathConsequences.DetermineLostItems(itemsInside);
             foreach (GrabbableObject item in lostItems) DespawnItem(item);

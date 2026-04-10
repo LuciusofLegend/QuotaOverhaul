@@ -24,7 +24,7 @@ public class Plugin : BaseUnityPlugin
     {
         Instance = this;
         Harmony = new Harmony(PluginGuid);
-        Log = BepInEx.Logging.Logger.CreateLogSource(PluginName);
+        Log = this.Logger;
         Config = new Config(base.Config);
         Harmony.PatchAll();
         Log.LogInfo($"{PluginName} v{PluginVersion} is loaded!");

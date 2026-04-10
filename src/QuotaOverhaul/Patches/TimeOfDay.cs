@@ -20,6 +20,10 @@ namespace QuotaOverhaul.Patches
             if (!GameNetworkManager.Instance.isHostingGame) return false;
             if (!CanFinishQuota()) return false;
             TimeOfDay.Instance.profitQuota = QuotaOverhaul.GetBaseProfitQuota();
+            Plugin.Log.LogDebug($"Calculating new Base Quota, based on a quota of {TimeOfDay.Instance.profitQuota}");
+            Plugin.Log.LogDebug($"Base Increase: {TimeOfDay.Instance.quotaVariables.baseIncrease}");
+            Plugin.Log.LogDebug($"Increase Steepness: {TimeOfDay.Instance.quotaVariables.increaseSteepness}");
+            Plugin.Log.LogDebug($"Randomness Mult: {TimeOfDay.Instance.quotaVariables.randomizerMultiplier}");
             return true;
         }
 
@@ -27,6 +31,7 @@ namespace QuotaOverhaul.Patches
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
             if (!CanFinishQuota()) return;
+            Plugin.Log.LogDebug($"New Base Quota is {TimeOfDay.Instance.profitQuota}");
             QuotaOverhaul.SetBaseProfitQuota(TimeOfDay.Instance.profitQuota);
             QuotaOverhaul.OnNewQuota();
         }
@@ -34,9 +39,17 @@ namespace QuotaOverhaul.Patches
         private static bool CanFinishQuota()
         {
             int daysSinceQuotaStart = TimeOfDay.Instance.quotaVariables.deadlineDaysAmount - TimeOfDay.Instance.daysUntilDeadline;
-            if (Plugin.Config.QuotaEarlyFinishLine < 0 && TimeOfDay.Instance.daysUntilDeadline > 0) return false;
-            if (daysSinceQuotaStart < Plugin.Config.QuotaEarlyFinishLine) return false;
-            return true;
+            if (Plugin.Config.QuotaEarlyFinishLine.Value < 0 && TimeOfDay.Instance.daysUntilDeadline > 0) return false;
+            if (daysSinceQuotaStart < Plugin.Config.QuotaEarlyFinishLine)
+            {
+                Plugin.Log.LogDebug($"Could not finish quota.  We are {daysSinceQuotaStart} days into the quota, and we can't finish until day ${Plugin.Config.QuotaEarlyFinishLine.Value}");
+                return false;
+            }
+            else
+            {
+                Plugin.Log.LogDebug($"We are able to finish the quota.  We are {daysSinceQuotaStart} days into the quota, and we can finish any time after day ${Plugin.Config.QuotaEarlyFinishLine.Value}");
+                return true;
+            }
         }
     }
 }
