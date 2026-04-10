@@ -31,7 +31,7 @@ namespace QuotaOverhaul
             if (Plugin.Config.ChargeCreditsInsteadOfQuota.Value)
             {
                 Plugin.Log.LogDebug("Applying combined penalty system...");
-                int creditsOwed = (int)(TimeOfDay.Instance.profitQuota * Plugin.Config.CreditsPerQuota.Value * quotaPenalty);
+                int creditsOwed = (int)(TimeOfDay.Instance.profitQuota * (double)Plugin.Config.CreditsPerQuota.Value * quotaPenalty);
                 Plugin.Log.LogDebug($"Quota: {TimeOfDay.Instance.profitQuota}, Credits per Quota: {Plugin.Config.CreditsPerQuota.Value}, Multiply: {TimeOfDay.Instance.profitQuota * Plugin.Config.CreditsPerQuota.Value}, Quota Penalty: {quotaPenalty} \nTotal: {creditsOwed}");
                 //Plugin.Log.LogDebug($"You owe {creditsOwed} credits");
                 if (terminal.groupCredits >= creditsOwed)
@@ -44,7 +44,7 @@ namespace QuotaOverhaul
                 {
                     Plugin.Log.LogDebug($"You have {terminal.groupCredits} credits, which is NOT enough to cover the penalty");
                     creditPenaltyFromCombinedSystem = terminal.groupCredits;
-                    quotaPenalty = 1 / creditsOwed * terminal.groupCredits * quotaPenalty / Plugin.Config.CreditsPerQuota.Value;
+                    quotaPenalty = 1 / creditsOwed * terminal.groupCredits * quotaPenalty / (double)Plugin.Config.CreditsPerQuota.Value;
                     Plugin.Log.LogDebug($"You've lost all your credits and the remaining quota penalty is {quotaPenalty}");
                 }
                 terminal.groupCredits -= creditPenaltyFromCombinedSystem;
