@@ -30,12 +30,15 @@ namespace QuotaOverhaul
             {
                 Plugin.Log.LogDebug("Applying combined penalty system...");
                 int creditsOwed = (int)(TimeOfDay.Instance.profitQuota * Plugin.Config.CreditsPerQuota.Value * quotaPenalty);
-                Plugin.Log.LogDebug($"You owe {creditsOwed} credits");
-                if (terminal.groupCredits >= creditsOwed) {
+                Plugin.Log.LogDebug($"Quota: {TimeOfDay.Instance.profitQuota} \nCredits per Quota: {Plugin.Config.CreditsPerQuota.Value} \nMultiply: {TimeOfDay.Instance.profitQuota * Plugin.Config.CreditsPerQuota.Value} \nQuota Penalty: {quotaPenalty} \nTotal: {creditsOwed}");
+                //Plugin.Log.LogDebug($"You owe {creditsOwed} credits");
+                if (terminal.groupCredits >= creditsOwed)
+                {
                     Plugin.Log.LogDebug($"You have {terminal.groupCredits} credits, which is enough to cover the penalty");
                     creditPenaltyFromCombinedSystem = creditsOwed;
                 }
-                else {
+                else
+                {
                     Plugin.Log.LogDebug($"You have {terminal.groupCredits} credits, which is NOT enough to cover the penalty");
                     creditPenaltyFromCombinedSystem = terminal.groupCredits;
                     double remainingPenalty = 1 / creditsOwed * terminal.groupCredits * quotaPenalty / Plugin.Config.CreditsPerQuota.Value;
@@ -54,8 +57,16 @@ namespace QuotaOverhaul
 
         public static double CalculateCreditPenalty(int deadBodies, int recoveredBodies)
         {
-            if (!Plugin.Config.CreditPenaltiesEnabled.Value ||
-                !(Plugin.Config.CreditPenaltiesOnGordion.Value || StartOfRound.Instance.currentLevel.PlanetName != "71 Gordion")) return 0;
+            if (!Plugin.Config.CreditPenaltiesEnabled.Value)
+            {
+                Plugin.Log.LogDebug("Credit Penalties Disabled");
+                return 0;
+            }
+            if (!Plugin.Config.CreditPenaltiesOnGordion.Value && StartOfRound.Instance.currentLevel.PlanetName == "71 Gordion")
+            {
+                Plugin.Log.LogDebug("Credit Penalties Disabled on Gordion");
+                return 0;
+            }
 
             if (Plugin.Config.CreditPenaltiesDynamic.Value) return CalculateDynamicCreditPenalty(deadBodies, recoveredBodies);
             else return CalculateStaticCreditPenalty(deadBodies, recoveredBodies);
@@ -93,8 +104,16 @@ namespace QuotaOverhaul
 
         public static double CalculateQuotaPenalty(int deadBodies, int recoveredBodies)
         {
-            if (!Plugin.Config.QuotaPenaltiesEnabled.Value ||
-                !(Plugin.Config.QuotaPenaltiesOnGordion.Value || StartOfRound.Instance.currentLevel.PlanetName != "71 Gordion")) return 0;
+            if (!Plugin.Config.QuotaPenaltiesEnabled.Value)
+            {
+                Plugin.Log.LogDebug("Quota Penalties Disabled");
+                return 0;
+            }
+            if (!Plugin.Config.QuotaPenaltiesOnGordion.Value && StartOfRound.Instance.currentLevel.PlanetName == "71 Gordion")
+            {
+                Plugin.Log.LogDebug("Quota Penalties Disabled on Gordion");
+                return 0;
+            }
 
             if (Plugin.Config.QuotaPenaltiesDynamic.Value) return CalculateDynamicQuotaPenalty(deadBodies, recoveredBodies);
             else return CalculateStaticQuotaPenalty(deadBodies, recoveredBodies);
@@ -108,8 +127,8 @@ namespace QuotaOverhaul
             Plugin.Log.LogDebug($"Calculated Quota Penalty of {penalty}");
 
             if (penalty < 0 || penalty < Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d)
-                Plugin.Log.LogDebug($"Penalty fell below threshold of {Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d}");
             {
+                Plugin.Log.LogDebug($"Penalty fell below threshold of {Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d}.  No penalty will be applied.");
                 penalty = 0;
             }
 
