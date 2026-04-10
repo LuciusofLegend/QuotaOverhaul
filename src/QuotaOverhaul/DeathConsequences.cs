@@ -36,7 +36,7 @@ namespace QuotaOverhaul
                     creditPenaltyFromCombinedSystem = creditsOwed;
                 }
                 else {
-                    Plugin.Log.LogDebug($"You have {terminal.groupCredits} credits, which is NOT enough to cover the penalty")
+                    Plugin.Log.LogDebug($"You have {terminal.groupCredits} credits, which is NOT enough to cover the penalty");
                     creditPenaltyFromCombinedSystem = terminal.groupCredits;
                     double remainingPenalty = 1 / creditsOwed * terminal.groupCredits * quotaPenalty / Plugin.Config.CreditsPerQuota.Value;
                     quotaPenalty = remainingPenalty;
@@ -196,7 +196,7 @@ namespace QuotaOverhaul
                         if (rng.NextDouble() < Plugin.Config.LoseEachEquipmentChance.Value / 100)
                         {
                             equipmentLost++;
-                            if (equipmentLost > maxLostEquipment)
+                            if (equipmentLost >= maxLostEquipment)
                             {
                                 Plugin.Log.LogDebug($"Reached the maximum for lost equipment items: {maxLostEquipment}");
                                 break;
