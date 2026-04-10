@@ -35,7 +35,7 @@ public class Config : SyncedConfig2<Config>
     [SyncedEntryField] public SyncedEntry<float> QuotaPenaltyPercentThreshold;
     [SyncedEntryField] public SyncedEntry<float> QuotaPenaltyRecoveryBonus;
     [SyncedEntryField] public SyncedEntry<bool> ChargeCreditsInsteadOfQuota;
-    [SyncedEntryField] public SyncedEntry<float> CreditsPerQuota;
+    [SyncedEntryField] public SyncedEntry<double> CreditsPerQuota;
 
     [SyncedEntryField] public SyncedEntry<bool> VanillaScrapLoss;
     [SyncedEntryField] public SyncedEntry<bool> ScrapLossOnGordion;
@@ -82,7 +82,7 @@ public class Config : SyncedConfig2<Config>
         QuotaPenaltyPercentThreshold = config.BindSyncedEntry("Quota Penalties", "Penalty Percent Threshold", 25f, "If the penalty falls below this threshold, the penalty is set to 0. Increasing this value makes minor slip-ups more forgiving.  This applies to both the static and dynamic algorithms. \nValues between 0-100");
         QuotaPenaltyRecoveryBonus = config.BindSyncedEntry("Quota Penalties", "Body Recovery Bonus", 50f, "How much of the penalty to forgive for recovering bodies.  Applies to both normal and dynamic modes.  For example:  Assuming a fully default coniguration, except without Dynamic Penalties, if you die, the penalty for your body is 12%.  If your body is recovered, 50% of the penalty is forgiven, leaving a 6% penalty. \nValues between 0-100");
         ChargeCreditsInsteadOfQuota = config.BindSyncedEntry("Quota Penalties", "Charge Credits Instead", false, "Charges credits instead of increasing the quota.  You can set the conversion rate below.  Quota will only increase when you've run out of credits.  Creates an effect similar to Quota Rollover.  I encourage you to try this!");
-        CreditsPerQuota = config.BindSyncedEntry("Quota Penalties", "Credits Per Quota", 1f, "The conversion rate from Quota Penalties to Credits.  Increasing this makes you lose more credits.  This can also be set below 1, to make credits less sensitive. \nValues: > 0");
+        CreditsPerQuota = config.BindSyncedEntry("Quota Penalties", "Credits Per Quota", 1d, "The conversion rate from Quota Penalties to Credits.  Increasing this makes you lose more credits.  This can also be set below 1, to make credits less sensitive. \nValues: > 0");
 
         VanillaScrapLoss = config.BindSyncedEntry("Scrap Loss", "Vanilla Scrap Loss", false, "If enabled, scrap loss will work just like vanilla, or it can be handled by another mod.  The next option, Scrap Loss On Gordion, can override this.  So for truly vanilla behavior, set that to true as well. \nVanilla: true");
         ScrapLossOnGordion = config.BindSyncedEntry("Scrap Loss", "Lose Scrap on Gordion", false, "Toggles scrap loss at the company building.  If this is false, you won't lose scrap at the Company even if Vanilla Scrap Loss is true. \n Vanilla: true");
