@@ -86,9 +86,9 @@ public class Config : SyncedConfig2<Config>
         CreditsPerQuota = config.BindSyncedEntry("Quota Penalties", "Credits Per Quota", 1f, "The conversion rate from Quota Penalties to Credits.  Increasing this makes you lose more credits.  This can also be set below 1, to make credits less sensitive. \nValues: > 0");
 
         DespawnPropsPatch = config.BindSyncedEntry("Scrap Loss", "Despawn Props Patch", true, "Toggles the entire patch of the Despawn Props method.  Leave this as true unless you need to disable it for mod compatibility.  The Scrap Loss On Gordion toggle is separate from this patch, so for truly vanilla behavior, set it to true. \nVanilla: false");
-        ScrapLossEnabled = config.BindSyncedEntry("Scrap Loss", "Enable Scrap Loss", "If enabled, you lose scrap when all players die on a moon.  \nVanilla: true");
+        ScrapLossEnabled = config.BindSyncedEntry("Scrap Loss", "Enable Scrap Loss", false, "If enabled, you lose scrap when all players die on a moon.  \nVanilla: true");
         ScrapLossOnGordion = config.BindSyncedEntry("Scrap Loss", "Scrap Loss at the Company", false, "Toggles scrap loss at the company building.  This can be enabled separately from the rest of the scrap loss changes, i.e. even if Despawn Props Patch is false. \n Vanilla: true");
-        ItemsSafeChance = config.BindSyncedEntry("Scrap Loss", "Safe Chance", 100f, "A percent chance of all scrap and equipment being safe. When your items are 'safe', it overrides all other settings, and you keep everything. \nValues between 0-100 \nVanilla: 0");
+        ItemsSafeChance = config.BindSyncedEntry("Scrap Loss", "Safe Chance", 25f, "A percent chance of all scrap and equipment being safe. When your items are 'safe', it overrides all other settings, and you keep everything. \nValues between 0-100 \nVanilla: 0");
         ValueLossEnabled = config.BindSyncedEntry("Scrap Loss", "Value Loss Enabled", true, "If enabled, you lose a percentage of the total scrap value on board on a crew wipe. \nVanilla: false.");
         ValueLossPercent = config.BindSyncedEntry("Scrap Loss", "Value Loss Percent", 100f, "The percentage of total scrap value to lose. \nValues between 0-100");
         LoseEachScrapChance = config.BindSyncedEntry("Scrap Loss", "Lose Each Chance", 50f, "A percent chance of each item being lost. \nValues between 0-100 \nVanilla: 0");
