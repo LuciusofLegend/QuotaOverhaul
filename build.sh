@@ -5,4 +5,4 @@ mod_name="QuotaOverhaul"
 output_folder="./src/$mod_name/bin/Debug"
 
 dotnet build
-cp "./CHANGELOG.md" "./artifacts/tspublish/icon.png" "./LICENSE.md" "$output_folder/$mod_name.deps.json" "$output_folder/$mod_name.dll" "$profiles_path/$mod_profile/BepInEx/plugins/$mod_author-$mod_name"
+cp "./CHANGELOG.md" "icon.png" "./LICENSE.md" "$output_folder/$mod_name.deps.json" "$output_folder/$mod_name.dll" "$profiles_path/$mod_profile/BepInEx/plugins/$mod_author-$mod_name"
