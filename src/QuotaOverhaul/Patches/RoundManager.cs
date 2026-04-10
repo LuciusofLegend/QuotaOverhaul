@@ -14,13 +14,13 @@ namespace QuotaOverhaul.Patches
         public static bool Prefix()
         {
             if (!Plugin.Config.ScrapLossOnGordion && StartOfRound.Instance.currentLevel.PlanetName != "71 Gordion") return false;
-            return Plugin.Config.VanillaScrapLoss.Value;
+            return Plugin.Config.DespawnPropsPatch.Value;
         }
 
         public static void Postfix(bool despawnAllItems = false)
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
-            if (Plugin.Config.VanillaScrapLoss.Value)
+            if (Plugin.Config.DespawnPropsPatch.Value)
             {
                 Plugin.Log.LogDebug("Vanilla Scrap Loss is on.  Skipping custom DespawnProps method.");
                 return;

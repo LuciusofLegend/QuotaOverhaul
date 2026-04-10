@@ -37,7 +37,8 @@ public class Config : SyncedConfig2<Config>
     [SyncedEntryField] public SyncedEntry<bool> ChargeCreditsInsteadOfQuota;
     [SyncedEntryField] public SyncedEntry<float> CreditsPerQuota;
 
-    [SyncedEntryField] public SyncedEntry<bool> VanillaScrapLoss;
+    [SyncedEntryField] public SyncedEntry<bool> DespawnPropsPatch;
+    [SyncedEntryField] public SyncedEntry<bool> ScrapLossEnabled;
     [SyncedEntryField] public SyncedEntry<bool> ScrapLossOnGordion;
     [SyncedEntryField] public SyncedEntry<float> ItemsSafeChance;
     [SyncedEntryField] public SyncedEntry<float> LoseEachScrapChance;
@@ -81,12 +82,13 @@ public class Config : SyncedConfig2<Config>
         QuotaPenaltyPercentCap = config.BindSyncedEntry("Quota Penalties", "Penalty Percent Cap", 50f, "The percent penalty in the worst case scenario, all players dead and unrecovered. Any players still alive, and any bodies recovered (see Body Recovery Bonus) will reduce the penalty. \nValues >= 0");
         QuotaPenaltyPercentThreshold = config.BindSyncedEntry("Quota Penalties", "Penalty Percent Threshold", 25f, "If the penalty falls below this threshold, the penalty is set to 0. Increasing this value makes minor slip-ups more forgiving.  This applies to both the static and dynamic algorithms. \nValues between 0-100");
         QuotaPenaltyRecoveryBonus = config.BindSyncedEntry("Quota Penalties", "Body Recovery Bonus", 50f, "How much of the penalty to forgive for recovering bodies.  Applies to both normal and dynamic modes.  For example:  Assuming a fully default coniguration, except without Dynamic Penalties, if you die, the penalty for your body is 12%.  If your body is recovered, 50% of the penalty is forgiven, leaving a 6% penalty. \nValues between 0-100");
-        ChargeCreditsInsteadOfQuota = config.BindSyncedEntry("Quota Penalties", "Charge Credits Instead", false, "Charges credits instead of increasing the quota.  You can set the conversion rate below.  Quota will only increase when you've run out of credits.  Creates an effect similar to Quota Rollover.  I encourage you to try this!");
+        ChargeCreditsInsteadOfQuota = config.BindSyncedEntry("Quota Penalties", "Charge Credits Instead", false, "Charges credits instead of increasing the quota.  You can set the conversion rate below.  Quota will only increase when you've run out of credits.");
         CreditsPerQuota = config.BindSyncedEntry("Quota Penalties", "Credits Per Quota", 1f, "The conversion rate from Quota Penalties to Credits.  Increasing this makes you lose more credits.  This can also be set below 1, to make credits less sensitive. \nValues: > 0");
 
-        VanillaScrapLoss = config.BindSyncedEntry("Scrap Loss", "Vanilla Scrap Loss", false, "If enabled, scrap loss will work just like vanilla, or it can be handled by another mod.  The next option, Scrap Loss On Gordion, can override this.  So for truly vanilla behavior, set that to true as well. \nVanilla: true");
-        ScrapLossOnGordion = config.BindSyncedEntry("Scrap Loss", "Lose Scrap on Gordion", false, "Toggles scrap loss at the company building.  If this is false, you won't lose scrap at the Company even if Vanilla Scrap Loss is true. \n Vanilla: true");
-        ItemsSafeChance = config.BindSyncedEntry("Scrap Loss", "Safe Chance", 25f, "A percent chance of all scrap and equipment being safe. When your items are 'safe', it overrides all other settings, and you keep everything. \nValues between 0-100 \nVanilla: 0");
+        DespawnPropsPatch = config.BindSyncedEntry("Scrap Loss", "Despawn Props Patch", true, "Toggles the entire patch of the Despawn Props method.  Leave this as true unless you need to disable it for mod compatibility.  The Scrap Loss On Gordion toggle is separate from this patch, so for truly vanilla behavior, set it to true. \nVanilla: false");
+        ScrapLossEnabled = config.BindSyncedEntry("Scrap Loss", "Enable Scrap Loss", "If enabled, you lose scrap when all players die on a moon.  \nVanilla: true");
+        ScrapLossOnGordion = config.BindSyncedEntry("Scrap Loss", "Scrap Loss at the Company", false, "Toggles scrap loss at the company building.  This can be enabled separately from the rest of the scrap loss changes, i.e. even if Despawn Props Patch is false. \n Vanilla: true");
+        ItemsSafeChance = config.BindSyncedEntry("Scrap Loss", "Safe Chance", 100f, "A percent chance of all scrap and equipment being safe. When your items are 'safe', it overrides all other settings, and you keep everything. \nValues between 0-100 \nVanilla: 0");
         ValueLossEnabled = config.BindSyncedEntry("Scrap Loss", "Value Loss Enabled", true, "If enabled, you lose a percentage of the total scrap value on board on a crew wipe. \nVanilla: false.");
         ValueLossPercent = config.BindSyncedEntry("Scrap Loss", "Value Loss Percent", 100f, "The percentage of total scrap value to lose. \nValues between 0-100");
         LoseEachScrapChance = config.BindSyncedEntry("Scrap Loss", "Lose Each Chance", 50f, "A percent chance of each item being lost. \nValues between 0-100 \nVanilla: 0");
