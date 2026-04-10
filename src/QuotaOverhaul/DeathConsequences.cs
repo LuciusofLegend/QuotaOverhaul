@@ -32,7 +32,7 @@ namespace QuotaOverhaul
             {
                 Plugin.Log.LogDebug("Applying combined penalty system...");
                 int creditsOwed = (int)(TimeOfDay.Instance.profitQuota * Plugin.Config.CreditsPerQuota.Value * quotaPenalty);
-                Plugin.Log.LogDebug($"Quota: {TimeOfDay.Instance.profitQuota} \nCredits per Quota: {Plugin.Config.CreditsPerQuota.Value} \nMultiply: {TimeOfDay.Instance.profitQuota * Plugin.Config.CreditsPerQuota.Value} \nQuota Penalty: {quotaPenalty} \nTotal: {creditsOwed}");
+                Plugin.Log.LogDebug($"Quota: {TimeOfDay.Instance.profitQuota}, Credits per Quota: {Plugin.Config.CreditsPerQuota.Value}, Multiply: {TimeOfDay.Instance.profitQuota * Plugin.Config.CreditsPerQuota.Value}, Quota Penalty: {quotaPenalty} \nTotal: {creditsOwed}");
                 //Plugin.Log.LogDebug($"You owe {creditsOwed} credits");
                 if (terminal.groupCredits >= creditsOwed)
                 {
