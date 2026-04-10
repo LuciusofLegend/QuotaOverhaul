@@ -12,11 +12,13 @@ namespace QuotaOverhaul
             Terminal terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
 
             int oldCredits = terminal.groupCredits;
-            double creditPenalty = CalculateCreditPenalty(deadBodies, recoveredBodies);
+            double creditPenaltyFraction = CalculateCreditPenalty(deadBodies, recoveredBodies);
+            int creditPenaltyTotal = (int)(oldCredits * creditPenaltyFraction);
+            Plugin.Log.LogDebug($"You lost {creditPenaltyTotal} of {terminal.groupCredits} credits");
 
             if (GameNetworkManager.Instance.isHostingGame)
             {
-                terminal.groupCredits -= (int)(oldCredits * creditPenalty);
+                terminal.groupCredits -= creditPenaltyTotal;
                 if (terminal.groupCredits < 0) terminal.groupCredits = 0;
             }
 
@@ -50,7 +52,7 @@ namespace QuotaOverhaul
             }
             QuotaOverhaul.QuotaPenaltyMultiplier.Increase(quotaPenalty);
 
-            string penaltyAdditionText = $"CASUALTIES: {deadBodies}\nBODIES RECOVERED: {recoveredBodies} \n \nCREDITS: -{(int)(creditPenalty * 100)}% -{creditPenaltyFromCombinedSystem} \n{oldCredits} -> {terminal.groupCredits} \n \nQUOTA: +{(int)(quotaPenalty * 100)}% \n{oldQuota} -> {TimeOfDay.Instance.profitQuota}";
+            string penaltyAdditionText = $"CASUALTIES: {deadBodies}\nBODIES RECOVERED: {recoveredBodies} \n \nCREDITS: -{(int)(creditPenaltyFraction * 100)}% -{creditPenaltyFromCombinedSystem} \n{oldCredits} -> {terminal.groupCredits} \n \nQUOTA: +{(int)(quotaPenalty * 100)}% \n{oldQuota} -> {TimeOfDay.Instance.profitQuota}";
             HUDManager.Instance.statsUIElements.penaltyAddition.text = penaltyAdditionText;
             HUDManager.Instance.statsUIElements.penaltyTotal.text = "";
         }
