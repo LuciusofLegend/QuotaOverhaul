@@ -6,7 +6,7 @@
     <Authors>LuciusofLegend</Authors>
     <Description>New quota system that scales based on player count, and gives you control over the consequences of death.</Description>
     <Product>QuotaOverhaul</Product>
-    <Version>1.4.6</Version>
+    <Version>2.0.0</Version>
     <ProjectDepsFileName>$(Product).deps.json</ProjectDepsFileName>
     <RootNamespace>$(Product)</RootNamespace>
     <TargetName>$(Product)</TargetName>

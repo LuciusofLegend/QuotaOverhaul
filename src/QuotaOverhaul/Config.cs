@@ -56,8 +56,8 @@ public class Config : SyncedConfig2<Config>
     public Config(ConfigFile config) : base(Plugin.PluginGuid)
     {
         StartingCredits = config.BindSyncedEntry("Quota Settings", "Starting Credits", 300, "How much cash you want? \nVanilla: 60");
-        StartingQuota = config.BindSyncedEntry("Quota Settings", "Starting Quota", 250, "The first quota. \nVanilla: 130");
-        QuotaBaseIncrease = config.BindSyncedEntry("Quota Settings", "Quota Base Increase", 150, "The minimum quota increase. \nVanilla: 200");
+        StartingQuota = config.BindSyncedEntry("Quota Settings", "Starting Quota", 200, "The first quota. \nVanilla: 130");
+        QuotaBaseIncrease = config.BindSyncedEntry("Quota Settings", "Quota Base Increase", 125, "The minimum quota increase. \nVanilla: 200");
         QuotaIncreaseSteepness = config.BindSyncedEntry("Quota Settings", "Quota Increase Steepness", 16f, "The quota increases exponentially, and this controls the steepness of the curve.  HIGHER steepness value = LOWER quota. \nVanilla: 16");
         QuotaRandomizerMultiplier = config.BindSyncedEntry("Quota Settings", "Quota Randomness Multiplier", 0f, "There is a bit of random variation each time the quota increases.  This number controls how much. \nVanilla: 1");
         QuotaDeadline = config.BindSyncedEntry("Quota Settings", "Quota Deadline", 3, "The number of days you are given to complete each quota. \nVanilla: 3");
