@@ -56,7 +56,7 @@ namespace QuotaOverhaul.Patches
 
             if (despawnAllItems)
             {
-                Plugin.Log.LogInfo("Despawning all items");
+                Plugin.Log.LogDebug("Despawning all items");
                 foreach (GrabbableObject item in items)
                 {
                     DespawnItem(item);
@@ -70,7 +70,7 @@ namespace QuotaOverhaul.Patches
 
                 if (!(item.isInShipRoom || item.isHeld) || item.deactivated)
                 {
-                    Plugin.Log.LogInfo($"{item.itemProperties.itemName ?? item.name} Lost Outside");
+                    Plugin.Log.LogDebug($"{item.itemProperties.itemName ?? item.name} Lost Outside");
                     DespawnItem(item);
                 }
                 else
@@ -99,7 +99,7 @@ namespace QuotaOverhaul.Patches
                     if (vehicle.NetworkObject != null)
                     {
                         vehicle.NetworkObject.Despawn(false);
-                        Plugin.Log.LogInfo("Despawned vehicle");
+                        Plugin.Log.LogDebug("Despawned vehicle");
                     }
                 }
                 else
@@ -122,7 +122,7 @@ namespace QuotaOverhaul.Patches
             NetworkObject networkComponent = item.gameObject.GetComponent<NetworkObject>();
             if (networkComponent != null && networkComponent.IsSpawned)
             {
-                Plugin.Log.LogInfo($"Despawning {item.itemProperties.itemName ?? item.name}");
+                Plugin.Log.LogDebug($"Despawning {item.itemProperties.itemName ?? item.name}");
                 networkComponent.Despawn();
             }
             else

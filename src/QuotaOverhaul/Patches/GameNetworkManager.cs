@@ -1,6 +1,7 @@
 using HarmonyLib;
 
-namespace QuotaOverhaul.Patches{
+namespace QuotaOverhaul.Patches
+{
     [HarmonyPatch(typeof(GameNetworkManager), nameof(GameNetworkManager.SaveGame))]
     public class SaveGamePatch
     {
@@ -8,6 +9,7 @@ namespace QuotaOverhaul.Patches{
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
             QuotaOverhaul.SaveData();
+            Plugin.Log.LogInfo("Saving data");
         }
     }
 }

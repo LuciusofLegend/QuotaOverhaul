@@ -72,7 +72,7 @@ namespace QuotaOverhaul
                 penalty = 0;
             }
 
-            Plugin.Log.LogInfo($"Calculated Credit Penalty of {penalty}");
+            Plugin.Log.LogDebug($"Calculated Credit Penalty of {penalty}");
             return penalty;
         }
 
@@ -87,7 +87,7 @@ namespace QuotaOverhaul
                 penalty = 0;
             }
 
-            Plugin.Log.LogInfo($"Calculated Dynamic Credit Penalty of {penalty}");
+            Plugin.Log.LogDebug($"Calculated Dynamic Credit Penalty of {penalty}");
             return penalty;
         }
 
@@ -105,10 +105,10 @@ namespace QuotaOverhaul
             double penaltyPerBody = Plugin.Config.QuotaPenaltyPercentPerPlayer.Value / 100d;
             double bonusPerRecoveredBody = penaltyPerBody * Plugin.Config.QuotaPenaltyRecoveryBonus.Value / 100d;
             double penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
-            Plugin.Log.LogInfo($"Calculated Quota Penalty of {penalty}");
+            Plugin.Log.LogDebug($"Calculated Quota Penalty of {penalty}");
 
             if (penalty < 0 || penalty < Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d)
-                Plugin.Log.LogInfo($"Penalty fell below threshold of {Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d}");
+                Plugin.Log.LogDebug($"Penalty fell below threshold of {Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d}");
             {
                 penalty = 0;
             }
@@ -185,7 +185,7 @@ namespace QuotaOverhaul
                     }
                 }
 
-                Plugin.Log.LogInfo($"Lost {scrapLost} scrap items worth {scrapValueLost}");
+                Plugin.Log.LogDebug($"Lost {scrapLost} scrap items worth {scrapValueLost}");
 
                 if (Plugin.Config.EquipmentLossEnabled.Value)
                 {
