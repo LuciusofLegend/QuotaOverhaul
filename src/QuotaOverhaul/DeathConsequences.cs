@@ -36,13 +36,13 @@ namespace QuotaOverhaul
                 {
                     Plugin.Log.LogDebug($"You have {terminal.groupCredits} credits, which is enough to cover the penalty");
                     creditPenaltyFromCombinedSystem = creditsOwed;
+                    quotaPenalty = 0;
                 }
                 else
                 {
                     Plugin.Log.LogDebug($"You have {terminal.groupCredits} credits, which is NOT enough to cover the penalty");
                     creditPenaltyFromCombinedSystem = terminal.groupCredits;
-                    double remainingPenalty = 1 / creditsOwed * terminal.groupCredits * quotaPenalty / Plugin.Config.CreditsPerQuota.Value;
-                    quotaPenalty = remainingPenalty;
+                    quotaPenalty = 1 / creditsOwed * terminal.groupCredits * quotaPenalty / Plugin.Config.CreditsPerQuota.Value;
                     Plugin.Log.LogDebug($"You've lost all your credits and the remaining quota penalty is {quotaPenalty}");
                 }
                 terminal.groupCredits -= creditPenaltyFromCombinedSystem;
