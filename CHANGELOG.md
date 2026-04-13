@@ -1,3 +1,7 @@
+## 2.0.1
+
+- Fixed scrap loss handling, which was totally incorrect. Not sure how I missed it in testing but whatever, it should be good now.
+
 ## 2.0.0
 
 - Updated to work with v81!
