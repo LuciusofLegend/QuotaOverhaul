@@ -13,16 +13,15 @@ namespace QuotaOverhaul.Patches
     {
         public static bool Prefix()
         {
-            if (!Plugin.Config.ScrapLossOnGordion && StartOfRound.Instance.currentLevel.PlanetName != "71 Gordion") return false;
-            return Plugin.Config.DespawnPropsPatch.Value;
+            return !Plugin.Config.DespawnPropsPatch.Value;
         }
 
         public static void Postfix(bool despawnAllItems = false)
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
-            if (Plugin.Config.DespawnPropsPatch.Value)
+            if (!Plugin.Config.DespawnPropsPatch.Value)
             {
-                Plugin.Log.LogDebug("Vanilla Scrap Loss is on.  Skipping custom DespawnProps method.");
+                Plugin.Log.LogDebug("Despawn Items patch is disabled.   The Vanilla scrap loss method will be used.");
                 return;
             }
 
@@ -80,9 +79,9 @@ namespace QuotaOverhaul.Patches
             }
 
             if (!StartOfRound.Instance.allPlayersDead) return;
-            if (!Plugin.Config.ScrapLossOnGordion && StartOfRound.Instance.currentLevel.PlanetName != "71 Gordion")
+            if (!Plugin.Config.ScrapLossOnGordion && StartOfRound.Instance.currentLevel.PlanetName == "71 Gordion")
             {
-                Plugin.Log.LogDebug("Scrap loss disabled at the Company.  Skipping Scrap Loss.");
+                Plugin.Log.LogDebug("Scrap Loss On Gordion is false.  Your items are safe at the company");
                 return;
             }
 
