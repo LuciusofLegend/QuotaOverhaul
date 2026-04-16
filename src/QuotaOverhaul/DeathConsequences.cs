@@ -71,8 +71,17 @@ namespace QuotaOverhaul
                 return 0;
             }
 
-            if (Plugin.Config.CreditPenaltiesDynamic.Value) return CalculateDynamicCreditPenalty(deadBodies, recoveredBodies);
-            else return CalculateStaticCreditPenalty(deadBodies, recoveredBodies);
+            double penalty = 0;
+            double penaltyThreshold = Plugin.Config.CreditPenaltyPercentThreshold.Value / 100d;
+            if (Plugin.Config.CreditPenaltiesDynamic.Value) penalty = CalculateDynamicCreditPenalty(deadBodies, recoveredBodies);
+            else penalty = CalculateStaticCreditPenalty(deadBodies, recoveredBodies);
+
+            if (penalty < 0 || penalty < penaltyThreshold)
+            {
+                penalty = 0;
+                Plugin.Log.LogInfo($"Credit Penalty fell below the threshold of {penaltyThreshold}.  No penalty will be applied.");
+            }
+            return penalty;
         }
 
         private static double CalculateStaticCreditPenalty(int deadBodies, int recoveredBodies)
@@ -80,11 +89,6 @@ namespace QuotaOverhaul
             double penaltyPerBody = Plugin.Config.CreditPenaltyPercentPerPlayer.Value / 100d;
             double bonusPerRecoveredBody = penaltyPerBody * Plugin.Config.QuotaPenaltyRecoveryBonus.Value / 100d;
             double penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
-
-            if (penalty < 0 || penalty < Plugin.Config.CreditPenaltyPercentThreshold.Value / 100d)
-            {
-                penalty = 0;
-            }
 
             Plugin.Log.LogInfo($"Calculated Credit Penalty of {penalty}");
             return penalty;
@@ -96,12 +100,18 @@ namespace QuotaOverhaul
             double bonusPerRecoveredBody = penaltyPerBody * Plugin.Config.CreditPenaltyRecoveryBonus.Value / 100d;
             double penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
 
-            if (penalty < 0 || penalty < Plugin.Config.CreditPenaltyPercentThreshold.Value / 100d)
-            {
-                penalty = 0;
-            }
-
             Plugin.Log.LogInfo($"Calculated Dynamic Credit Penalty of {penalty}");
+            return penalty;
+        }
+
+        private static double CalculateTeamWipeCreditPenalty(int recoveredBodies)
+        {
+            int playerCount = QuotaOverhaul.GetRecordPlayersThisMoon();
+            double penaltyPerBody = 1d / playerCount * Plugin.Config.CreditPenaltyOnTeamWipe.Value / 100d;
+            double bonusPerRecoveredBody = penaltyPerBody * Plugin.Config.CreditPenaltyRecoveryBonus.Value / 100d;
+            double penalty = playerCount * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
+
+            PLugin.Log.LogInfo($"Calculated Team Wipe Credit Penalty of {penalty}");
             return penalty;
         }
 
@@ -118,8 +128,17 @@ namespace QuotaOverhaul
                 return 0;
             }
 
-            if (Plugin.Config.QuotaPenaltiesDynamic.Value) return CalculateDynamicQuotaPenalty(deadBodies, recoveredBodies);
-            else return CalculateStaticQuotaPenalty(deadBodies, recoveredBodies);
+            double penalty = 0;
+            double penaltyThreshold = Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d;
+            if (Plugin.Config.QuotaPenaltiesDynamic.Value) penalty = CalculateDynamicQuotaPenalty(deadBodies, recoveredBodies);
+            else penalty = CalculateStaticQuotaPenalty(deadBodies, recoveredBodies);
+
+            if (penalty < 0 || penalty < penaltyThreshold)
+            {
+                penalty = 0;
+                Plugin.Log.LogInfo($"Quota Penalty fell below the threshold of {penaltyThreshold}.  No penalty will be applied.");
+            }
+            return penalty;
         }
 
         private static double CalculateStaticQuotaPenalty(int deadBodies, int recoveredBodies)
@@ -131,7 +150,7 @@ namespace QuotaOverhaul
 
             if (penalty < 0 || penalty < Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d)
             {
-                Plugin.Log.LogInfo($"Penalty fell below threshold of {Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d}.  No penalty will be applied.");
+                Plugin.Log.LogInfo($"Quota penalty fell below threshold of {Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d}.  No penalty will be applied.");
                 penalty = 0;
             }
 

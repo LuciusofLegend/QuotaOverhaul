@@ -1,3 +1,8 @@
+## 2.0.2
+
+- All logs are now at Info level
+- Added options to set a separate credit or quota penalty in the case of a team wipe, aka all players dead.
+
 ## 2.0.1
 
 - Fixed scrap loss handling, which was totally incorrect. Not sure how I missed it in testing but whatever, it should be good now.

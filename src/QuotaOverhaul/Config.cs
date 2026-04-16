@@ -26,6 +26,7 @@ public class Config : SyncedConfig2<Config>
     [SyncedEntryField] public SyncedEntry<float> CreditPenaltyPercentCap;
     [SyncedEntryField] public SyncedEntry<float> CreditPenaltyPercentThreshold;
     [SyncedEntryField] public SyncedEntry<float> CreditPenaltyRecoveryBonus;
+    [SyncedEntryFIeld] public SyncedEntry<float> CreditPenaltyOnTeamWipe;
 
     [SyncedEntryField] public SyncedEntry<bool> QuotaPenaltiesEnabled;
     [SyncedEntryField] public SyncedEntry<bool> QuotaPenaltiesOnGordion;
@@ -34,6 +35,7 @@ public class Config : SyncedConfig2<Config>
     [SyncedEntryField] public SyncedEntry<float> QuotaPenaltyPercentCap;
     [SyncedEntryField] public SyncedEntry<float> QuotaPenaltyPercentThreshold;
     [SyncedEntryField] public SyncedEntry<float> QuotaPenaltyRecoveryBonus;
+    [SyncedEntryFIeld] public SyncedEntry<float> QuotaPenaltyOnTeamWipe;
     [SyncedEntryField] public SyncedEntry<bool> ChargeCreditsInsteadOfQuota;
     [SyncedEntryField] public SyncedEntry<float> CreditsPerQuota;
 
@@ -74,6 +76,7 @@ public class Config : SyncedConfig2<Config>
         CreditPenaltyPercentCap = config.BindSyncedEntry("Credit Penalties", "Penalty Percent Cap", 80f, "The percent penalty in the worst case scenario, all players dead and unrecovered. Any players still alive, and any bodies recovered (see Body Recovery Bonus) will reduce the penalty. \nValues >= 0");
         CreditPenaltyPercentThreshold = config.BindSyncedEntry("Credit Penalties", "Penalty Percent Threshold", 20f, "If the penalty falls below this threshold, the penalty is set to 0. Increasing this value makes minor slip-ups more forgiving.  This applies to both the static and dynamic algorithms. \nValues between 0-100");
         CreditPenaltyRecoveryBonus = config.BindSyncedEntry("Credit Penalties", "Body Recovery Bonus", 50f, "How much of the penalty to forgive for recovering bodies. A higher value means a higher incentive to recover bodies.  Applies to both normal and dynamic modes. \nValues between 0-100");
+        CreditPenaltyOnTeamWipe = config.BindySyncedEntry("Credit Penalties", "Team Wipe Penalty", 0f, "The penalty that will be applied in the case of all players being dead.  A value <= 0 disables this feature.  This applies to either flat or dynamic mode.  Recovered bodies still reduce the penalty as normal.");
 
         QuotaPenaltiesEnabled = config.BindSyncedEntry("Quota Penalties", "Enable", true, "Increase the quota for each player that dies. Intended to replace losing scrap when all players die. Penalties stack additively and are reset after each quota. \nVanilla: false");
         QuotaPenaltiesOnGordion = config.BindSyncedEntry("Quota Penalties", "Enable At The Company", false, "Whether to allow quota penalties at the company building. \nVanilla: true");
@@ -82,6 +85,7 @@ public class Config : SyncedConfig2<Config>
         QuotaPenaltyPercentCap = config.BindSyncedEntry("Quota Penalties", "Penalty Percent Cap", 50f, "The percent penalty in the worst case scenario, all players dead and unrecovered. Any players still alive, and any bodies recovered (see Body Recovery Bonus) will reduce the penalty. \nValues >= 0");
         QuotaPenaltyPercentThreshold = config.BindSyncedEntry("Quota Penalties", "Penalty Percent Threshold", 25f, "If the penalty falls below this threshold, the penalty is set to 0. Increasing this value makes minor slip-ups more forgiving.  This applies to both the static and dynamic algorithms. \nValues between 0-100");
         QuotaPenaltyRecoveryBonus = config.BindSyncedEntry("Quota Penalties", "Body Recovery Bonus", 50f, "How much of the penalty to forgive for recovering bodies.  Applies to both normal and dynamic modes.  For example:  Assuming a fully default coniguration, except without Dynamic Penalties, if you die, the penalty for your body is 12%.  If your body is recovered, 50% of the penalty is forgiven, leaving a 6% penalty. \nValues between 0-100");
+        CreditPenaltyOnTeamWipe = config.BindySyncedEntry("Credit Penalties", "Team Wipe Penalty", 0f, "The penalty that will be applied in the case of all players being dead.  A value <= 0 disables this feature.  This applies to either flat or dynamic mode.  Recovered bodies still reduce the penalty as normal.");
         ChargeCreditsInsteadOfQuota = config.BindSyncedEntry("Quota Penalties", "Charge Credits Instead", false, "Charges credits instead of increasing the quota.  You can set the conversion rate below.  Quota will only increase when you've run out of credits.");
         CreditsPerQuota = config.BindSyncedEntry("Quota Penalties", "Credits Per Quota", 1f, "The conversion rate from Quota Penalties to Credits.  Increasing this makes you lose more credits.  This can also be set below 1, to make credits less sensitive. \nValues: > 0");
 

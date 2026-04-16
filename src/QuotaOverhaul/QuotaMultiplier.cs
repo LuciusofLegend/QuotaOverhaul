@@ -99,7 +99,7 @@ namespace QuotaOverhaul
             {
                 double beforeMultiplier = result;
                 result *= multiplier.Get();
-                Plugin.Log.LogInfo($"Applying quota multiplier: {multiplier.name} \n {beforeMultiplier} * {multiplier.Get()} = {result}");
+                Plugin.Log.LogInfo($"Applying quota multiplier: {multiplier.name}.  {beforeMultiplier} * {multiplier.Get()} = {result}");
             }
             return (int)result;
         }
