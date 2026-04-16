@@ -9,12 +9,13 @@ namespace QuotaOverhaul
 
         public static void DoDeathConsequences(int deadBodies, int recoveredBodies)
         {
+            Plugin.Log.LogInfo($"Calculating Death Consequences for {QuotaOverhaul.GetRecordPlayersThisMoon()} players.  {deadBodies} dead, {recoveredBodies} recovered.");
             Terminal terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
 
             int oldCredits = terminal.groupCredits;
             double creditPenaltyFraction = CalculateCreditPenalty(deadBodies, recoveredBodies);
             int creditPenaltyTotal = (int)(oldCredits * creditPenaltyFraction);
-            Plugin.Log.LogDebug($"You lost {creditPenaltyTotal} of {terminal.groupCredits} credits");
+            Plugin.Log.LogInfo($"You lost {creditPenaltyTotal} of {terminal.groupCredits} credits");
 
             if (GameNetworkManager.Instance.isHostingGame)
             {
@@ -30,22 +31,22 @@ namespace QuotaOverhaul
             int creditPenaltyFromCombinedSystem = 0;
             if (Plugin.Config.ChargeCreditsInsteadOfQuota.Value)
             {
-                Plugin.Log.LogDebug("Applying combined penalty system...");
+                Plugin.Log.LogInfo("Applying combined penalty system...");
                 int creditsOwed = (int)(TimeOfDay.Instance.profitQuota * (double)Plugin.Config.CreditsPerQuota.Value * quotaPenalty);
-                Plugin.Log.LogDebug($"Quota: {TimeOfDay.Instance.profitQuota}, Credits per Quota: {Plugin.Config.CreditsPerQuota.Value}, Multiply: {TimeOfDay.Instance.profitQuota * Plugin.Config.CreditsPerQuota.Value}, Quota Penalty: {quotaPenalty} \nTotal: {creditsOwed}");
-                //Plugin.Log.LogDebug($"You owe {creditsOwed} credits");
+                Plugin.Log.LogInfo($"Quota: {TimeOfDay.Instance.profitQuota}, Credits per Quota: {Plugin.Config.CreditsPerQuota.Value}, Multiply: {TimeOfDay.Instance.profitQuota * Plugin.Config.CreditsPerQuota.Value}, Quota Penalty: {quotaPenalty} \nTotal: {creditsOwed}");
+                //Plugin.Log.LogInfo($"You owe {creditsOwed} credits");
                 if (terminal.groupCredits >= creditsOwed)
                 {
-                    Plugin.Log.LogDebug($"You have {terminal.groupCredits} credits, which is enough to cover the penalty");
+                    Plugin.Log.LogInfo($"You have {terminal.groupCredits} credits, which is enough to cover the penalty");
                     creditPenaltyFromCombinedSystem = creditsOwed;
                     quotaPenalty = 0;
                 }
                 else
                 {
-                    Plugin.Log.LogDebug($"You have {terminal.groupCredits} credits, which is NOT enough to cover the penalty");
+                    Plugin.Log.LogInfo($"You have {terminal.groupCredits} credits, which is NOT enough to cover the penalty");
                     creditPenaltyFromCombinedSystem = terminal.groupCredits;
                     quotaPenalty = 1 / creditsOwed * terminal.groupCredits * quotaPenalty / (double)Plugin.Config.CreditsPerQuota.Value;
-                    Plugin.Log.LogDebug($"You've lost all your credits and the remaining quota penalty is {quotaPenalty}");
+                    Plugin.Log.LogInfo($"You've lost all your credits and the remaining quota penalty is {quotaPenalty}");
                 }
                 terminal.groupCredits -= creditPenaltyFromCombinedSystem;
                 if (terminal.groupCredits < 0) terminal.groupCredits = 0;
@@ -61,12 +62,12 @@ namespace QuotaOverhaul
         {
             if (!Plugin.Config.CreditPenaltiesEnabled.Value)
             {
-                Plugin.Log.LogDebug("Credit Penalties Disabled");
+                Plugin.Log.LogInfo("Credit Penalties Disabled");
                 return 0;
             }
             if (!Plugin.Config.CreditPenaltiesOnGordion.Value && StartOfRound.Instance.currentLevel.PlanetName == "71 Gordion")
             {
-                Plugin.Log.LogDebug("Credit Penalties Disabled on Gordion");
+                Plugin.Log.LogInfo("Credit Penalties Disabled on Gordion");
                 return 0;
             }
 
@@ -85,7 +86,7 @@ namespace QuotaOverhaul
                 penalty = 0;
             }
 
-            Plugin.Log.LogDebug($"Calculated Credit Penalty of {penalty}");
+            Plugin.Log.LogInfo($"Calculated Credit Penalty of {penalty}");
             return penalty;
         }
 
@@ -100,7 +101,7 @@ namespace QuotaOverhaul
                 penalty = 0;
             }
 
-            Plugin.Log.LogDebug($"Calculated Dynamic Credit Penalty of {penalty}");
+            Plugin.Log.LogInfo($"Calculated Dynamic Credit Penalty of {penalty}");
             return penalty;
         }
 
@@ -108,12 +109,12 @@ namespace QuotaOverhaul
         {
             if (!Plugin.Config.QuotaPenaltiesEnabled.Value)
             {
-                Plugin.Log.LogDebug("Quota Penalties Disabled");
+                Plugin.Log.LogInfo("Quota Penalties Disabled");
                 return 0;
             }
             if (!Plugin.Config.QuotaPenaltiesOnGordion.Value && StartOfRound.Instance.currentLevel.PlanetName == "71 Gordion")
             {
-                Plugin.Log.LogDebug("Quota Penalties Disabled on Gordion");
+                Plugin.Log.LogInfo("Quota Penalties Disabled on Gordion");
                 return 0;
             }
 
@@ -126,11 +127,11 @@ namespace QuotaOverhaul
             double penaltyPerBody = Plugin.Config.QuotaPenaltyPercentPerPlayer.Value / 100d;
             double bonusPerRecoveredBody = penaltyPerBody * Plugin.Config.QuotaPenaltyRecoveryBonus.Value / 100d;
             double penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
-            Plugin.Log.LogDebug($"Calculated Quota Penalty of {penalty}");
+            Plugin.Log.LogInfo($"Calculated Quota Penalty of {penalty}");
 
             if (penalty < 0 || penalty < Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d)
             {
-                Plugin.Log.LogDebug($"Penalty fell below threshold of {Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d}.  No penalty will be applied.");
+                Plugin.Log.LogInfo($"Penalty fell below threshold of {Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d}.  No penalty will be applied.");
                 penalty = 0;
             }
 
@@ -142,12 +143,12 @@ namespace QuotaOverhaul
             double penaltyPerBody = 1d / QuotaOverhaul.GetRecordPlayersThisMoon() * Plugin.Config.QuotaPenaltyPercentCap.Value / 100d;
             double bonusPerRecoveredBody = penaltyPerBody * Plugin.Config.QuotaPenaltyRecoveryBonus.Value / 100d;
             double penalty = deadBodies * penaltyPerBody - recoveredBodies * bonusPerRecoveredBody;
-            Plugin.Log.LogDebug($"Calculated Dynamic Quota Penalty of {penalty}");
+            Plugin.Log.LogInfo($"Calculated Dynamic Quota Penalty of {penalty}");
 
             if (penalty < 0 || penalty < Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d)
             {
                 penalty = 0;
-                Plugin.Log.LogDebug($"Penalty fell below threshold of {Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d}.  No penalty will be applied.");
+                Plugin.Log.LogInfo($"Penalty fell below threshold of {Plugin.Config.QuotaPenaltyPercentThreshold.Value / 100d}.  No penalty will be applied.");
             }
 
             return penalty;
@@ -166,12 +167,12 @@ namespace QuotaOverhaul
             int maxLostScrap = System.Math.Min(Plugin.Config.MaxLostScrapItems.Value, (int)((float)itemsScrap.Count * Plugin.Config.MaxPercentLostScrapItems.Value / 100f));
             int maxLostEquipment = System.Math.Min(Plugin.Config.MaxLostEquipmentItems.Value, (int)((float)itemsEquipment.Count * Plugin.Config.MaxPercentLostEquipmentItems.Value / 100f));
 
-            if (itemsAreSafe) { Plugin.Log.LogDebug("All items are safe!"); }
+            if (itemsAreSafe) { Plugin.Log.LogInfo("All items are safe!"); }
             else
             {
                 if (Plugin.Config.ScrapLossEnabled.Value)
                 {
-                    Plugin.Log.LogDebug("Scrap loss is enabled");
+                    Plugin.Log.LogInfo("Scrap loss is enabled");
                     itemsScrap.RemoveAll(item => !item.IsSpawned);
                     int totalScrapValue = itemsScrap.Sum(scrap => scrap.scrapValue);
                     int scrapLost = 0;
@@ -187,10 +188,10 @@ namespace QuotaOverhaul
                             scrapValueLost += scrap.scrapValue;
                             scrapLost++;
                             lostItems.Add(scrap);
-                            Plugin.Log.LogDebug($"Lost a {scrap.name} due to Value Loss");
+                            Plugin.Log.LogInfo($"Lost a {scrap.name} due to Value Loss");
                         }
                         itemsScrap.RemoveAll(item => !item.IsSpawned);
-                        Plugin.Log.LogDebug($"Value Loss: {scrapValueLost}$ of scrap lost");
+                        Plugin.Log.LogInfo($"Value Loss: {scrapValueLost}$ of scrap lost");
                     }
 
                     foreach (GrabbableObject scrap in itemsScrap)
@@ -199,23 +200,23 @@ namespace QuotaOverhaul
                         {
                             if (scrapLost >= maxLostScrap)
                             {
-                                Plugin.Log.LogDebug($"Reached the maximum for lost scrap items: {maxLostScrap}");
+                                Plugin.Log.LogInfo($"Reached the maximum for lost scrap items: {maxLostScrap}");
                                 break;
                             }
                             scrapValueLost += scrap.scrapValue;
                             scrapLost++;
                             lostItems.Add(scrap);
-                            Plugin.Log.LogDebug($"Lost a {scrap.name} due to random chance");
+                            Plugin.Log.LogInfo($"Lost a {scrap.name} due to random chance");
                         }
                     }
 
-                    Plugin.Log.LogDebug($"Lost {scrapLost} scrap items worth {scrapValueLost}");
+                    Plugin.Log.LogInfo($"Lost {scrapLost} scrap items worth {scrapValueLost}");
                 }
-                else Plugin.Log.LogDebug("Scrap loss is disabled");
+                else Plugin.Log.LogInfo("Scrap loss is disabled");
 
                 if (Plugin.Config.EquipmentLossEnabled.Value)
                 {
-                    Plugin.Log.LogDebug("Equipment loss is enabled");
+                    Plugin.Log.LogInfo("Equipment loss is enabled");
                     itemsEquipment.RemoveAll(item => !item.IsSpawned);
                     int equipmentLost = 0;
                     foreach (GrabbableObject equipment in itemsEquipment)
@@ -225,16 +226,16 @@ namespace QuotaOverhaul
                             equipmentLost++;
                             if (equipmentLost >= maxLostEquipment)
                             {
-                                Plugin.Log.LogDebug($"Reached the maximum for lost equipment items: {maxLostEquipment}");
+                                Plugin.Log.LogInfo($"Reached the maximum for lost equipment items: {maxLostEquipment}");
                                 break;
                             }
                             lostItems.Add(equipment);
-                            Plugin.Log.LogDebug($"Lost a {equipment.name} to random chance");
+                            Plugin.Log.LogInfo($"Lost a {equipment.name} to random chance");
                         }
                     }
-                    Plugin.Log.LogDebug($"Lost {equipmentLost} equipment items");
+                    Plugin.Log.LogInfo($"Lost {equipmentLost} equipment items");
                 }
-                else Plugin.Log.LogDebug("Equipment loss is disabled");
+                else Plugin.Log.LogInfo("Equipment loss is disabled");
             }
 
             return lostItems;

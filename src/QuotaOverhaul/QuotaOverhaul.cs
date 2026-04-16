@@ -49,7 +49,7 @@ namespace QuotaOverhaul
             int playersCounted = math.clamp(RecordPlayersThisQuota, Plugin.Config.QuotaPlayerThreshold.Value, Plugin.Config.QuotaPlayerCap.Value);
             playersCounted -= Plugin.Config.QuotaPlayerThreshold.Value;
             double result = 1 + Plugin.Config.QuotaMultiplierPerPlayer.Value * math.max(playersCounted, 0);
-            Plugin.Log.LogDebug("Calculated player count multiplier of " + result);
+            Plugin.Log.LogInfo("Calculated player count multiplier of " + result);
             return result;
         }
 
@@ -109,7 +109,7 @@ namespace QuotaOverhaul
             {
                 SetRecordPlayersThisQuota(playerCount);
             }
-            Plugin.Log.LogDebug("Player count: " + playerCount);
+            Plugin.Log.LogInfo($"Player count: {playerCount}");
         }
 
         private static void LoadData()

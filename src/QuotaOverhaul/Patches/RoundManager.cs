@@ -21,7 +21,7 @@ namespace QuotaOverhaul.Patches
             if (!GameNetworkManager.Instance.isHostingGame) return;
             if (!Plugin.Config.DespawnPropsPatch.Value)
             {
-                Plugin.Log.LogDebug("Despawn Items patch is disabled.   The Vanilla scrap loss method will be used.");
+                Plugin.Log.LogInfo("Despawn Items patch is disabled.   The Vanilla scrap loss method will be used.");
                 return;
             }
 
@@ -55,7 +55,7 @@ namespace QuotaOverhaul.Patches
 
             if (despawnAllItems)
             {
-                Plugin.Log.LogDebug("Despawning all items");
+                Plugin.Log.LogInfo("Despawning all items");
                 foreach (GrabbableObject item in items)
                 {
                     DespawnItem(item);
@@ -69,7 +69,7 @@ namespace QuotaOverhaul.Patches
 
                 if (!(item.isInShipRoom || item.isHeld) || item.deactivated)
                 {
-                    Plugin.Log.LogDebug($"{item.itemProperties.itemName ?? item.name} Lost Outside");
+                    Plugin.Log.LogInfo($"{item.itemProperties.itemName ?? item.name} Lost Outside");
                     DespawnItem(item);
                 }
                 else
@@ -81,7 +81,7 @@ namespace QuotaOverhaul.Patches
             if (!StartOfRound.Instance.allPlayersDead) return;
             if (!Plugin.Config.ScrapLossOnGordion && StartOfRound.Instance.currentLevel.PlanetName == "71 Gordion")
             {
-                Plugin.Log.LogDebug("Scrap Loss On Gordion is false.  Your items are safe at the company");
+                Plugin.Log.LogInfo("Scrap Loss On Gordion is false.  Your items are safe at the company");
                 return;
             }
 
@@ -98,7 +98,7 @@ namespace QuotaOverhaul.Patches
                     if (vehicle.NetworkObject != null)
                     {
                         vehicle.NetworkObject.Despawn(false);
-                        Plugin.Log.LogDebug("Despawned vehicle");
+                        Plugin.Log.LogInfo("Despawned vehicle");
                     }
                 }
                 else
@@ -121,12 +121,12 @@ namespace QuotaOverhaul.Patches
             NetworkObject networkComponent = item.gameObject.GetComponent<NetworkObject>();
             if (networkComponent != null && networkComponent.IsSpawned)
             {
-                Plugin.Log.LogDebug($"Despawning {item.itemProperties.itemName ?? item.name}");
+                Plugin.Log.LogInfo($"Despawning {item.itemProperties.itemName ?? item.name}");
                 networkComponent.Despawn();
             }
             else
             {
-                Plugin.Log.LogDebug($"Error/warning: {item.itemProperties.itemName ?? item.itemProperties.itemName ?? item.name} was not spawned or did not have a NetworkObject component!  Skipped despawning and destroyed it instead.");
+                Plugin.Log.LogInfo($"Error/warning: {item.itemProperties.itemName ?? item.itemProperties.itemName ?? item.name} was not spawned or did not have a NetworkObject component!  Skipped despawning and destroyed it instead.");
                 UnityEngine.Object.Destroy(item.gameObject);
             }
             if (RoundManager.Instance.spawnedSyncedObjects.Contains(item.gameObject))
