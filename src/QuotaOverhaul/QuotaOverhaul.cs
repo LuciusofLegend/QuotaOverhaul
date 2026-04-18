@@ -44,15 +44,6 @@ namespace QuotaOverhaul
             QuotaPlayerMultiplier.Set(CalculatePlayerCountMultiplier());
         }
 
-        public static double CalculatePlayerCountMultiplier()
-        {
-            int playersCounted = math.clamp(RecordPlayersThisQuota, Plugin.Config.QuotaPlayerThreshold.Value, Plugin.Config.QuotaPlayerCap.Value);
-            playersCounted -= Plugin.Config.QuotaPlayerThreshold.Value;
-            double result = 1 + Plugin.Config.QuotaMultiplierPerPlayer.Value * math.max(playersCounted, 0);
-            Plugin.Log.LogInfo("Calculated player count multiplier of " + result);
-            return result;
-        }
-
         public static int GetRecordPlayersThisMoon()
         {
             return RecordPlayersThisMoon;
@@ -62,6 +53,17 @@ namespace QuotaOverhaul
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
             RecordPlayersThisMoon = value;
+        }
+
+        public static double CalculatePlayerCountMultiplier()
+        {
+            int playersCounted = RecordPlayersThisQuota;
+            if (playersCounted > Plugin.Config.QuotaPlayerCap.Value) playersCounted = Plugin.Config.QuotaPlayerCap.Value;
+            playersCounted -= Plugin.Config.QuotaPlayerThreshold.Value;
+            if (playersCounted < 0) playersCounted = 0;
+            double result = 1 + Plugin.Config.QuotaMultiplierPerPlayer.Value * playersCounted;
+            Plugin.Log.LogInfo($"Calculated player count multiplier of {result}, from {RecordPlayersThisQuota} players.");
+            return result;
         }
 
         public static void OnNewSession()

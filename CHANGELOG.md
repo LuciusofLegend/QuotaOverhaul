@@ -2,6 +2,7 @@
 
 - All logs are now at Info level
 - Added options to set a separate credit or quota penalty in the case of a team wipe, aka all players dead.
+- Changed config options from percentages to decimals
 
 ## 2.0.1
 
