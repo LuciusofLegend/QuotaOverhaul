@@ -38,7 +38,8 @@ I like this mod because when things are going badly, there's a tendency to want 
 
 # Known Issues
 
-Probably incompatible with any mod that changes the quota.  With certain configurations it might work, but generally Quota Overhaul will overwrite any changes.
+- Probably incompatible with any mod that changes the quota.  With certain configurations it might work, but generally Quota Overhaul will overwrite any changes.
+- Currently there are some pretty mysterious issues with the quota multipliers.  When you die and then reload the save, it starts acting strangely.  This is a high priority to fix.
 
 # Acknowledgements
 
