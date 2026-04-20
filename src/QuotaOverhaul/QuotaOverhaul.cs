@@ -77,6 +77,8 @@ namespace QuotaOverhaul
             if (Plugin.Config.StartingCredits.Value != 60) TimeOfDay.Instance.quotaVariables.startingCredits = Plugin.Config.StartingCredits.Value;
             if (Plugin.Config.QuotaDeadline.Value != 3) TimeOfDay.Instance.quotaVariables.deadlineDaysAmount = Plugin.Config.QuotaDeadline.Value;
 
+            Plugin.Log.LogInfo($"Quota before loading data: {QuotaMultiplier.GetQuotaWithMultipliers()}");
+
             LoadData();
 
             if (TimeOfDay.Instance.timesFulfilledQuota == 0 && !QuotaInProgress) OnNewRun();
@@ -96,6 +98,7 @@ namespace QuotaOverhaul
             QuotaPenaltyMultiplier.Reset();
             RecordPlayersThisQuota = StartOfRound.Instance.connectedPlayersAmount;
             UpdateProfitQuota();
+            SaveData();
         }
 
         public static void OnPlayerCountChanged()
@@ -118,10 +121,23 @@ namespace QuotaOverhaul
         {
             if (!GameNetworkManager.Instance.isHostingGame) return;
 
+            Plugin.Log.LogInfo("Loading data...");
             string saveFile = GameNetworkManager.Instance.currentSaveFileName;
-            if (ES3.KeyExists(nameof(BaseProfitQuota), saveFile)) BaseProfitQuota = ES3.Load<int>(nameof(BaseProfitQuota), saveFile);
-            if (ES3.KeyExists(nameof(RecordPlayersThisQuota), saveFile)) RecordPlayersThisQuota = ES3.Load<int>(nameof(RecordPlayersThisQuota), saveFile);
-            if (ES3.KeyExists(nameof(QuotaInProgress), saveFile)) QuotaInProgress = ES3.Load<bool>(nameof(QuotaInProgress), saveFile);
+            if (ES3.KeyExists(nameof(BaseProfitQuota), saveFile))
+            {
+                BaseProfitQuota = ES3.Load<int>(nameof(BaseProfitQuota), saveFile);
+                Plugin.Log.LogInfo($"Base Quota: {ES3.Load<int>(nameof(BaseProfitQuota), saveFile)}");
+            }
+            if (ES3.KeyExists(nameof(RecordPlayersThisQuota), saveFile))
+            {
+                RecordPlayersThisQuota = ES3.Load<int>(nameof(RecordPlayersThisQuota), saveFile);
+                Plugin.Log.LogInfo($"Highest Player Coun This Quota: {ES3.Load<int>(nameof(RecordPlayersThisQuota), saveFile)}");
+            }
+            if (ES3.KeyExists(nameof(QuotaInProgress), saveFile))
+            {
+                QuotaInProgress = ES3.Load<bool>(nameof(QuotaInProgress), saveFile);
+                Plugin.Log.LogInfo($"Is Quota In Progress: {ES3.Load<bool>(nameof(QuotaInProgress), saveFile)}");
+            }
             QuotaMultiplier.LoadAll(saveFile);
         }
 
