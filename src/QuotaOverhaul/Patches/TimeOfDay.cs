@@ -42,12 +42,12 @@ namespace QuotaOverhaul.Patches
             if (Plugin.Config.QuotaEarlyFinishLine.Value < 0 && TimeOfDay.Instance.daysUntilDeadline > 0) return false;
             if (daysSinceQuotaStart < Plugin.Config.QuotaEarlyFinishLine)
             {
-                Plugin.Log.LogInfo($"Could not finish quota.  We are {daysSinceQuotaStart} days into the quota, and we can't finish until day ${Plugin.Config.QuotaEarlyFinishLine.Value}");
+                Plugin.Log.LogInfo($"Could not finish quota.  We are {daysSinceQuotaStart} days into the quota, and we can't finish until day {Plugin.Config.QuotaEarlyFinishLine.Value}");
                 return false;
             }
             else
             {
-                Plugin.Log.LogInfo($"We are able to finish the quota.  We are {daysSinceQuotaStart} days into the quota, and we can finish any time after day ${Plugin.Config.QuotaEarlyFinishLine.Value}");
+                Plugin.Log.LogInfo($"We are able to finish the quota.  We are {daysSinceQuotaStart} days into the quota, and we can finish any time after day {Plugin.Config.QuotaEarlyFinishLine.Value}");
                 return true;
             }
         }
