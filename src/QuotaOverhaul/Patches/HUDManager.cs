@@ -12,7 +12,7 @@ namespace QuotaOverhaul.Patches
 
         public static void Postfix(int playersDead, int bodiesInsured)
         {
-            DeathConsequences.DoDeathConsequences(playersDead, bodiesInsured);
+            DeathConsequences.ApplyDeathPenalties(playersDead, bodiesInsured);
         }
     }
 }

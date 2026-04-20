@@ -7,7 +7,7 @@ namespace QuotaOverhaul
     public class DeathConsequences
     {
 
-        public static void DoDeathConsequences(int deadBodies, int recoveredBodies)
+        public static void ApplyDeathPenalties(int deadBodies, int recoveredBodies)
         {
             Plugin.Log.LogInfo($"Calculating Death Consequences for {QuotaOverhaul.GetRecordPlayersThisMoon()} players.  {deadBodies} dead, {recoveredBodies} recovered.");
             Terminal terminal = UnityEngine.Object.FindObjectOfType<Terminal>();
